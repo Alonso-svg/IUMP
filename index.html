@@ -69,7 +69,7 @@
   }
 
   /* Fondo con imagen rotando (fade) */
-  .hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80'); background-size: cover; background-position: center; }
   .hero-bg .slide {
     position: absolute; inset: 0;
     background-size: cover; background-position: center;
@@ -458,25 +458,8 @@
     return (evento - hoy) / (1000 * 60 * 60 * 24) > 5;
   }
 
-  /* ── Fondo rotando (fade) ── */
-  const bgFotos = [
-    'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80',
-    'https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=800&q=80',
-    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80',
-  ];
-  const heroBg = document.getElementById('hero-bg');
-  bgFotos.forEach((url, i) => {
-    const d = document.createElement('div');
-    d.className = 'slide' + (i === 0 ? ' active' : '');
-    d.style.backgroundImage = `url('${url}')`;
-    heroBg.appendChild(d);
-  });
-  let bgCurrent = 0;
-  setInterval(() => {
-    heroBg.children[bgCurrent].classList.remove('active');
-    bgCurrent = (bgCurrent + 1) % heroBg.children.length;
-    heroBg.children[bgCurrent].classList.add('active');
-  }, 5000);
+  /* ── Fondo fijo ── */
+  /* ✏️ Para cambiar la imagen de fondo, reemplaza la URL en el CSS de .hero-bg */
 
   /* ── Navegación ── */
   let panelAnterior = 'inicio';
