@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  /* ── VARIABLES GLOBALES ── */
   :root {
     --blue:       #0d2e6e;
     --blue-mid:   #1a4699;
@@ -29,346 +28,254 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  /* ── Responsive: fondo azul en PC, sin bordes blancos ── */
   body {
     font-family: 'Inter', sans-serif;
-    background: var(--gray-100);
+    background: var(--blue);
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
   }
 
-  /* ── CONTENEDOR TIPO APP MÓVIL ── */
   .app {
     width: 100%;
-    max-width: 420px;
+    max-width: 480px;
     min-height: 100vh;
     background: var(--white);
     position: relative;
     overflow: hidden;
   }
 
-  /* ══════════════════════════════════════
-     PANEL 1 — PANTALLA DE INICIO
-  ══════════════════════════════════════ */
+  @media (min-width: 600px) {
+    body { padding: 2rem 1rem; }
+    .app {
+      border-radius: 20px;
+      min-height: auto;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+      margin-bottom: 2rem;
+    }
+  }
+
+  /* ══ PANEL 1 ══ */
   #panel-inicio {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     background: var(--blue);
   }
-
-  /* Imagen de fondo con rotación */
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
+  @media (min-width: 600px) {
+    #panel-inicio { min-height: 700px; border-radius: 20px; }
   }
+
+  .hero-bg { position: absolute; inset: 0; z-index: 0; }
   .hero-bg .slide {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 1.2s ease;
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    opacity: 0; transition: opacity 1.2s ease;
   }
   .hero-bg .slide.active { opacity: 1; }
-
-  /* Por ahora usa un color sólido. Cuando tengas imágenes,
-     reemplaza los background-color por background-image: url('tu-imagen.jpg') */
+  /* ✏️ Reemplaza los background-color por background-image: url('foto.jpg') cuando tengas imágenes */
   .hero-bg .slide:nth-child(1) { background-color: #0a1f4a; }
   .hero-bg .slide:nth-child(2) { background-color: #0e2a5c; }
   .hero-bg .slide:nth-child(3) { background-color: #112d60; }
 
   .hero-overlay {
     position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(180deg,
-      rgba(13,46,110,0.5) 0%,
-      rgba(13,46,110,0.85) 55%,
-      rgba(13,46,110,1) 100%
-    );
+    background: linear-gradient(180deg, rgba(13,46,110,0.5) 0%, rgba(13,46,110,0.85) 55%, rgba(13,46,110,1) 100%);
   }
-
   .hero-content {
-    position: relative; z-index: 2;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 3rem 1.5rem 0;
-    text-align: center;
+    position: relative; z-index: 2; flex: 1;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 3rem 1.5rem 0; text-align: center;
   }
-
-  /* Logo */
   .logo-ring {
     width: 72px; height: 72px; border-radius: 50%;
-    background: var(--white);
-    border: 3px solid var(--gold-light);
+    background: var(--white); border: 3px solid var(--gold-light);
     display: flex; align-items: center; justify-content: center;
-    margin-bottom: 1rem;
-    overflow: hidden;
+    margin-bottom: 1rem; overflow: hidden;
   }
-  .logo-ring img {
-    width: 60px; height: 60px; object-fit: contain;
-  }
+  .logo-ring img { width: 60px; height: 60px; object-fit: contain; }
 
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     ✏️  EDITA AQUÍ: Nombre corporación
-         y nombre de la sección/zonal
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  /* ✏️ EDITA AQUÍ: nombre corporación */
   .corp-name {
-    font-size: 11px; font-weight: 500;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 4px;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 4px;
   }
-  /* ↓ Cambia este texto ↓ */
+  /* ✏️ EDITA AQUÍ: nombre corto / zonal */
   .corp-short {
-    font-size: 17px; font-weight: 600;
-    color: var(--gold-light);
-    letter-spacing: 0.04em;
-    margin-bottom: 1.25rem;
+    font-size: 17px; font-weight: 600; color: var(--gold-light);
+    letter-spacing: 0.04em; margin-bottom: 1.25rem;
   }
+  .divider { width: 36px; height: 2px; background: var(--gold); border-radius: 2px; margin-bottom: 2rem; }
 
-  .divider {
-    width: 36px; height: 2px;
-    background: var(--gold);
-    border-radius: 2px;
-    margin-bottom: 2rem;
-  }
-
-  /* Tarjeta del evento */
   .event-card {
-    background: rgba(255,255,255,0.07);
-    border: 0.5px solid rgba(255,255,255,0.18);
-    border-radius: var(--radius-md);
-    padding: 1.25rem 1.5rem;
-    width: 100%;
-    margin-bottom: 1.5rem;
+    background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.18);
+    border-radius: var(--radius-md); padding: 1.25rem 1.5rem; width: 100%; margin-bottom: 1.5rem;
   }
   .event-tag {
-    display: inline-block;
-    background: var(--gold);
-    color: var(--blue);
-    font-size: 10px; font-weight: 600;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 3px 12px; border-radius: 20px;
-    margin-bottom: 10px;
+    display: inline-block; background: var(--gold); color: var(--blue);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 12px; border-radius: 20px; margin-bottom: 10px;
   }
-
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     ✏️  EDITA AQUÍ: Nombre del evento
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-  .event-name {
-    font-size: 24px; font-weight: 600;
-    color: var(--white); line-height: 1.2;
-    margin-bottom: 10px;
-  }
-
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     ✏️  EDITA AQUÍ: Fecha y lugar
-         Formato: Día · Fecha · Ciudad
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  /* ✏️ EDITA AQUÍ: nombre del evento */
+  .event-name { font-size: 24px; font-weight: 600; color: var(--white); line-height: 1.2; margin-bottom: 10px; }
+  /* ✏️ EDITA AQUÍ: fecha y lugar */
   .event-meta {
-    display: flex; align-items: center;
-    justify-content: center; gap: 8px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
     font-size: 13px; color: rgba(255,255,255,0.6);
   }
   .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); }
 
-  /* Indicadores de imagen rotando */
-  .slide-dots {
-    display: flex; gap: 6px; justify-content: center;
-    margin-bottom: 2rem;
-  }
-  .slide-dots span {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: rgba(255,255,255,0.3);
-    transition: all 0.3s;
-  }
-  .slide-dots span.on {
-    background: var(--gold-light);
-    width: 18px; border-radius: 4px;
-  }
+  .slide-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 2rem; }
+  .slide-dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: all 0.3s; }
+  .slide-dots span.on { background: var(--gold-light); width: 18px; border-radius: 4px; }
 
-  /* Botones del panel 1 */
-  .hero-btns {
-    position: relative; z-index: 2;
-    width: 100%; padding: 0 1.5rem 2.5rem;
-    display: flex; flex-direction: column; gap: 10px;
-  }
+  .hero-btns { position: relative; z-index: 2; width: 100%; padding: 0 1.5rem 2.5rem; display: flex; flex-direction: column; gap: 10px; }
   .btn-gold {
-    background: var(--gold); color: var(--blue);
-    border: none; border-radius: var(--radius-sm);
-    padding: 14px; font-size: 15px; font-weight: 600;
-    cursor: pointer; width: 100%;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    transition: opacity 0.15s;
+    background: var(--gold); color: var(--blue); border: none; border-radius: var(--radius-sm);
+    padding: 14px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity 0.15s;
   }
   .btn-gold:hover { opacity: 0.9; }
   .btn-outline {
-    background: rgba(255,255,255,0.08); color: var(--white);
-    border: 0.5px solid rgba(255,255,255,0.25);
-    border-radius: var(--radius-sm);
-    padding: 13px; font-size: 14px; font-weight: 500;
-    cursor: pointer; width: 100%;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    transition: background 0.15s;
+    background: rgba(255,255,255,0.08); color: var(--white); border: 0.5px solid rgba(255,255,255,0.25);
+    border-radius: var(--radius-sm); padding: 13px; font-size: 14px; font-weight: 500;
+    cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.15s;
   }
   .btn-outline:hover { background: rgba(255,255,255,0.14); }
 
-  /* ══════════════════════════════════════
-     PANEL 2 — FORMULARIO DE CONFIRMACIÓN
-  ══════════════════════════════════════ */
-  #panel-formulario {
-    display: none;
-    min-height: 100vh;
-    flex-direction: column;
-    background: var(--white);
-  }
-  #panel-formulario.visible { display: flex; }
+  /* ══ PANEL 2 ══ */
+  #panel-formulario { display: none; min-height: 100vh; flex-direction: column; background: var(--white); }
 
   .form-header {
-    background: var(--blue);
-    padding: 1.5rem;
+    background: var(--blue); padding: 1.5rem;
     display: flex; align-items: center; gap: 12px;
   }
   .back-btn {
-    background: rgba(255,255,255,0.1); border: none;
-    width: 36px; height: 36px; border-radius: 8px;
-    color: white; cursor: pointer; font-size: 18px;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s;
+    background: rgba(255,255,255,0.1); border: none; width: 36px; height: 36px;
+    border-radius: 8px; color: white; cursor: pointer; font-size: 18px;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s;
   }
   .back-btn:hover { background: rgba(255,255,255,0.2); }
   .form-header-text { flex: 1; }
   .form-header-title { font-size: 16px; font-weight: 600; color: var(--white); }
-
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     ✏️  EDITA AQUÍ: Subtítulo del formulario
-         Cambia el nombre del evento, fecha y lugar
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  /* ✏️ EDITA AQUÍ: subtítulo del formulario — nombre evento · fecha · ciudad */
   .form-header-sub { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
 
-  .form-body { padding: 1.5rem; flex: 1; }
+  /* Aviso informativo sobre la contraseña */
+  .info-box {
+    background: #eff6ff; border-left: 3px solid var(--blue-mid);
+    border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 1.25rem;
+    font-size: 13px; color: var(--blue-mid); line-height: 1.5;
+  }
+  .info-box strong { font-weight: 600; }
 
+  .form-body { padding: 1.5rem; flex: 1; }
   .field { margin-bottom: 1.1rem; }
   .field label {
-    display: block; font-size: 11px; font-weight: 600;
-    letter-spacing: 0.07em; text-transform: uppercase;
-    color: var(--gray-500); margin-bottom: 5px;
-  }
-  .field input, .field select {
-    width: 100%; border: 1px solid var(--gray-300);
-    border-radius: var(--radius-sm); padding: 11px 13px;
-    font-size: 14px; color: var(--gray-900);
-    font-family: 'Inter', sans-serif;
-    background: var(--white); outline: none;
-    transition: border-color 0.15s;
-  }
-  .field input:focus, .field select:focus {
-    border-color: var(--blue-mid);
-    box-shadow: 0 0 0 3px rgba(26,70,153,0.12);
-  }
-
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-  /* Selector de pastores: 0, 1, 2 */
-  .pastor-label {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.07em;
+    display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.07em;
     text-transform: uppercase; color: var(--gray-500); margin-bottom: 5px;
   }
+  .field input, .field select {
+    width: 100%; border: 1px solid var(--gray-300); border-radius: var(--radius-sm);
+    padding: 11px 13px; font-size: 14px; color: var(--gray-900);
+    font-family: 'Inter', sans-serif; background: var(--white); outline: none; transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus {
+    border-color: var(--blue-mid); box-shadow: 0 0 0 3px rgba(26,70,153,0.12);
+  }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .pastor-label { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 5px; }
   .pastor-opts { display: flex; gap: 8px; }
   .pastor-opt {
-    flex: 1; text-align: center;
-    border: 1px solid var(--gray-300); border-radius: var(--radius-sm);
-    padding: 11px 6px; font-size: 16px; font-weight: 600;
-    color: var(--gray-500); background: var(--white);
-    cursor: pointer; transition: all 0.15s;
-    user-select: none;
+    flex: 1; text-align: center; border: 1px solid var(--gray-300); border-radius: var(--radius-sm);
+    padding: 11px 6px; font-size: 16px; font-weight: 600; color: var(--gray-500);
+    background: var(--white); cursor: pointer; transition: all 0.15s; user-select: none;
   }
-  .pastor-opt.selected {
-    border-color: var(--blue-mid); color: var(--blue-mid);
-    background: var(--blue-light);
-  }
-
+  .pastor-opt.selected { border-color: var(--blue-mid); color: var(--blue-mid); background: var(--blue-light); }
   .btn-submit {
-    background: var(--blue); color: var(--white);
-    border: none; border-radius: var(--radius-sm);
-    padding: 14px; font-size: 15px; font-weight: 600;
-    width: 100%; margin-top: 1.5rem; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    transition: opacity 0.15s;
+    background: var(--blue); color: var(--white); border: none; border-radius: var(--radius-sm);
+    padding: 14px; font-size: 15px; font-weight: 600; width: 100%; margin-top: 1.5rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity 0.15s;
   }
   .btn-submit:hover { opacity: 0.88; }
+  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
-  /* ══════════════════════════════════════
-     PANEL 3 — PARTICIPACIÓN
-  ══════════════════════════════════════ */
-  #panel-participacion {
-    display: none;
-    min-height: 100vh;
-    flex-direction: column;
-    background: var(--gray-50);
-  }
-  #panel-participacion.visible { display: flex; }
+  /* ══ PANEL 3 ══ */
+  #panel-participacion { display: none; min-height: 100vh; flex-direction: column; background: var(--gray-50); }
 
-  .part-header {
-    background: var(--blue); padding: 1.5rem;
-    display: flex; align-items: center; gap: 12px;
-  }
+  .part-header { background: var(--blue); padding: 1.5rem; display: flex; align-items: center; gap: 12px; }
   .part-header-title { font-size: 16px; font-weight: 600; color: var(--white); flex: 1; }
-  .live-pill {
-    font-size: 11px; font-weight: 600;
-    background: var(--gold-pale); color: #92400e;
-    padding: 4px 10px; border-radius: 20px;
-  }
+  .live-pill { font-size: 11px; font-weight: 600; background: var(--gold-pale); color: #92400e; padding: 4px 10px; border-radius: 20px; }
 
-  .stats-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-    padding: 1.25rem 1.25rem 0;
-  }
-  .stat-card {
-    background: var(--blue); border-radius: var(--radius-md);
-    padding: 1.1rem; text-align: center;
-  }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 1.25rem 1.25rem 0; }
+  .stat-card { background: var(--blue); border-radius: var(--radius-md); padding: 1.1rem; text-align: center; }
   .stat-n { font-size: 30px; font-weight: 600; color: var(--gold-light); }
   .stat-l { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.06em; }
 
   .church-list { padding: 1.25rem; display: flex; flex-direction: column; gap: 10px; }
-
   .church-card {
-    background: var(--white); border-radius: var(--radius-md);
-    border: 0.5px solid var(--gray-300);
-    padding: 12px 14px;
-    display: flex; align-items: center; justify-content: space-between;
+    background: var(--white); border-radius: var(--radius-md); border: 0.5px solid var(--gray-300);
+    padding: 12px 14px; display: flex; align-items: center; justify-content: space-between;
   }
   .church-left { display: flex; align-items: center; gap: 10px; }
   .church-avatar {
-    width: 38px; height: 38px; border-radius: var(--radius-sm);
-    background: var(--blue-light);
+    width: 38px; height: 38px; border-radius: var(--radius-sm); background: var(--blue-light);
     display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 600; color: var(--blue-mid);
-    flex-shrink: 0;
+    font-size: 13px; font-weight: 600; color: var(--blue-mid); flex-shrink: 0;
   }
   .church-name { font-size: 13px; font-weight: 600; color: var(--gray-900); }
   .church-enc { font-size: 11px; color: var(--gray-500); margin-top: 1px; }
   .church-pastor { font-size: 10px; color: var(--gray-500); margin-top: 1px; }
+  .church-right { display: flex; align-items: center; gap: 8px; }
   .church-count {
     font-size: 14px; font-weight: 600; color: #92400e;
-    background: var(--gold-pale); border-radius: 20px;
-    padding: 5px 13px; flex-shrink: 0;
+    background: var(--gold-pale); border-radius: 20px; padding: 5px 13px; flex-shrink: 0;
+  }
+  .btn-edit {
+    background: var(--blue-light); color: var(--blue-mid); border: none;
+    border-radius: var(--radius-sm); padding: 6px 10px; font-size: 12px; font-weight: 600;
+    cursor: pointer; flex-shrink: 0; transition: background 0.15s;
+  }
+  .btn-edit:hover { background: #c7d9f5; }
+
+  /* ══ MODAL EDITAR ══ */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 50;
+    background: rgba(0,0,0,0.5); align-items: center; justify-content: center; padding: 1.5rem;
+  }
+  .modal-overlay.visible { display: flex; }
+  .modal {
+    background: var(--white); border-radius: var(--radius-lg); padding: 1.5rem;
+    width: 100%; max-width: 360px;
+  }
+  .modal-title { font-size: 16px; font-weight: 600; color: var(--gray-900); margin-bottom: 4px; }
+  .modal-sub { font-size: 13px; color: var(--gray-500); margin-bottom: 1.25rem; line-height: 1.4; }
+  .modal-field { margin-bottom: 1rem; }
+  .modal-field label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gray-500); margin-bottom: 5px; }
+  .modal-field input {
+    width: 100%; border: 1px solid var(--gray-300); border-radius: var(--radius-sm);
+    padding: 10px 12px; font-size: 14px; font-family: 'Inter', sans-serif; outline: none;
+  }
+  .modal-field input:focus { border-color: var(--blue-mid); box-shadow: 0 0 0 3px rgba(26,70,153,0.12); }
+  .modal-error { font-size: 13px; color: #dc2626; margin-bottom: 0.75rem; display: none; }
+  .modal-btns { display: flex; gap: 8px; margin-top: 1.25rem; }
+  .btn-cancel {
+    flex: 1; background: var(--gray-100); color: var(--gray-700); border: none;
+    border-radius: var(--radius-sm); padding: 11px; font-size: 14px; font-weight: 500; cursor: pointer;
+  }
+  .btn-confirm-edit {
+    flex: 2; background: var(--blue); color: white; border: none;
+    border-radius: var(--radius-sm); padding: 11px; font-size: 14px; font-weight: 600; cursor: pointer;
   }
 
-  /* Toast de éxito */
+  /* Toast */
   .toast {
     position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
-    background: #065f46; color: white;
-    padding: 12px 20px; border-radius: var(--radius-sm);
-    font-size: 14px; font-weight: 500;
-    opacity: 0; transition: opacity 0.3s;
-    pointer-events: none; white-space: nowrap;
-    z-index: 100;
+    background: #065f46; color: white; padding: 12px 20px; border-radius: var(--radius-sm);
+    font-size: 14px; font-weight: 500; opacity: 0; transition: opacity 0.3s;
+    pointer-events: none; white-space: nowrap; z-index: 100;
   }
   .toast.show { opacity: 1; }
 </style>
@@ -377,14 +284,9 @@
 
 <div class="app">
 
-  <!-- ══════════════════════════════════════
-       PANEL 1 — INICIO
-  ══════════════════════════════════════ -->
+  <!-- ══ PANEL 1 — INICIO ══ -->
   <section id="panel-inicio">
     <div class="hero-bg">
-      <!-- Imágenes de fondo rotando.
-           Cuando tengas fotos del zonal, reemplaza los
-           background-color por background-image: url('foto1.jpg') en el CSS -->
       <div class="slide active"></div>
       <div class="slide"></div>
       <div class="slide"></div>
@@ -393,18 +295,14 @@
 
     <div class="hero-content">
       <div class="logo-ring">
-        <img
-          src="https://iglesiaunida.cl/wp-content/uploads/2023/09/cropped-logo-270x270.png"
-          alt="Logo IUMP"
-          onerror="this.style.display='none'"
-        >
+        <img src="https://iglesiaunida.cl/wp-content/uploads/2023/09/cropped-logo-270x270.png" alt="Logo IUMP" onerror="this.style.display='none'">
       </div>
 
-      <!-- ✏️ NOMBRE DE LA CORPORACIÓN (línea pequeña arriba) -->
+      <!-- ✏️ EDITA AQUÍ: nombre corporación -->
       <p class="corp-name">Iglesia Unida Metodista Pentecostal</p>
 
-      <!-- ✏️ NOMBRE CORTO / SECCIÓN — Cámbialo para cada zonal
-           Ejemplo: "IUMP · Zonal Lautaro" / "IUMP · Zonal Temuco" -->
+      <!-- ✏️ EDITA AQUÍ: nombre corto / sección — cambia para cada zonal
+           Ejemplos: "IUMP · Zonal Lautaro" / "IUMP · Zonal Temuco" -->
       <p class="corp-short">IUMP · Zonal Lautaro</p>
 
       <div class="divider"></div>
@@ -412,10 +310,10 @@
       <div class="event-card">
         <span class="event-tag">Próxima actividad</span>
 
-        <!-- ✏️ NOMBRE DEL EVENTO — Cámbialo según corresponda -->
+        <!-- ✏️ EDITA AQUÍ: nombre del evento -->
         <p class="event-name">Zonal de Jóvenes</p>
 
-        <!-- ✏️ FECHA Y LUGAR — Formato: Día de semana · Fecha · Ciudad -->
+        <!-- ✏️ EDITA AQUÍ: fecha y lugar — Formato: Día · Fecha · Ciudad -->
         <div class="event-meta">
           <span class="dot"></span>
           <span>Sábado 4 de julio</span>
@@ -431,31 +329,30 @@
     </div>
 
     <div class="hero-btns">
-      <button class="btn-gold" onclick="mostrar('formulario')">
-        ✓ &nbsp;Confirmar asistencia
-      </button>
-      <button class="btn-outline" onclick="mostrar('participacion')">
-        ≡ &nbsp;Ver participación
-      </button>
+      <button class="btn-gold" onclick="mostrar('formulario')">✓ &nbsp;Confirmar asistencia</button>
+      <button class="btn-outline" onclick="mostrar('participacion')">≡ &nbsp;Ver participación</button>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       PANEL 2 — FORMULARIO
-  ══════════════════════════════════════ -->
+  <!-- ══ PANEL 2 — FORMULARIO ══ -->
   <section id="panel-formulario">
     <div class="form-header">
       <button class="back-btn" onclick="mostrar('inicio')">←</button>
       <div class="form-header-text">
         <p class="form-header-title">Confirmar asistencia</p>
-
-        <!-- ✏️ SUBTÍTULO DEL FORMULARIO — Cámbialo para cada zonal
-             Formato: Nombre del evento · Fecha · Ciudad -->
+        <!-- ✏️ EDITA AQUÍ: subtítulo — nombre evento · fecha · ciudad -->
         <p class="form-header-sub">Zonal de Jóvenes · 4 julio · Lautaro</p>
       </div>
     </div>
 
     <div class="form-body">
+
+      <!-- Aviso informativo -->
+      <div class="info-box">
+        <strong>¿Para qué sirve la contraseña?</strong><br>
+        Si necesitas modificar el número de participantes después de confirmar, podrás hacerlo desde el panel de participación usando tu correo y esta contraseña. Solo es posible editar hasta <strong>5 días antes</strong> de la fecha del evento.
+      </div>
+
       <div class="field">
         <label>Nombre del encargado</label>
         <input type="text" id="f-nombre" placeholder="Ej: Juan Pérez">
@@ -463,6 +360,10 @@
       <div class="field">
         <label>Correo electrónico</label>
         <input type="email" id="f-correo" placeholder="encargado@iglesia.cl">
+      </div>
+      <div class="field">
+        <label>Contraseña (para editar después)</label>
+        <input type="password" id="f-password" placeholder="Crea una contraseña">
       </div>
       <div class="field">
         <label>Nombre de la iglesia</label>
@@ -484,15 +385,11 @@
         </div>
       </div>
 
-      <button class="btn-submit" onclick="enviarFormulario()">
-        ✉ &nbsp;Enviar confirmación
-      </button>
+      <button class="btn-submit" onclick="enviarFormulario()">✉ &nbsp;Enviar confirmación</button>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       PANEL 3 — PARTICIPACIÓN
-  ══════════════════════════════════════ -->
+  <!-- ══ PANEL 3 — PARTICIPACIÓN ══ -->
   <section id="panel-participacion">
     <div class="part-header">
       <button class="back-btn" onclick="mostrar('inicio')">←</button>
@@ -512,11 +409,34 @@
     </div>
 
     <div class="church-list" id="lista-iglesias">
-      <p style="font-size:14px; color:#6b7280; text-align:center; margin-top:1rem;">
-        Aún no hay confirmaciones.
-      </p>
+      <p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Aún no hay confirmaciones.</p>
     </div>
   </section>
+
+  <!-- ══ MODAL EDITAR ══ -->
+  <div class="modal-overlay" id="modal-editar">
+    <div class="modal">
+      <p class="modal-title">Editar confirmación</p>
+      <p class="modal-sub">Ingresa tu correo y contraseña para modificar la cantidad de participantes de tu iglesia.</p>
+      <div class="modal-field">
+        <label>Correo electrónico</label>
+        <input type="email" id="m-correo" placeholder="encargado@iglesia.cl">
+      </div>
+      <div class="modal-field">
+        <label>Contraseña</label>
+        <input type="password" id="m-password" placeholder="Tu contraseña">
+      </div>
+      <div class="modal-field">
+        <label>Nueva cantidad de participantes</label>
+        <input type="number" id="m-participantes" placeholder="0" min="0">
+      </div>
+      <p class="modal-error" id="modal-error">Correo o contraseña incorrectos.</p>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn-confirm-edit" onclick="guardarEdicion()">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
 
   <div class="toast" id="toast">✓ Confirmación enviada</div>
 </div>
@@ -529,17 +449,29 @@
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5aG14dG1tY25pdnJiYXl5ZmJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2Mjg1NjEsImV4cCI6MjA5NzIwNDU2MX0.z3X2yenl04WsxMqteDBESOCv0hT5V_QspM1ubY2wHHs';
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  /* ── Navegación entre paneles ── */
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ✏️  FECHA LÍMITE DE EDICIÓN
+         Cambia esta fecha para cada zonal.
+         Formato: 'YYYY-MM-DD'
+         Se bloquea la edición 5 días antes.
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  const FECHA_EVENTO = '2026-07-04';
+
+  function puedeEditar() {
+    const hoy = new Date();
+    const evento = new Date(FECHA_EVENTO);
+    const diff = (evento - hoy) / (1000 * 60 * 60 * 24);
+    return diff > 5;
+  }
+
+  /* ── Navegación ── */
   function mostrar(panel) {
     document.getElementById('panel-inicio').style.display = 'none';
     document.getElementById('panel-formulario').style.display = 'none';
     document.getElementById('panel-participacion').style.display = 'none';
-
-    if (panel === 'inicio') {
-      document.getElementById('panel-inicio').style.display = 'flex';
-    } else if (panel === 'formulario') {
-      document.getElementById('panel-formulario').style.display = 'flex';
-    } else if (panel === 'participacion') {
+    if (panel === 'inicio') document.getElementById('panel-inicio').style.display = 'flex';
+    else if (panel === 'formulario') document.getElementById('panel-formulario').style.display = 'flex';
+    else if (panel === 'participacion') {
       document.getElementById('panel-participacion').style.display = 'flex';
       cargarParticipacion();
     }
@@ -554,7 +486,7 @@
     pastoresVal = parseInt(el.dataset.val);
   }
 
-  /* ── Rotación de imágenes de fondo ── */
+  /* ── Rotación de imágenes ── */
   const slides = document.querySelectorAll('.slide');
   const dots   = document.querySelectorAll('.slide-dots span');
   let current  = 0;
@@ -566,15 +498,16 @@
     dots[current].classList.add('on');
   }, 4000);
 
-  /* ── Envío del formulario → Supabase ── */
+  /* ── Envío del formulario ── */
   async function enviarFormulario() {
-    const nombre  = document.getElementById('f-nombre').value.trim();
-    const correo  = document.getElementById('f-correo').value.trim();
-    const iglesia = document.getElementById('f-iglesia').value.trim();
+    const nombre       = document.getElementById('f-nombre').value.trim();
+    const correo       = document.getElementById('f-correo').value.trim();
+    const password     = document.getElementById('f-password').value.trim();
+    const iglesia      = document.getElementById('f-iglesia').value.trim();
     const participantes = parseInt(document.getElementById('f-jovenes').value) || 0;
 
-    if (!nombre || !correo || !iglesia) {
-      alert('Por favor completa todos los campos antes de enviar.');
+    if (!nombre || !correo || !password || !iglesia) {
+      alert('Por favor completa todos los campos, incluyendo la contraseña.');
       return;
     }
 
@@ -583,11 +516,7 @@
     btn.disabled = true;
 
     const { error } = await db.from('confirmaciones').insert([{
-      nombre,
-      correo,
-      iglesia,
-      participantes,
-      pastores: pastoresVal
+      nombre, correo, password, iglesia, participantes, pastores: pastoresVal
     }]);
 
     btn.textContent = '✉ Enviar confirmación';
@@ -602,9 +531,9 @@
     mostrarToast('✓ Confirmación enviada');
     mostrar('inicio');
 
-    /* Limpiar formulario */
     document.getElementById('f-nombre').value = '';
     document.getElementById('f-correo').value = '';
+    document.getElementById('f-password').value = '';
     document.getElementById('f-iglesia').value = '';
     document.getElementById('f-jovenes').value = '';
     document.querySelectorAll('.pastor-opt').forEach(o => o.classList.remove('selected'));
@@ -612,22 +541,20 @@
     pastoresVal = 0;
   }
 
-  /* ── Carga del panel de participación desde Supabase ── */
+  /* ── Cargar participación ── */
   async function cargarParticipacion() {
     const lista = document.getElementById('lista-iglesias');
     lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Cargando...</p>';
 
-    const { data, error } = await db
-      .from('confirmaciones')
-      .select('*')
-      .order('created_at', { ascending: false });
+    const { data, error } = await db.from('confirmaciones').select('*').order('created_at', { ascending: false });
 
     if (error || !data) {
       lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Error al cargar datos.</p>';
       return;
     }
 
-    const totalP = data.reduce((s, c) => s + (c.participantes || 0) + (c.pastores || 0), 0);
+    /* Total solo suma participantes (sin sumar pastores al conteo) */
+    const totalP = data.reduce((s, c) => s + (c.participantes || 0), 0);
     document.getElementById('total-participantes').textContent = totalP;
     document.getElementById('total-iglesias').textContent = data.length;
 
@@ -636,9 +563,14 @@
       return;
     }
 
+    const editable = puedeEditar();
+
     lista.innerHTML = data.map(c => {
       const iniciales = c.iglesia.split(' ').slice(-2).map(w => w[0]).join('').toUpperCase();
       const pastorTxt = c.pastores === 0 ? 'Sin pastor' : c.pastores === 1 ? '1 pastor' : '2 pastores';
+      const btnEditar = editable
+        ? `<button class="btn-edit" onclick="abrirModal('${c.id}')">Editar</button>`
+        : '';
       return `
         <div class="church-card">
           <div class="church-left">
@@ -649,12 +581,65 @@
               <p class="church-pastor">${pastorTxt}</p>
             </div>
           </div>
-          <span class="church-count">${c.participantes || 0}</span>
+          <div class="church-right">
+            <span class="church-count">${c.participantes || 0}</span>
+            ${btnEditar}
+          </div>
         </div>`;
     }).join('');
   }
 
-  /* ── Toast de confirmación ── */
+  /* ── Modal editar ── */
+  let editandoId = null;
+
+  function abrirModal(id) {
+    editandoId = id;
+    document.getElementById('m-correo').value = '';
+    document.getElementById('m-password').value = '';
+    document.getElementById('m-participantes').value = '';
+    document.getElementById('modal-error').style.display = 'none';
+    document.getElementById('modal-editar').classList.add('visible');
+  }
+
+  function cerrarModal() {
+    document.getElementById('modal-editar').classList.remove('visible');
+    editandoId = null;
+  }
+
+  async function guardarEdicion() {
+    const correo       = document.getElementById('m-correo').value.trim();
+    const password     = document.getElementById('m-password').value.trim();
+    const participantes = parseInt(document.getElementById('m-participantes').value) || 0;
+    const errorEl      = document.getElementById('modal-error');
+
+    errorEl.style.display = 'none';
+
+    /* Verificar correo y contraseña contra el registro */
+    const { data, error } = await db
+      .from('confirmaciones')
+      .select('id, correo, password')
+      .eq('id', editandoId)
+      .single();
+
+    if (error || !data) { errorEl.style.display = 'block'; return; }
+    if (data.correo !== correo || data.password !== password) {
+      errorEl.style.display = 'block'; return;
+    }
+
+    /* Actualizar participantes */
+    const { error: updateError } = await db
+      .from('confirmaciones')
+      .update({ participantes })
+      .eq('id', editandoId);
+
+    if (updateError) { errorEl.textContent = 'Error al guardar. Intenta de nuevo.'; errorEl.style.display = 'block'; return; }
+
+    cerrarModal();
+    mostrarToast('✓ Participantes actualizados');
+    cargarParticipacion();
+  }
+
+  /* ── Toast ── */
   function mostrarToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
