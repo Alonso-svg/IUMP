@@ -521,13 +521,16 @@
   <div class="toast" id="toast">✓ Confirmación enviada</div>
 </div>
 
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  /* ── CONFIGURACIÓN SUPABASE ── */
+  const SUPABASE_URL = 'https://uyhmxtmmcnivrbayyfbf.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5aG14dG1tY25pdnJiYXl5ZmJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2Mjg1NjEsImV4cCI6MjA5NzIwNDU2MX0.z3X2yenl04WsxMqteDBESOCv0hT5V_QspM1ubY2wHHs';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
   /* ── Navegación entre paneles ── */
   function mostrar(panel) {
-    document.getElementById('panel-inicio').classList.remove('visible');
-    document.getElementById('panel-formulario').classList.remove('visible');
-    document.getElementById('panel-participacion').classList.remove('visible');
-
     document.getElementById('panel-inicio').style.display = 'none';
     document.getElementById('panel-formulario').style.display = 'none';
     document.getElementById('panel-participacion').style.display = 'none';
@@ -563,23 +566,38 @@
     dots[current].classList.add('on');
   }, 4000);
 
-  /* ── Base de datos local (temporal — se reemplazará por Supabase) ── */
-  let confirmaciones = [];
-
-  /* ── Envío del formulario ── */
-  function enviarFormulario() {
+  /* ── Envío del formulario → Supabase ── */
+  async function enviarFormulario() {
     const nombre  = document.getElementById('f-nombre').value.trim();
     const correo  = document.getElementById('f-correo').value.trim();
     const iglesia = document.getElementById('f-iglesia').value.trim();
-    const jovenes = parseInt(document.getElementById('f-jovenes').value) || 0;
+    const participantes = parseInt(document.getElementById('f-jovenes').value) || 0;
 
     if (!nombre || !correo || !iglesia) {
       alert('Por favor completa todos los campos antes de enviar.');
       return;
     }
 
-    /* Aquí irá la llamada a Supabase cuando la conectemos */
-    confirmaciones.push({ nombre, correo, iglesia, jovenes, pastores: pastoresVal });
+    const btn = document.querySelector('.btn-submit');
+    btn.textContent = 'Enviando...';
+    btn.disabled = true;
+
+    const { error } = await db.from('confirmaciones').insert([{
+      nombre,
+      correo,
+      iglesia,
+      participantes,
+      pastores: pastoresVal
+    }]);
+
+    btn.textContent = '✉ Enviar confirmación';
+    btn.disabled = false;
+
+    if (error) {
+      alert('Hubo un error al enviar. Intenta de nuevo.');
+      console.error(error);
+      return;
+    }
 
     mostrarToast('✓ Confirmación enviada');
     mostrar('inicio');
@@ -594,19 +612,31 @@
     pastoresVal = 0;
   }
 
-  /* ── Carga del panel de participación ── */
-  function cargarParticipacion() {
-    const totalP = confirmaciones.reduce((s, c) => s + c.jovenes + c.pastores, 0);
-    document.getElementById('total-participantes').textContent = totalP;
-    document.getElementById('total-iglesias').textContent = confirmaciones.length;
-
+  /* ── Carga del panel de participación desde Supabase ── */
+  async function cargarParticipacion() {
     const lista = document.getElementById('lista-iglesias');
-    if (confirmaciones.length === 0) {
+    lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Cargando...</p>';
+
+    const { data, error } = await db
+      .from('confirmaciones')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error || !data) {
+      lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Error al cargar datos.</p>';
+      return;
+    }
+
+    const totalP = data.reduce((s, c) => s + (c.participantes || 0) + (c.pastores || 0), 0);
+    document.getElementById('total-participantes').textContent = totalP;
+    document.getElementById('total-iglesias').textContent = data.length;
+
+    if (data.length === 0) {
       lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Aún no hay confirmaciones.</p>';
       return;
     }
 
-    lista.innerHTML = confirmaciones.map(c => {
+    lista.innerHTML = data.map(c => {
       const iniciales = c.iglesia.split(' ').slice(-2).map(w => w[0]).join('').toUpperCase();
       const pastorTxt = c.pastores === 0 ? 'Sin pastor' : c.pastores === 1 ? '1 pastor' : '2 pastores';
       return `
@@ -619,7 +649,7 @@
               <p class="church-pastor">${pastorTxt}</p>
             </div>
           </div>
-          <span class="church-count">${c.jovenes}</span>
+          <span class="church-count">${c.participantes || 0}</span>
         </div>`;
     }).join('');
   }
