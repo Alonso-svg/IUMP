@@ -68,14 +68,12 @@
     #panel-inicio { min-height: 750px; border-radius: 20px; }
   }
 
-  /* Fondo con imagen rotando (fade) */
-  .hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80'); background-size: cover; background-position: center; }
-  .hero-bg .slide {
-    position: absolute; inset: 0;
+  /* ✏️ Para cambiar la imagen de fondo reemplaza la URL aquí */
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0; overflow: hidden;
+    background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80');
     background-size: cover; background-position: center;
-    opacity: 0; transition: opacity 1.4s ease;
   }
-  .hero-bg .slide.active { opacity: 1; }
 
   .hero-overlay {
     position: absolute; inset: 0; z-index: 1;
@@ -110,6 +108,7 @@
     font-size: 17px; font-weight: 600; color: var(--gold-light);
     letter-spacing: 0.04em; margin-bottom: 1.25rem;
   }
+
   .divider { width: 36px; height: 2px; background: var(--gold); border-radius: 2px; margin-bottom: 1.5rem; }
 
   .event-card {
@@ -123,9 +122,10 @@
   }
   /* ✏️ EDITA AQUÍ: nombre del evento */
   .event-name { font-size: 24px; font-weight: 600; color: var(--white); line-height: 1.2; margin-bottom: 10px; }
+
   /* ✏️ EDITA AQUÍ: fecha completa con año y lugar
      Formato: "Sábado 4 de julio de 2026 · Lautaro"
-     IMPORTANTE: también actualiza FECHA_EVENTO en el script de abajo */
+     IMPORTANTE: también actualiza FECHA_EVENTO y TITULO_EVENTO en el script */
   .event-meta {
     display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
     font-size: 13px; color: rgba(255,255,255,0.65);
@@ -133,6 +133,13 @@
   .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
 
   /* ══ CARRUSEL HORIZONTAL ══ */
+  /* ✏️ EDITA AQUÍ: título del carrusel (en el HTML, busca class="carrusel-titulo") */
+  .carrusel-titulo {
+    position: relative; z-index: 2;
+    text-align: center; margin-bottom: 0.4rem;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.45);
+  }
   .carrusel-wrap {
     position: relative; z-index: 2;
     width: 100%; overflow: hidden;
@@ -189,7 +196,8 @@
   .back-btn:hover { background: rgba(255,255,255,0.2); }
   .form-header-text { flex: 1; }
   .form-header-title { font-size: 16px; font-weight: 600; color: var(--white); }
-  /* ✏️ EDITA AQUÍ: subtítulo formulario — nombre evento · fecha · ciudad */
+
+  /* ✏️ EDITA AQUÍ: subtítulo del formulario — nombre evento · fecha · ciudad */
   .form-header-sub { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
 
   .info-box {
@@ -235,6 +243,17 @@
   .part-header-title { font-size: 16px; font-weight: 600; color: var(--white); flex: 1; }
   .live-pill { font-size: 11px; font-weight: 600; background: var(--gold-pale); color: #92400e; padding: 4px 10px; border-radius: 20px; }
 
+  /* Botones descarga e impresión */
+  .part-actions { display: flex; gap: 10px; padding: 1rem 1.25rem 0; }
+  .btn-action {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 10px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600;
+    cursor: pointer; border: none; transition: opacity 0.15s;
+  }
+  .btn-action:hover { opacity: 0.85; }
+  .btn-download { background: var(--blue); color: white; }
+  .btn-print    { background: var(--gold); color: var(--blue); }
+
   .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 1.25rem 1.25rem 0; }
   .stat-card { background: var(--blue); border-radius: var(--radius-md); padding: 1.1rem; text-align: center; }
   .stat-n { font-size: 30px; font-weight: 600; color: var(--gold-light); }
@@ -265,9 +284,7 @@
     cursor: pointer; transition: background 0.15s;
   }
   .btn-edit:hover { background: #c7d9f5; }
-  .edit-closed {
-    font-size: 11px; color: var(--gray-500); font-style: italic;
-  }
+  .edit-closed { font-size: 11px; color: var(--gray-500); font-style: italic; }
 
   /* Toast */
   .toast {
@@ -282,9 +299,11 @@
 <body>
 <div class="app">
 
-  <!-- ══ PANEL 1 — INICIO ══ -->
+  <!-- ══════════════════════════════════════
+       PANEL 1 — INICIO
+  ══════════════════════════════════════ -->
   <section id="panel-inicio">
-    <div class="hero-bg" id="hero-bg"></div>
+    <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
@@ -295,8 +314,8 @@
       <!-- ✏️ EDITA AQUÍ: nombre corporación -->
       <p class="corp-name">Iglesia Unida Metodista Pentecostal</p>
 
-      <!-- ✏️ EDITA AQUÍ: nombre corto / zonal
-           Ejemplos: "IUMP · Zonal Temuco" / "IUMP · Zonal Victoria" -->
+      <!-- ✏️ EDITA AQUÍ: nombre corto / zonal — cambia para cada evento
+           Ejemplo: "IUMP · Zonal Temuco" / "IUMP · Zonal Victoria" -->
       <p class="corp-short">IUMP · Zonal Lautaro</p>
 
       <div class="divider"></div>
@@ -308,7 +327,7 @@
         <p class="event-name">Zonal de Jóvenes</p>
 
         <!-- ✏️ EDITA AQUÍ: fecha completa con año y lugar
-             IMPORTANTE: actualiza también FECHA_EVENTO en el script -->
+             IMPORTANTE: actualiza también FECHA_EVENTO y TITULO_EVENTO en el script -->
         <div class="event-meta">
           <span class="dot"></span>
           <span>Sábado 4 de julio de 2026</span>
@@ -319,15 +338,15 @@
       </div>
     </div>
 
-    <!-- ══ CARRUSEL DE FOTOS ══ -->
-    <!-- ✏️ Para cambiar fotos: reemplaza las URLs dentro de carrusel-track
-         Puedes agregar o quitar imágenes. Las URLs deben duplicarse (el bloque
-         se repite dos veces) para que la animación sea continua sin saltos -->
+    <!-- ✏️ EDITA AQUÍ: título del carrusel -->
+    <p class="carrusel-titulo">Imágenes de la última zonal</p>
+
+    <!-- ══ CARRUSEL DE FOTOS ══
+         ✏️ Para cambiar fotos: reemplaza los archivos en la carpeta /fotos
+            manteniendo los mismos nombres (foto1.jpg, foto2.jpg, etc.)
+            El bloque se repite dos veces para que el loop sea continuo -->
     <div class="carrusel-wrap">
-      <div class="carrusel-track" id="carrusel-track">
-        <!-- ✏️ FOTOS DEL CARRUSEL — agrega o cambia fotos aquí
-             Las fotos deben estar en la carpeta /fotos del repositorio
-             El bloque se repite dos veces para que el loop sea continuo -->
+      <div class="carrusel-track">
         <!-- Bloque 1 (original) -->
         <img src="fotos/foto1.jpg" alt="Zonal 1">
         <img src="fotos/foto2.jpg" alt="Zonal 2">
@@ -354,18 +373,21 @@
     </div>
 
     <div class="hero-btns">
-      <button class="btn-gold" onclick="mostrar('formulario', null)">✓ &nbsp;Confirmar asistencia</button>
+      <button class="btn-gold" onclick="abrirNuevo()">✓ &nbsp;Confirmar asistencia</button>
       <button class="btn-outline" onclick="mostrar('participacion', null)">≡ &nbsp;Ver participación</button>
     </div>
   </section>
 
-  <!-- ══ PANEL 2 — FORMULARIO ══ -->
+  <!-- ══════════════════════════════════════
+       PANEL 2 — FORMULARIO
+  ══════════════════════════════════════ -->
   <section id="panel-formulario">
     <div class="form-header">
-      <button class="back-btn" id="back-btn" onclick="volverDesdeFormulario()">←</button>
+      <button class="back-btn" onclick="volverDesdeFormulario()">←</button>
       <div class="form-header-text">
         <p class="form-header-title" id="form-titulo">Confirmar asistencia</p>
-        <!-- ✏️ EDITA AQUÍ: subtítulo formulario — nombre evento · fecha · ciudad -->
+
+        <!-- ✏️ EDITA AQUÍ: subtítulo del formulario — nombre evento · fecha · ciudad -->
         <p class="form-header-sub">Zonal de Jóvenes · 4 julio 2026 · Lautaro</p>
       </div>
     </div>
@@ -414,12 +436,20 @@
     </div>
   </section>
 
-  <!-- ══ PANEL 3 — PARTICIPACIÓN ══ -->
+  <!-- ══════════════════════════════════════
+       PANEL 3 — PARTICIPACIÓN
+  ══════════════════════════════════════ -->
   <section id="panel-participacion">
     <div class="part-header">
       <button class="back-btn" onclick="mostrar('inicio', null)">←</button>
       <p class="part-header-title">Iglesias confirmadas</p>
       <span class="live-pill">En vivo</span>
+    </div>
+
+    <!-- Botones descargar PDF e imprimir -->
+    <div class="part-actions">
+      <button class="btn-action btn-download" onclick="descargarPDF()">⬇ Descargar PDF</button>
+      <button class="btn-action btn-print"    onclick="imprimirLista()">🖨 Imprimir</button>
     </div>
 
     <div class="stats-grid">
@@ -434,35 +464,43 @@
     </div>
 
     <div class="church-list" id="lista-iglesias">
-      <p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Aún no hay confirmaciones.</p>
+      <p style="font-size:14px; color:#6b7280; text-align:center; margin-top:1rem;">
+        Aún no hay confirmaciones.
+      </p>
     </div>
   </section>
 
   <div class="toast" id="toast"></div>
 </div>
 
+<!-- jsPDF para generación de PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+<!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  /* ── SUPABASE ── */
+  /* ── CONFIGURACIÓN SUPABASE ── */
   const SUPABASE_URL = 'https://uyhmxtmmcnivrbayyfbf.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5aG14dG1tY25pdnJiYXl5ZmJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2Mjg1NjEsImV4cCI6MjA5NzIwNDU2MX0.z3X2yenl04WsxMqteDBESOCv0hT5V_QspM1ubY2wHHs';
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     ✏️  FECHA DEL EVENTO — actualiza esto para cada zonal
-         Formato: 'YYYY-MM-DD'
-         La edición se bloquea automáticamente 5 días antes
+     ✏️  CAMBIA ESTO PARA CADA ZONAL:
+
+     FECHA_EVENTO  → Formato 'YYYY-MM-DD'
+                     La edición se bloquea 5 días antes automáticamente
+
+     TITULO_EVENTO → Aparece en el PDF y en la hoja de impresión
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-  const FECHA_EVENTO = '2026-07-04';
+  const FECHA_EVENTO  = '2026-07-04';
+  const TITULO_EVENTO = 'Zonal de Jóvenes · 4 de julio de 2026 · Lautaro';
 
   function puedeEditar() {
-    const hoy   = new Date();
+    const hoy    = new Date();
     const evento = new Date(FECHA_EVENTO);
     return (evento - hoy) / (1000 * 60 * 60 * 24) > 5;
   }
-
-  /* ── Fondo fijo ── */
-  /* ✏️ Para cambiar la imagen de fondo, reemplaza la URL en el CSS de .hero-bg */
 
   /* ── Navegación ── */
   let panelAnterior = 'inicio';
@@ -470,7 +508,7 @@
   let editandoId    = null;
 
   function mostrar(panel, desde) {
-    ['panel-inicio','panel-formulario','panel-participacion'].forEach(id => {
+    ['panel-inicio', 'panel-formulario', 'panel-participacion'].forEach(id => {
       document.getElementById(id).style.display = 'none';
     });
     if (panel === 'inicio') {
@@ -511,7 +549,7 @@
       mostrarToast('⚠ Edición cerrada: faltan menos de 5 días para el evento');
       return;
     }
-    /* Pedir correo y contraseña para verificar identidad */
+
     const correo = prompt('Ingresa tu correo electrónico:');
     if (!correo) return;
     const pass = prompt('Ingresa tu contraseña:');
@@ -525,7 +563,6 @@
       mostrarToast('❌ Correo o contraseña incorrectos'); return;
     }
 
-    /* Precargar datos en el formulario */
     modoEdicion = true;
     editandoId  = id;
     document.getElementById('form-titulo').textContent = 'Editar confirmación';
@@ -542,11 +579,13 @@
 
   /* ── Selector de pastores ── */
   let pastoresVal = 0;
+
   function selectPastor(el) {
     document.querySelectorAll('.pastor-opt').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
     pastoresVal = parseInt(el.dataset.val);
   }
+
   function resetPastores(val) {
     pastoresVal = val;
     document.querySelectorAll('.pastor-opt').forEach(o => {
@@ -592,19 +631,22 @@
     mostrar(modoEdicion ? 'participacion' : 'inicio', null);
   }
 
-  /* ── Cargar panel de participación ── */
+  /* ── Cargar panel de participación desde Supabase ── */
   async function cargarParticipacion() {
     const lista = document.getElementById('lista-iglesias');
     lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Cargando...</p>';
 
-    const { data, error } = await db.from('confirmaciones').select('*').order('created_at', { ascending: false });
+    const { data, error } = await db
+      .from('confirmaciones')
+      .select('*')
+      .order('created_at', { ascending: false });
 
     if (error || !data) {
       lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Error al cargar datos.</p>';
       return;
     }
 
-    /* Total de participantes — solo suma el número ingresado, sin contar pastores */
+    /* Total solo suma participantes — no cuenta pastores */
     const totalP = data.reduce((s, c) => s + (c.participantes || 0), 0);
     document.getElementById('total-participantes').textContent = totalP;
     document.getElementById('total-iglesias').textContent = data.length;
@@ -640,16 +682,138 @@
     }).join('');
   }
 
-  /* ── Toast ── */
+  /* ── Obtener todos los datos ordenados por iglesia (para PDF/impresión) ── */
+  async function obtenerDatos() {
+    const { data, error } = await db
+      .from('confirmaciones')
+      .select('*')
+      .order('iglesia', { ascending: true });
+    if (error || !data) return null;
+    return data;
+  }
+
+  /* ── Descargar PDF ── */
+  async function descargarPDF() {
+    const data = await obtenerDatos();
+    if (!data || data.length === 0) { mostrarToast('⚠ No hay confirmaciones aún'); return; }
+    mostrarToast('Generando PDF...');
+
+    const { jsPDF } = window.jspdf;
+    const doc  = new jsPDF();
+    const fecha  = new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'long', year:'numeric' });
+    const totalP = data.reduce((s, c) => s + (c.participantes || 0), 0);
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(13, 46, 110);
+    doc.text('Iglesia Unida Metodista Pentecostal', 105, 22, { align: 'center' });
+
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(80);
+    doc.text(TITULO_EVENTO, 105, 31, { align: 'center' });
+
+    doc.setFontSize(9);
+    doc.setTextColor(150);
+    doc.text('Generado el ' + fecha, 105, 39, { align: 'center' });
+
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(13, 46, 110);
+    doc.text('Total participantes: ' + totalP + '   |   Iglesias confirmadas: ' + data.length, 105, 49, { align: 'center' });
+
+    doc.autoTable({
+      startY: 56,
+      head: [['Iglesia', 'Encargado', 'Participantes', 'Pastores']],
+      body: data.map(c => [
+        c.iglesia,
+        c.nombre,
+        c.participantes || 0,
+        c.pastores === 0 ? 'Ninguno' : c.pastores === 1 ? '1 pastor' : '2 pastores'
+      ]),
+      headStyles: { fillColor: [13, 46, 110], textColor: 255, fontStyle: 'bold', fontSize: 10 },
+      alternateRowStyles: { fillColor: [240, 245, 255] },
+      styles: { fontSize: 10, cellPadding: 4 },
+      columnStyles: {
+        0: { cellWidth: 60 },
+        1: { cellWidth: 55 },
+        2: { cellWidth: 35, halign: 'center' },
+        3: { cellWidth: 40, halign: 'center' }
+      }
+    });
+
+    const pages = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pages; i++) {
+      doc.setPage(i);
+      doc.setFontSize(8);
+      doc.setTextColor(180);
+      doc.text('IUMP · Jóvenes · Página ' + i + ' de ' + pages, 105, doc.internal.pageSize.height - 10, { align: 'center' });
+    }
+
+    doc.save('confirmaciones-zonal.pdf');
+    mostrarToast('✓ PDF descargado');
+  }
+
+  /* ── Imprimir ── */
+  async function imprimirLista() {
+    const data = await obtenerDatos();
+    if (!data || data.length === 0) { mostrarToast('⚠ No hay confirmaciones aún'); return; }
+
+    const totalP = data.reduce((s, c) => s + (c.participantes || 0), 0);
+    const fecha  = new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'long', year:'numeric' });
+
+    const filas = data.map(c => `
+      <tr>
+        <td>${c.iglesia}</td>
+        <td>${c.nombre}</td>
+        <td style="text-align:center">${c.participantes || 0}</td>
+        <td style="text-align:center">${c.pastores === 0 ? 'Ninguno' : c.pastores === 1 ? '1 pastor' : '2 pastores'}</td>
+      </tr>`).join('');
+
+    const ventana = window.open('', '_blank');
+    ventana.document.write(`
+      <!DOCTYPE html><html lang="es"><head>
+      <meta charset="UTF-8">
+      <title>Confirmaciones Zonal</title>
+      <style>
+        body { font-family: Arial, sans-serif; padding: 2cm; color: #111; }
+        h1 { font-size: 18px; text-align: center; margin-bottom: 4px; color: #0d2e6e; }
+        h2 { font-size: 13px; text-align: center; font-weight: normal; color: #444; margin-bottom: 4px; }
+        .meta { text-align: center; font-size: 11px; color: #888; margin-bottom: 12px; }
+        .totales {
+          text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 20px;
+          color: #0d2e6e; border: 1px solid #c7d9f5; padding: 8px;
+          border-radius: 6px; background: #f0f5ff;
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th { background: #0d2e6e; color: white; padding: 8px; text-align: left; }
+        td { padding: 7px 8px; border-bottom: 1px solid #ddd; }
+        tr:nth-child(even) td { background: #f0f5ff; }
+        .footer { text-align: center; font-size: 10px; color: #aaa; margin-top: 24px; }
+      </style></head><body>
+      <h1>Iglesia Unida Metodista Pentecostal</h1>
+      <h2>${TITULO_EVENTO}</h2>
+      <p class="meta">Generado el ${fecha}</p>
+      <p class="totales">Total participantes: ${totalP} &nbsp;&nbsp;|&nbsp;&nbsp; Iglesias confirmadas: ${data.length}</p>
+      <table>
+        <thead>
+          <tr><th>Iglesia</th><th>Encargado</th><th>Participantes</th><th>Pastores</th></tr>
+        </thead>
+        <tbody>${filas}</tbody>
+      </table>
+      <p class="footer">IUMP · Jóvenes · Zona Central</p>
+      <script>window.onload = () => { window.print(); }<\/script>
+      </body></html>`);
+    ventana.document.close();
+  }
+
+  /* ── Toast de confirmación ── */
   function mostrarToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
   }
-
-  /* ── Conectar botón de confirmar asistencia ── */
-  document.querySelector('.btn-gold').addEventListener('click', abrirNuevo);
 </script>
 </body>
 </html>
