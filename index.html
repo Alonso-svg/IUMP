@@ -28,7 +28,6 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  /* ── Responsive: fondo azul en PC, sin bordes blancos ── */
   body {
     font-family: 'Inter', sans-serif;
     background: var(--blue);
@@ -63,32 +62,35 @@
     display: flex;
     flex-direction: column;
     background: var(--blue);
+    position: relative;
   }
   @media (min-width: 600px) {
-    #panel-inicio { min-height: 700px; border-radius: 20px; }
+    #panel-inicio { min-height: 750px; border-radius: 20px; }
   }
 
-  .hero-bg { position: absolute; inset: 0; z-index: 0; }
+  /* Fondo con imagen rotando (fade) */
+  .hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
   .hero-bg .slide {
     position: absolute; inset: 0;
     background-size: cover; background-position: center;
-    opacity: 0; transition: opacity 1.2s ease;
+    opacity: 0; transition: opacity 1.4s ease;
   }
   .hero-bg .slide.active { opacity: 1; }
-  /* ✏️ Reemplaza los background-color por background-image: url('foto.jpg') cuando tengas imágenes */
-  .hero-bg .slide:nth-child(1) { background-color: #0a1f4a; }
-  .hero-bg .slide:nth-child(2) { background-color: #0e2a5c; }
-  .hero-bg .slide:nth-child(3) { background-color: #112d60; }
 
   .hero-overlay {
     position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(180deg, rgba(13,46,110,0.5) 0%, rgba(13,46,110,0.85) 55%, rgba(13,46,110,1) 100%);
+    background: linear-gradient(180deg,
+      rgba(13,46,110,0.55) 0%,
+      rgba(13,46,110,0.82) 50%,
+      rgba(13,46,110,0.97) 100%);
   }
+
   .hero-content {
     position: relative; z-index: 2; flex: 1;
     display: flex; flex-direction: column; align-items: center;
     padding: 3rem 1.5rem 0; text-align: center;
   }
+
   .logo-ring {
     width: 72px; height: 72px; border-radius: 50%;
     background: var(--white); border: 3px solid var(--gold-light);
@@ -102,16 +104,17 @@
     font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
     text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 4px;
   }
-  /* ✏️ EDITA AQUÍ: nombre corto / zonal */
+  /* ✏️ EDITA AQUÍ: nombre corto / zonal — cambia para cada evento
+     Ejemplo: "IUMP · Zonal Temuco" / "IUMP · Zonal Victoria" */
   .corp-short {
     font-size: 17px; font-weight: 600; color: var(--gold-light);
     letter-spacing: 0.04em; margin-bottom: 1.25rem;
   }
-  .divider { width: 36px; height: 2px; background: var(--gold); border-radius: 2px; margin-bottom: 2rem; }
+  .divider { width: 36px; height: 2px; background: var(--gold); border-radius: 2px; margin-bottom: 1.5rem; }
 
   .event-card {
-    background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.18);
-    border-radius: var(--radius-md); padding: 1.25rem 1.5rem; width: 100%; margin-bottom: 1.5rem;
+    background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius-md); padding: 1.25rem 1.5rem; width: 100%; margin-bottom: 1rem;
   }
   .event-tag {
     display: inline-block; background: var(--gold); color: var(--blue);
@@ -120,18 +123,44 @@
   }
   /* ✏️ EDITA AQUÍ: nombre del evento */
   .event-name { font-size: 24px; font-weight: 600; color: var(--white); line-height: 1.2; margin-bottom: 10px; }
-  /* ✏️ EDITA AQUÍ: fecha y lugar */
+  /* ✏️ EDITA AQUÍ: fecha completa con año y lugar
+     Formato: "Sábado 4 de julio de 2026 · Lautaro"
+     IMPORTANTE: también actualiza FECHA_EVENTO en el script de abajo */
   .event-meta {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    font-size: 13px; color: rgba(255,255,255,0.6);
+    display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+    font-size: 13px; color: rgba(255,255,255,0.65);
   }
-  .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); }
+  .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
 
-  .slide-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 2rem; }
-  .slide-dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: all 0.3s; }
-  .slide-dots span.on { background: var(--gold-light); width: 18px; border-radius: 4px; }
+  /* ══ CARRUSEL HORIZONTAL ══ */
+  .carrusel-wrap {
+    position: relative; z-index: 2;
+    width: 100%; overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .carrusel-track {
+    display: flex; gap: 10px;
+    width: max-content;
+    animation: scroll-left 30s linear infinite;
+    padding: 0 1rem;
+  }
+  .carrusel-track:hover { animation-play-state: paused; }
+  .carrusel-track img {
+    width: 140px; height: 90px;
+    object-fit: cover; border-radius: var(--radius-sm);
+    border: 2px solid rgba(255,255,255,0.2);
+    flex-shrink: 0;
+  }
+  @keyframes scroll-left {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
 
-  .hero-btns { position: relative; z-index: 2; width: 100%; padding: 0 1.5rem 2.5rem; display: flex; flex-direction: column; gap: 10px; }
+  .hero-btns {
+    position: relative; z-index: 2;
+    width: 100%; padding: 0 1.5rem 2.5rem;
+    display: flex; flex-direction: column; gap: 10px;
+  }
   .btn-gold {
     background: var(--gold); color: var(--blue); border: none; border-radius: var(--radius-sm);
     padding: 14px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%;
@@ -160,10 +189,9 @@
   .back-btn:hover { background: rgba(255,255,255,0.2); }
   .form-header-text { flex: 1; }
   .form-header-title { font-size: 16px; font-weight: 600; color: var(--white); }
-  /* ✏️ EDITA AQUÍ: subtítulo del formulario — nombre evento · fecha · ciudad */
+  /* ✏️ EDITA AQUÍ: subtítulo formulario — nombre evento · fecha · ciudad */
   .form-header-sub { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
 
-  /* Aviso informativo sobre la contraseña */
   .info-box {
     background: #eff6ff; border-left: 3px solid var(--blue-mid);
     border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 1.25rem;
@@ -177,14 +205,12 @@
     display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.07em;
     text-transform: uppercase; color: var(--gray-500); margin-bottom: 5px;
   }
-  .field input, .field select {
+  .field input {
     width: 100%; border: 1px solid var(--gray-300); border-radius: var(--radius-sm);
     padding: 11px 13px; font-size: 14px; color: var(--gray-900);
     font-family: 'Inter', sans-serif; background: var(--white); outline: none; transition: border-color 0.15s;
   }
-  .field input:focus, .field select:focus {
-    border-color: var(--blue-mid); box-shadow: 0 0 0 3px rgba(26,70,153,0.12);
-  }
+  .field input:focus { border-color: var(--blue-mid); box-shadow: 0 0 0 3px rgba(26,70,153,0.12); }
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .pastor-label { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 5px; }
   .pastor-opts { display: flex; gap: 8px; }
@@ -228,46 +254,19 @@
   .church-name { font-size: 13px; font-weight: 600; color: var(--gray-900); }
   .church-enc { font-size: 11px; color: var(--gray-500); margin-top: 1px; }
   .church-pastor { font-size: 10px; color: var(--gray-500); margin-top: 1px; }
-  .church-right { display: flex; align-items: center; gap: 8px; }
+  .church-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .church-count {
     font-size: 14px; font-weight: 600; color: #92400e;
-    background: var(--gold-pale); border-radius: 20px; padding: 5px 13px; flex-shrink: 0;
+    background: var(--gold-pale); border-radius: 20px; padding: 5px 13px;
   }
   .btn-edit {
     background: var(--blue-light); color: var(--blue-mid); border: none;
-    border-radius: var(--radius-sm); padding: 6px 10px; font-size: 12px; font-weight: 600;
-    cursor: pointer; flex-shrink: 0; transition: background 0.15s;
+    border-radius: var(--radius-sm); padding: 6px 12px; font-size: 12px; font-weight: 600;
+    cursor: pointer; transition: background 0.15s;
   }
   .btn-edit:hover { background: #c7d9f5; }
-
-  /* ══ MODAL EDITAR ══ */
-  .modal-overlay {
-    display: none; position: fixed; inset: 0; z-index: 50;
-    background: rgba(0,0,0,0.5); align-items: center; justify-content: center; padding: 1.5rem;
-  }
-  .modal-overlay.visible { display: flex; }
-  .modal {
-    background: var(--white); border-radius: var(--radius-lg); padding: 1.5rem;
-    width: 100%; max-width: 360px;
-  }
-  .modal-title { font-size: 16px; font-weight: 600; color: var(--gray-900); margin-bottom: 4px; }
-  .modal-sub { font-size: 13px; color: var(--gray-500); margin-bottom: 1.25rem; line-height: 1.4; }
-  .modal-field { margin-bottom: 1rem; }
-  .modal-field label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gray-500); margin-bottom: 5px; }
-  .modal-field input {
-    width: 100%; border: 1px solid var(--gray-300); border-radius: var(--radius-sm);
-    padding: 10px 12px; font-size: 14px; font-family: 'Inter', sans-serif; outline: none;
-  }
-  .modal-field input:focus { border-color: var(--blue-mid); box-shadow: 0 0 0 3px rgba(26,70,153,0.12); }
-  .modal-error { font-size: 13px; color: #dc2626; margin-bottom: 0.75rem; display: none; }
-  .modal-btns { display: flex; gap: 8px; margin-top: 1.25rem; }
-  .btn-cancel {
-    flex: 1; background: var(--gray-100); color: var(--gray-700); border: none;
-    border-radius: var(--radius-sm); padding: 11px; font-size: 14px; font-weight: 500; cursor: pointer;
-  }
-  .btn-confirm-edit {
-    flex: 2; background: var(--blue); color: white; border: none;
-    border-radius: var(--radius-sm); padding: 11px; font-size: 14px; font-weight: 600; cursor: pointer;
+  .edit-closed {
+    font-size: 11px; color: var(--gray-500); font-style: italic;
   }
 
   /* Toast */
@@ -281,16 +280,11 @@
 </style>
 </head>
 <body>
-
 <div class="app">
 
   <!-- ══ PANEL 1 — INICIO ══ -->
   <section id="panel-inicio">
-    <div class="hero-bg">
-      <div class="slide active"></div>
-      <div class="slide"></div>
-      <div class="slide"></div>
-    </div>
+    <div class="hero-bg" id="hero-bg"></div>
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
@@ -301,8 +295,8 @@
       <!-- ✏️ EDITA AQUÍ: nombre corporación -->
       <p class="corp-name">Iglesia Unida Metodista Pentecostal</p>
 
-      <!-- ✏️ EDITA AQUÍ: nombre corto / sección — cambia para cada zonal
-           Ejemplos: "IUMP · Zonal Lautaro" / "IUMP · Zonal Temuco" -->
+      <!-- ✏️ EDITA AQUÍ: nombre corto / zonal
+           Ejemplos: "IUMP · Zonal Temuco" / "IUMP · Zonal Victoria" -->
       <p class="corp-short">IUMP · Zonal Lautaro</p>
 
       <div class="divider"></div>
@@ -313,45 +307,73 @@
         <!-- ✏️ EDITA AQUÍ: nombre del evento -->
         <p class="event-name">Zonal de Jóvenes</p>
 
-        <!-- ✏️ EDITA AQUÍ: fecha y lugar — Formato: Día · Fecha · Ciudad -->
+        <!-- ✏️ EDITA AQUÍ: fecha completa con año y lugar
+             IMPORTANTE: actualiza también FECHA_EVENTO en el script -->
         <div class="event-meta">
           <span class="dot"></span>
-          <span>Sábado 4 de julio</span>
+          <span>Sábado 4 de julio de 2026</span>
           <span class="dot"></span>
           <span>Lautaro</span>
           <span class="dot"></span>
         </div>
       </div>
+    </div>
 
-      <div class="slide-dots">
-        <span class="on"></span><span></span><span></span>
+    <!-- ══ CARRUSEL DE FOTOS ══ -->
+    <!-- ✏️ Para cambiar fotos: reemplaza las URLs dentro de carrusel-track
+         Puedes agregar o quitar imágenes. Las URLs deben duplicarse (el bloque
+         se repite dos veces) para que la animación sea continua sin saltos -->
+    <div class="carrusel-wrap">
+      <div class="carrusel-track" id="carrusel-track">
+        <!-- Bloque 1 (original) -->
+        <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=80" alt="Paisaje 1">
+        <img src="https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=400&q=80" alt="Paisaje 2">
+        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&q=80" alt="Paisaje 3">
+        <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=400&q=80" alt="Paisaje 4">
+        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80" alt="Paisaje 5">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=80" alt="Paisaje 6">
+        <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=400&q=80" alt="Paisaje 7">
+        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400&q=80" alt="Paisaje 8">
+        <img src="https://images.unsplash.com/photo-1476231682828-37e571bc172f?w=400&q=80" alt="Paisaje 9">
+        <img src="https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=400&q=80" alt="Paisaje 10">
+        <!-- Bloque 2 (duplicado para loop continuo) -->
+        <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=80" alt="Paisaje 1">
+        <img src="https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=400&q=80" alt="Paisaje 2">
+        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&q=80" alt="Paisaje 3">
+        <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=400&q=80" alt="Paisaje 4">
+        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80" alt="Paisaje 5">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=80" alt="Paisaje 6">
+        <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=400&q=80" alt="Paisaje 7">
+        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400&q=80" alt="Paisaje 8">
+        <img src="https://images.unsplash.com/photo-1476231682828-37e571bc172f?w=400&q=80" alt="Paisaje 9">
+        <img src="https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=400&q=80" alt="Paisaje 10">
       </div>
     </div>
 
     <div class="hero-btns">
-      <button class="btn-gold" onclick="mostrar('formulario')">✓ &nbsp;Confirmar asistencia</button>
-      <button class="btn-outline" onclick="mostrar('participacion')">≡ &nbsp;Ver participación</button>
+      <button class="btn-gold" onclick="mostrar('formulario', null)">✓ &nbsp;Confirmar asistencia</button>
+      <button class="btn-outline" onclick="mostrar('participacion', null)">≡ &nbsp;Ver participación</button>
     </div>
   </section>
 
   <!-- ══ PANEL 2 — FORMULARIO ══ -->
   <section id="panel-formulario">
     <div class="form-header">
-      <button class="back-btn" onclick="mostrar('inicio')">←</button>
+      <button class="back-btn" id="back-btn" onclick="volverDesdeFormulario()">←</button>
       <div class="form-header-text">
-        <p class="form-header-title">Confirmar asistencia</p>
-        <!-- ✏️ EDITA AQUÍ: subtítulo — nombre evento · fecha · ciudad -->
-        <p class="form-header-sub">Zonal de Jóvenes · 4 julio · Lautaro</p>
+        <p class="form-header-title" id="form-titulo">Confirmar asistencia</p>
+        <!-- ✏️ EDITA AQUÍ: subtítulo formulario — nombre evento · fecha · ciudad -->
+        <p class="form-header-sub">Zonal de Jóvenes · 4 julio 2026 · Lautaro</p>
       </div>
     </div>
 
     <div class="form-body">
-
-      <!-- Aviso informativo -->
       <div class="info-box">
         <strong>¿Para qué sirve la contraseña?</strong><br>
-        Si necesitas modificar el número de participantes después de confirmar, podrás hacerlo desde el panel de participación usando tu correo y esta contraseña. Solo es posible editar hasta <strong>5 días antes</strong> de la fecha del evento.
+        Si necesitas modificar tu confirmación después de enviarla, puedes hacerlo desde el panel de participación usando tu correo y esta contraseña. Solo es posible editar hasta <strong>5 días antes</strong> de la fecha del evento.
       </div>
+
+      <input type="hidden" id="f-id">
 
       <div class="field">
         <label>Nombre del encargado</label>
@@ -385,14 +407,14 @@
         </div>
       </div>
 
-      <button class="btn-submit" onclick="enviarFormulario()">✉ &nbsp;Enviar confirmación</button>
+      <button class="btn-submit" id="btn-submit" onclick="enviarFormulario()">✉ &nbsp;Enviar confirmación</button>
     </div>
   </section>
 
   <!-- ══ PANEL 3 — PARTICIPACIÓN ══ -->
   <section id="panel-participacion">
     <div class="part-header">
-      <button class="back-btn" onclick="mostrar('inicio')">←</button>
+      <button class="back-btn" onclick="mostrar('inicio', null)">←</button>
       <p class="part-header-title">Iglesias confirmadas</p>
       <span class="live-pill">En vivo</span>
     </div>
@@ -413,70 +435,124 @@
     </div>
   </section>
 
-  <!-- ══ MODAL EDITAR ══ -->
-  <div class="modal-overlay" id="modal-editar">
-    <div class="modal">
-      <p class="modal-title">Editar confirmación</p>
-      <p class="modal-sub">Ingresa tu correo y contraseña para modificar la cantidad de participantes de tu iglesia.</p>
-      <div class="modal-field">
-        <label>Correo electrónico</label>
-        <input type="email" id="m-correo" placeholder="encargado@iglesia.cl">
-      </div>
-      <div class="modal-field">
-        <label>Contraseña</label>
-        <input type="password" id="m-password" placeholder="Tu contraseña">
-      </div>
-      <div class="modal-field">
-        <label>Nueva cantidad de participantes</label>
-        <input type="number" id="m-participantes" placeholder="0" min="0">
-      </div>
-      <p class="modal-error" id="modal-error">Correo o contraseña incorrectos.</p>
-      <div class="modal-btns">
-        <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
-        <button class="btn-confirm-edit" onclick="guardarEdicion()">Guardar cambios</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast">✓ Confirmación enviada</div>
+  <div class="toast" id="toast"></div>
 </div>
 
-<!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  /* ── CONFIGURACIÓN SUPABASE ── */
+  /* ── SUPABASE ── */
   const SUPABASE_URL = 'https://uyhmxtmmcnivrbayyfbf.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5aG14dG1tY25pdnJiYXl5ZmJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2Mjg1NjEsImV4cCI6MjA5NzIwNDU2MX0.z3X2yenl04WsxMqteDBESOCv0hT5V_QspM1ubY2wHHs';
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     ✏️  FECHA LÍMITE DE EDICIÓN
-         Cambia esta fecha para cada zonal.
+     ✏️  FECHA DEL EVENTO — actualiza esto para cada zonal
          Formato: 'YYYY-MM-DD'
-         Se bloquea la edición 5 días antes.
+         La edición se bloquea automáticamente 5 días antes
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   const FECHA_EVENTO = '2026-07-04';
 
   function puedeEditar() {
-    const hoy = new Date();
+    const hoy   = new Date();
     const evento = new Date(FECHA_EVENTO);
-    const diff = (evento - hoy) / (1000 * 60 * 60 * 24);
-    return diff > 5;
+    return (evento - hoy) / (1000 * 60 * 60 * 24) > 5;
   }
 
+  /* ── Fondo rotando (fade) ── */
+  const bgFotos = [
+    'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80',
+    'https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=800&q=80',
+    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80',
+  ];
+  const heroBg = document.getElementById('hero-bg');
+  bgFotos.forEach((url, i) => {
+    const d = document.createElement('div');
+    d.className = 'slide' + (i === 0 ? ' active' : '');
+    d.style.backgroundImage = `url('${url}')`;
+    heroBg.appendChild(d);
+  });
+  let bgCurrent = 0;
+  setInterval(() => {
+    heroBg.children[bgCurrent].classList.remove('active');
+    bgCurrent = (bgCurrent + 1) % heroBg.children.length;
+    heroBg.children[bgCurrent].classList.add('active');
+  }, 5000);
+
   /* ── Navegación ── */
-  function mostrar(panel) {
-    document.getElementById('panel-inicio').style.display = 'none';
-    document.getElementById('panel-formulario').style.display = 'none';
-    document.getElementById('panel-participacion').style.display = 'none';
-    if (panel === 'inicio') document.getElementById('panel-inicio').style.display = 'flex';
-    else if (panel === 'formulario') document.getElementById('panel-formulario').style.display = 'flex';
-    else if (panel === 'participacion') {
+  let panelAnterior = 'inicio';
+  let modoEdicion   = false;
+  let editandoId    = null;
+
+  function mostrar(panel, desde) {
+    ['panel-inicio','panel-formulario','panel-participacion'].forEach(id => {
+      document.getElementById(id).style.display = 'none';
+    });
+    if (panel === 'inicio') {
+      document.getElementById('panel-inicio').style.display = 'flex';
+    } else if (panel === 'formulario') {
+      document.getElementById('panel-formulario').style.display = 'flex';
+    } else if (panel === 'participacion') {
       document.getElementById('panel-participacion').style.display = 'flex';
       cargarParticipacion();
     }
+    if (desde) panelAnterior = desde;
   }
-  mostrar('inicio');
+  mostrar('inicio', null);
+
+  function volverDesdeFormulario() {
+    mostrar(panelAnterior || 'inicio', null);
+  }
+
+  /* ── Abrir formulario para NUEVO registro ── */
+  function abrirNuevo() {
+    modoEdicion = false;
+    editandoId  = null;
+    document.getElementById('form-titulo').textContent = 'Confirmar asistencia';
+    document.getElementById('btn-submit').textContent  = '✉  Enviar confirmación';
+    document.getElementById('f-id').value       = '';
+    document.getElementById('f-nombre').value   = '';
+    document.getElementById('f-correo').value   = '';
+    document.getElementById('f-password').value = '';
+    document.getElementById('f-iglesia').value  = '';
+    document.getElementById('f-jovenes').value  = '';
+    resetPastores(0);
+    mostrar('formulario', 'inicio');
+  }
+
+  /* ── Abrir formulario para EDITAR registro existente ── */
+  async function abrirEdicion(id) {
+    if (!puedeEditar()) {
+      mostrarToast('⚠ Edición cerrada: faltan menos de 5 días para el evento');
+      return;
+    }
+    /* Pedir correo y contraseña para verificar identidad */
+    const correo = prompt('Ingresa tu correo electrónico:');
+    if (!correo) return;
+    const pass = prompt('Ingresa tu contraseña:');
+    if (!pass) return;
+
+    const { data, error } = await db
+      .from('confirmaciones').select('*').eq('id', id).single();
+
+    if (error || !data) { mostrarToast('❌ No se encontró el registro'); return; }
+    if (data.correo !== correo.trim() || data.password !== pass.trim()) {
+      mostrarToast('❌ Correo o contraseña incorrectos'); return;
+    }
+
+    /* Precargar datos en el formulario */
+    modoEdicion = true;
+    editandoId  = id;
+    document.getElementById('form-titulo').textContent = 'Editar confirmación';
+    document.getElementById('btn-submit').textContent  = '💾  Guardar cambios';
+    document.getElementById('f-id').value       = id;
+    document.getElementById('f-nombre').value   = data.nombre;
+    document.getElementById('f-correo').value   = data.correo;
+    document.getElementById('f-password').value = data.password;
+    document.getElementById('f-iglesia').value  = data.iglesia;
+    document.getElementById('f-jovenes').value  = data.participantes || 0;
+    resetPastores(data.pastores || 0);
+    mostrar('formulario', 'participacion');
+  }
 
   /* ── Selector de pastores ── */
   let pastoresVal = 0;
@@ -485,63 +561,52 @@
     el.classList.add('selected');
     pastoresVal = parseInt(el.dataset.val);
   }
+  function resetPastores(val) {
+    pastoresVal = val;
+    document.querySelectorAll('.pastor-opt').forEach(o => {
+      o.classList.toggle('selected', parseInt(o.dataset.val) === val);
+    });
+  }
 
-  /* ── Rotación de imágenes ── */
-  const slides = document.querySelectorAll('.slide');
-  const dots   = document.querySelectorAll('.slide-dots span');
-  let current  = 0;
-  setInterval(() => {
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('on');
-    current = (current + 1) % slides.length;
-    slides[current].classList.add('active');
-    dots[current].classList.add('on');
-  }, 4000);
-
-  /* ── Envío del formulario ── */
+  /* ── Envío / guardado del formulario ── */
   async function enviarFormulario() {
-    const nombre       = document.getElementById('f-nombre').value.trim();
-    const correo       = document.getElementById('f-correo').value.trim();
-    const password     = document.getElementById('f-password').value.trim();
-    const iglesia      = document.getElementById('f-iglesia').value.trim();
+    const nombre        = document.getElementById('f-nombre').value.trim();
+    const correo        = document.getElementById('f-correo').value.trim();
+    const password      = document.getElementById('f-password').value.trim();
+    const iglesia       = document.getElementById('f-iglesia').value.trim();
     const participantes = parseInt(document.getElementById('f-jovenes').value) || 0;
 
     if (!nombre || !correo || !password || !iglesia) {
-      alert('Por favor completa todos los campos, incluyendo la contraseña.');
-      return;
+      mostrarToast('⚠ Completa todos los campos'); return;
     }
 
-    const btn = document.querySelector('.btn-submit');
-    btn.textContent = 'Enviando...';
+    const btn = document.getElementById('btn-submit');
+    btn.textContent = 'Guardando...';
     btn.disabled = true;
 
-    const { error } = await db.from('confirmaciones').insert([{
-      nombre, correo, password, iglesia, participantes, pastores: pastoresVal
-    }]);
-
-    btn.textContent = '✉ Enviar confirmación';
-    btn.disabled = false;
-
-    if (error) {
-      alert('Hubo un error al enviar. Intenta de nuevo.');
-      console.error(error);
-      return;
+    let error;
+    if (modoEdicion && editandoId) {
+      /* EDITAR: reemplaza el registro existente */
+      ({ error } = await db.from('confirmaciones').update({
+        nombre, correo, password, iglesia, participantes, pastores: pastoresVal
+      }).eq('id', editandoId));
+    } else {
+      /* NUEVO: inserta registro */
+      ({ error } = await db.from('confirmaciones').insert([{
+        nombre, correo, password, iglesia, participantes, pastores: pastoresVal
+      }]));
     }
 
-    mostrarToast('✓ Confirmación enviada');
-    mostrar('inicio');
+    btn.textContent = modoEdicion ? '💾  Guardar cambios' : '✉  Enviar confirmación';
+    btn.disabled = false;
 
-    document.getElementById('f-nombre').value = '';
-    document.getElementById('f-correo').value = '';
-    document.getElementById('f-password').value = '';
-    document.getElementById('f-iglesia').value = '';
-    document.getElementById('f-jovenes').value = '';
-    document.querySelectorAll('.pastor-opt').forEach(o => o.classList.remove('selected'));
-    document.querySelector('.pastor-opt[data-val="0"]').classList.add('selected');
-    pastoresVal = 0;
+    if (error) { mostrarToast('❌ Error al guardar. Intenta de nuevo.'); console.error(error); return; }
+
+    mostrarToast(modoEdicion ? '✓ Confirmación actualizada' : '✓ Confirmación enviada');
+    mostrar(modoEdicion ? 'participacion' : 'inicio', null);
   }
 
-  /* ── Cargar participación ── */
+  /* ── Cargar panel de participación ── */
   async function cargarParticipacion() {
     const lista = document.getElementById('lista-iglesias');
     lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Cargando...</p>';
@@ -553,7 +618,7 @@
       return;
     }
 
-    /* Total solo suma participantes (sin sumar pastores al conteo) */
+    /* Total de participantes — solo suma el número ingresado, sin contar pastores */
     const totalP = data.reduce((s, c) => s + (c.participantes || 0), 0);
     document.getElementById('total-participantes').textContent = totalP;
     document.getElementById('total-iglesias').textContent = data.length;
@@ -568,9 +633,9 @@
     lista.innerHTML = data.map(c => {
       const iniciales = c.iglesia.split(' ').slice(-2).map(w => w[0]).join('').toUpperCase();
       const pastorTxt = c.pastores === 0 ? 'Sin pastor' : c.pastores === 1 ? '1 pastor' : '2 pastores';
-      const btnEditar = editable
-        ? `<button class="btn-edit" onclick="abrirModal('${c.id}')">Editar</button>`
-        : '';
+      const accion = editable
+        ? `<button class="btn-edit" onclick="abrirEdicion('${c.id}')">Editar</button>`
+        : `<span class="edit-closed">Cerrado</span>`;
       return `
         <div class="church-card">
           <div class="church-left">
@@ -583,60 +648,10 @@
           </div>
           <div class="church-right">
             <span class="church-count">${c.participantes || 0}</span>
-            ${btnEditar}
+            ${accion}
           </div>
         </div>`;
     }).join('');
-  }
-
-  /* ── Modal editar ── */
-  let editandoId = null;
-
-  function abrirModal(id) {
-    editandoId = id;
-    document.getElementById('m-correo').value = '';
-    document.getElementById('m-password').value = '';
-    document.getElementById('m-participantes').value = '';
-    document.getElementById('modal-error').style.display = 'none';
-    document.getElementById('modal-editar').classList.add('visible');
-  }
-
-  function cerrarModal() {
-    document.getElementById('modal-editar').classList.remove('visible');
-    editandoId = null;
-  }
-
-  async function guardarEdicion() {
-    const correo       = document.getElementById('m-correo').value.trim();
-    const password     = document.getElementById('m-password').value.trim();
-    const participantes = parseInt(document.getElementById('m-participantes').value) || 0;
-    const errorEl      = document.getElementById('modal-error');
-
-    errorEl.style.display = 'none';
-
-    /* Verificar correo y contraseña contra el registro */
-    const { data, error } = await db
-      .from('confirmaciones')
-      .select('id, correo, password')
-      .eq('id', editandoId)
-      .single();
-
-    if (error || !data) { errorEl.style.display = 'block'; return; }
-    if (data.correo !== correo || data.password !== password) {
-      errorEl.style.display = 'block'; return;
-    }
-
-    /* Actualizar participantes */
-    const { error: updateError } = await db
-      .from('confirmaciones')
-      .update({ participantes })
-      .eq('id', editandoId);
-
-    if (updateError) { errorEl.textContent = 'Error al guardar. Intenta de nuevo.'; errorEl.style.display = 'block'; return; }
-
-    cerrarModal();
-    mostrarToast('✓ Participantes actualizados');
-    cargarParticipacion();
   }
 
   /* ── Toast ── */
@@ -646,6 +661,9 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
   }
+
+  /* ── Conectar botón de confirmar asistencia ── */
+  document.querySelector('.btn-gold').addEventListener('click', abrirNuevo);
 </script>
 </body>
 </html>
