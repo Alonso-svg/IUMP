@@ -225,10 +225,10 @@
   .grid3 .field { margin-bottom: 0; }
 
   .pastor-label { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--gray-500); margin-bottom: 4px; }
-  .pastor-opts { display: flex; gap: 8px; }
+  .pastor-opts { display: flex; gap: 6px; }
   .pastor-opt {
     flex: 1; text-align: center; border: 1px solid var(--gray-300); border-radius: var(--radius-sm);
-    padding: 10px 6px; font-size: 16px; font-weight: 600; color: var(--gray-500);
+    padding: 10px 4px; font-size: 15px; font-weight: 600; color: var(--gray-500);
     background: var(--white); cursor: pointer; transition: all 0.15s; user-select: none;
   }
   .pastor-opt.selected { border-color: var(--blue-mid); color: var(--blue-mid); background: var(--blue-light); }
@@ -276,7 +276,7 @@
   }
   .church-name { font-size: 13px; font-weight: 600; color: var(--gray-900); }
   .church-enc { font-size: 11px; color: var(--gray-500); margin-top: 1px; }
-  .church-pastor { font-size: 10px; color: var(--gray-500); margin-top: 1px; }
+  .church-detail { font-size: 10px; color: var(--gray-500); margin-top: 1px; }
   .church-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .church-count {
     font-size: 14px; font-weight: 600; color: #92400e;
@@ -417,14 +417,14 @@
         <input type="text" id="f-iglesia" placeholder="Ej: IUMP Barrio Norte">
       </div>
 
-      <!-- Los tres campos numéricos en una fila para ahorrar espacio -->
+      <!-- Los tres campos numéricos en una fila para ahorrar espacio en celular -->
       <div class="grid3">
         <div class="field">
-          <label>Total participantes</label>
+          <label>Participantes</label>
           <input type="number" id="f-jovenes" placeholder="0" min="0">
         </div>
         <div class="field">
-          <label>Adolescentes (- 15 años)</label>
+          <label>Adolescentes (- 15)</label>
           <input type="number" id="f-adolescentes" placeholder="0" min="0">
         </div>
         <div>
@@ -460,7 +460,7 @@
     <div class="stats-grid">
       <div class="stat-card">
         <p class="stat-n" id="total-participantes">0</p>
-        <p class="stat-l">Total participantes</p>
+        <p class="stat-l">Total general</p>
       </div>
       <div class="stat-card">
         <p class="stat-n" id="total-iglesias">0</p>
@@ -654,9 +654,9 @@
       return;
     }
 
-    /* Total solo suma participantes — no cuenta pastores ni adolescentes */
-    const totalP = data.reduce((s, c) => s + (c.participantes || 0), 0);
-    document.getElementById('total-participantes').textContent = totalP;
+    /* Total general = participantes + adolescentes + pastores de todas las iglesias */
+    const totalGeneral = data.reduce((s, c) => s + (c.participantes || 0) + (c.adolescentes || 0) + (c.pastores || 0), 0);
+    document.getElementById('total-participantes').textContent = totalGeneral;
     document.getElementById('total-iglesias').textContent = data.length;
 
     if (data.length === 0) {
@@ -667,9 +667,10 @@
     const editable = puedeEditar();
 
     lista.innerHTML = data.map(c => {
-      const iniciales = c.iglesia.split(' ').slice(-2).map(w => w[0]).join('').toUpperCase();
-      const pastorTxt = c.pastores === 0 ? 'Sin pastor' : c.pastores === 1 ? '1 pastor' : '2 pastores';
-      const adolTxt   = c.adolescentes > 0 ? `${c.adolescentes} adolescente${c.adolescentes > 1 ? 's' : ''}` : 'Sin adolescentes';
+      const iniciales  = c.iglesia.split(' ').slice(-2).map(w => w[0]).join('').toUpperCase();
+      const pastorTxt  = c.pastores === 0 ? 'Sin pastor' : c.pastores === 1 ? '1 pastor' : '2 pastores';
+      const adolTxt    = c.adolescentes > 0 ? `${c.adolescentes} adolescente${c.adolescentes > 1 ? 's' : ''}` : 'Sin adolescentes';
+      const totalFila  = (c.participantes || 0) + (c.adolescentes || 0) + (c.pastores || 0);
       const accion = editable
         ? `<button class="btn-edit" onclick="abrirEdicion('${c.id}')">Editar</button>`
         : `<span class="edit-closed">Cerrado</span>`;
@@ -680,11 +681,11 @@
             <div>
               <p class="church-name">${c.iglesia}</p>
               <p class="church-enc">Enc: ${c.nombre}</p>
-              <p class="church-pastor">${pastorTxt} · ${adolTxt}</p>
+              <p class="church-detail">${pastorTxt} · ${adolTxt} · ${c.participantes || 0} part.</p>
             </div>
           </div>
           <div class="church-right">
-            <span class="church-count">${c.participantes || 0}</span>
+            <span class="church-count">${totalFila}</span>
             ${accion}
           </div>
         </div>`;
@@ -710,7 +711,12 @@
     const { jsPDF } = window.jspdf;
     const doc    = new jsPDF();
     const fecha  = new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'long', year:'numeric' });
-    const totalP = data.reduce((s, c) => s + (c.participantes || 0), 0);
+
+    /* Totales generales */
+    const totalParticipantes = data.reduce((s, c) => s + (c.participantes || 0), 0);
+    const totalAdolescentes  = data.reduce((s, c) => s + (c.adolescentes || 0), 0);
+    const totalPastores      = data.reduce((s, c) => s + (c.pastores || 0), 0);
+    const totalGeneral       = totalParticipantes + totalAdolescentes + totalPastores;
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(16);
@@ -729,28 +735,42 @@
     doc.setFontSize(11);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(13, 46, 110);
-    doc.text('Total participantes: ' + totalP + '   |   Iglesias confirmadas: ' + data.length, 105, 49, { align: 'center' });
+    doc.text('Total general: ' + totalGeneral + '   |   Iglesias confirmadas: ' + data.length, 105, 49, { align: 'center' });
 
-    /* Orden columnas: Iglesia, Encargado, Pastores, Adolescentes, Total participantes */
+    /* Columnas: Iglesia, Encargado, Pastores, Adolescentes, Participantes, Total */
     doc.autoTable({
       startY: 56,
-      head: [['Iglesia', 'Encargado', 'Pastores', 'Adolescentes', 'Total']],
-      body: data.map(c => [
-        c.iglesia,
-        c.nombre,
-        c.pastores === 0 ? 'Ninguno' : c.pastores === 1 ? '1 pastor' : '2 pastores',
-        c.adolescentes || 0,
-        c.participantes || 0
-      ]),
-      headStyles: { fillColor: [13, 46, 110], textColor: 255, fontStyle: 'bold', fontSize: 10 },
+      head: [['Iglesia', 'Encargado', 'Pastores', 'Adolescentes', 'Participantes', 'Total']],
+      body: data.map(c => {
+        const total = (c.participantes || 0) + (c.adolescentes || 0) + (c.pastores || 0);
+        return [
+          c.iglesia,
+          c.nombre,
+          c.pastores === 0 ? 'Ninguno' : c.pastores === 1 ? '1' : '2',
+          c.adolescentes || 0,
+          c.participantes || 0,
+          total
+        ];
+      }),
+      /* Fila de totales al final con color dorado */
+      foot: [[
+        'TOTALES', '',
+        totalPastores,
+        totalAdolescentes,
+        totalParticipantes,
+        totalGeneral
+      ]],
+      headStyles: { fillColor: [13, 46, 110], textColor: 255, fontStyle: 'bold', fontSize: 9 },
+      footStyles: { fillColor: [201, 146, 10], textColor: 255, fontStyle: 'bold', fontSize: 9 },
       alternateRowStyles: { fillColor: [240, 245, 255] },
-      styles: { fontSize: 10, cellPadding: 4 },
+      styles: { fontSize: 9, cellPadding: 3 },
       columnStyles: {
-        0: { cellWidth: 50 },
-        1: { cellWidth: 50 },
-        2: { cellWidth: 35, halign: 'center' },
-        3: { cellWidth: 30, halign: 'center' },
-        4: { cellWidth: 25, halign: 'center' }
+        0: { cellWidth: 42 },
+        1: { cellWidth: 40 },
+        2: { cellWidth: 22, halign: 'center' },
+        3: { cellWidth: 25, halign: 'center' },
+        4: { cellWidth: 28, halign: 'center' },
+        5: { cellWidth: 20, halign: 'center', fontStyle: 'bold' }
       }
     });
 
@@ -771,18 +791,25 @@
     const data = await obtenerDatos();
     if (!data || data.length === 0) { mostrarToast('⚠ No hay confirmaciones aún'); return; }
 
-    const totalP = data.reduce((s, c) => s + (c.participantes || 0), 0);
-    const fecha  = new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'long', year:'numeric' });
+    const totalParticipantes = data.reduce((s, c) => s + (c.participantes || 0), 0);
+    const totalAdolescentes  = data.reduce((s, c) => s + (c.adolescentes || 0), 0);
+    const totalPastores      = data.reduce((s, c) => s + (c.pastores || 0), 0);
+    const totalGeneral       = totalParticipantes + totalAdolescentes + totalPastores;
+    const fecha              = new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'long', year:'numeric' });
 
-    /* Orden columnas: Iglesia, Encargado, Pastores, Adolescentes, Total participantes */
-    const filas = data.map(c => `
-      <tr>
-        <td>${c.iglesia}</td>
-        <td>${c.nombre}</td>
-        <td style="text-align:center">${c.pastores === 0 ? 'Ninguno' : c.pastores === 1 ? '1 pastor' : '2 pastores'}</td>
-        <td style="text-align:center">${c.adolescentes || 0}</td>
-        <td style="text-align:center">${c.participantes || 0}</td>
-      </tr>`).join('');
+    /* Columnas: Iglesia, Encargado, Pastores, Adolescentes, Participantes, Total */
+    const filas = data.map(c => {
+      const total = (c.participantes || 0) + (c.adolescentes || 0) + (c.pastores || 0);
+      return `
+        <tr>
+          <td>${c.iglesia}</td>
+          <td>${c.nombre}</td>
+          <td style="text-align:center">${c.pastores === 0 ? 'Ninguno' : c.pastores === 1 ? '1' : '2'}</td>
+          <td style="text-align:center">${c.adolescentes || 0}</td>
+          <td style="text-align:center">${c.participantes || 0}</td>
+          <td style="text-align:center; font-weight:bold; color:#0d2e6e">${total}</td>
+        </tr>`;
+    }).join('');
 
     const ventana = window.open('', '_blank');
     ventana.document.write(`
@@ -799,27 +826,39 @@
           color: #0d2e6e; border: 1px solid #c7d9f5; padding: 8px;
           border-radius: 6px; background: #f0f5ff;
         }
-        table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        th { background: #0d2e6e; color: white; padding: 8px; text-align: left; }
-        td { padding: 7px 8px; border-bottom: 1px solid #ddd; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        th { background: #0d2e6e; color: white; padding: 7px 8px; text-align: left; }
+        td { padding: 6px 8px; border-bottom: 1px solid #ddd; }
         tr:nth-child(even) td { background: #f0f5ff; }
+        .fila-total td { background: #c9920a; color: white; font-weight: bold; }
         .footer { text-align: center; font-size: 10px; color: #aaa; margin-top: 24px; }
       </style></head><body>
       <h1>Iglesia Unida Metodista Pentecostal</h1>
       <h2>${TITULO_EVENTO}</h2>
       <p class="meta">Generado el ${fecha}</p>
-      <p class="totales">Total participantes: ${totalP} &nbsp;&nbsp;|&nbsp;&nbsp; Iglesias confirmadas: ${data.length}</p>
+      <p class="totales">Total general: ${totalGeneral} &nbsp;&nbsp;|&nbsp;&nbsp; Iglesias confirmadas: ${data.length}</p>
       <table>
         <thead>
           <tr>
             <th>Iglesia</th>
             <th>Encargado</th>
-            <th>Pastores</th>
-            <th>Adolescentes</th>
-            <th>Total</th>
+            <th style="text-align:center">Pastores</th>
+            <th style="text-align:center">Adolescentes</th>
+            <th style="text-align:center">Participantes</th>
+            <th style="text-align:center">Total</th>
           </tr>
         </thead>
         <tbody>${filas}</tbody>
+        <tfoot>
+          <tr class="fila-total">
+            <td>TOTALES</td>
+            <td></td>
+            <td style="text-align:center">${totalPastores}</td>
+            <td style="text-align:center">${totalAdolescentes}</td>
+            <td style="text-align:center">${totalParticipantes}</td>
+            <td style="text-align:center">${totalGeneral}</td>
+          </tr>
+        </tfoot>
       </table>
       <p class="footer">IUMP · Jóvenes · Zona Central</p>
       <script>window.onload = () => { window.print(); }<\/script>
