@@ -436,12 +436,10 @@
       <div class="divider"></div>
       <div class="event-card">
         <span class="event-tag">Próxima actividad</span>
-        <!-- ✏️ EDITA: nombre evento -->
-        <p class="event-name">Zonal de Jóvenes Lautaro</p>
-        <!-- ✏️ EDITA: fecha visible — también actualiza FECHA_EVENTO en el script -->
+        <p class="event-name" id="txt-nombre-evento">Zonal de Jóvenes</p>
         <div class="event-meta">
           <span class="dot"></span>
-          <span>Sábado 4 de julio de 2026</span>
+          <span id="txt-fecha-visible">Cargando...</span>
           <span class="dot"></span>
         </div>
       </div>
@@ -636,12 +634,34 @@
 /* ════════ CONFIGURACIÓN ════════ */
 const SUPABASE_URL  = 'https://uyhmxtmmcnivrbayyfbf.supabase.co';
 const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5aG14dG1tY25pdnJiYXl5ZmJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2Mjg1NjEsImV4cCI6MjA5NzIwNDU2MX0.z3X2yenl04WsxMqteDBESOCv0hT5V_QspM1ubY2wHHs';
-/* ✏️ CAMBIA ESTO PARA CADA ZONAL */
-const FECHA_EVENTO  = '2026-07-04';
-const TITULO_EVENTO = 'Zonal de Jóvenes · 4 de julio de 2026 · Lautaro';
-const CLAVE_ADMIN   = 'kove123';
 
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+/* Variables globales — se cargan desde Supabase tabla config */
+var FECHA_EVENTO  = '';
+var TITULO_EVENTO = '';
+var CLAVE_ADMIN   = '';
+
+/* ════════ CARGA DE CONFIGURACIÓN DESDE SUPABASE ════════ */
+async function cargarConfig() {
+  var r = await db.from('config').select('clave, valor');
+  if (r.error || !r.data) {
+    mostrarToast('⚠ Error al cargar configuración');
+    return;
+  }
+  r.data.forEach(function(row) {
+    if (row.clave === 'fecha_evento')  FECHA_EVENTO  = row.valor;
+    if (row.clave === 'titulo_evento') TITULO_EVENTO = row.valor;
+    if (row.clave === 'clave_admin')   CLAVE_ADMIN   = row.valor;
+    if (row.clave === 'nombre_evento') document.getElementById('txt-nombre-evento').textContent = row.valor;
+    if (row.clave === 'fecha_visible') document.getElementById('txt-fecha-visible').textContent = row.valor;
+  });
+  /* Iniciar cuenta regresiva y navegación una vez cargada la config */
+  actualizarCuentaRegresiva();
+  setInterval(actualizarCuentaRegresiva, 1000);
+  mostrar('inicio', null);
+}
+cargarConfig();
 
 function puedeEditar() {
   return (new Date(FECHA_EVENTO) - new Date()) / (1000*60*60*24) > 5;
@@ -665,9 +685,6 @@ function actualizarCuentaRegresiva() {
   document.getElementById('cd-min').textContent  = String(Math.floor((diff % (1000*60*60)) / (1000*60))).padStart(2,'0');
   document.getElementById('cd-seg').textContent  = String(Math.floor((diff % (1000*60)) / 1000)).padStart(2,'0');
 }
-actualizarCuentaRegresiva();
-setInterval(actualizarCuentaRegresiva, 1000);
-
 /* ════════ NAVEGACIÓN ════════ */
 var panelAnterior = 'inicio';
 var modoEdicion   = false;
@@ -688,8 +705,6 @@ function mostrar(panel, desde) {
   }
   if (desde) panelAnterior = desde;
 }
-mostrar('inicio', null);
-
 function volverDesdeFormulario() {
   mostrar(panelAnterior || 'inicio', null);
 }
