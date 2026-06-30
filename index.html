@@ -296,11 +296,11 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 13px; font-weight: 600; color: var(--blue-mid); flex-shrink: 0;
   }
-  .church-name { font-size: 13px; font-weight: 600; color: var(--gray-900); }
-  .church-enc  { font-size: 11px; color: var(--gray-500); margin-top: 1px; }
+  .church-name   { font-size: 13px; font-weight: 600; color: var(--gray-900); }
+  .church-enc    { font-size: 11px; color: var(--gray-500); margin-top: 1px; }
   .church-detail { font-size: 10px; color: var(--gray-500); margin-top: 1px; }
-  .church-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-  .church-count {
+  .church-right  { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .church-count  {
     font-size: 14px; font-weight: 600; color: #92400e;
     background: var(--gold-pale); border-radius: 20px; padding: 5px 13px;
   }
@@ -326,34 +326,6 @@
     display: inline-flex; align-items: center; gap: 3px;
   }
   .badge-pagado { background: #d1fae5; color: #065f46; }
-
-  /* ══ PANEL 4 — MAPA ══ */
-  #panel-mapa { display: none; min-height: 100vh; flex-direction: column; background: var(--gray-50); }
-  .mapa-header { background: var(--blue); padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 12px; }
-  .mapa-header-title { font-size: 16px; font-weight: 600; color: var(--white); flex: 1; }
-  #mapa-frame { width: 100%; height: 280px; border: none; }
-  .mapa-body { padding: 1.25rem; }
-  .mapa-card {
-    background: var(--white); border-radius: var(--radius-md); border: 0.5px solid var(--gray-300);
-    padding: 1rem 1.25rem; margin-bottom: 1rem;
-  }
-  .mapa-card-title { font-size: 13px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
-  .mapa-address { font-size: 15px; font-weight: 500; color: var(--gray-900); margin-bottom: 12px; line-height: 1.4; }
-  .mapa-btns { display: flex; gap: 8px; }
-  .btn-mapa-ext {
-    flex: 1; padding: 10px; border: none; border-radius: var(--radius-sm);
-    font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity 0.15s;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-  }
-  .btn-mapa-ext:hover { opacity: 0.85; }
-  .btn-gmaps { background: #4285f4; color: white; }
-  .btn-waze  { background: #00c0f0; color: white; }
-  .instrucciones-item { display: flex; gap: 10px; margin-bottom: 10px; }
-  .inst-num {
-    width: 24px; height: 24px; border-radius: 50%; background: var(--blue); color: white;
-    font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .inst-text { font-size: 13px; color: var(--gray-700); line-height: 1.5; padding-top: 2px; }
 
   /* ══ TOAST ══ */
   .toast {
@@ -411,8 +383,8 @@
     margin-bottom: 8px; cursor: pointer; transition: background 0.12s;
   }
   .iglesia-select-item:hover { background: var(--blue-light); border-color: var(--blue-mid); }
-  .iglesia-select-name { font-size: 14px; font-weight: 600; color: var(--gray-900); }
-  .iglesia-select-enc  { font-size: 12px; color: var(--gray-500); }
+  .iglesia-select-name  { font-size: 14px; font-weight: 600; color: var(--gray-900); }
+  .iglesia-select-enc   { font-size: 12px; color: var(--gray-500); }
   .iglesia-select-count { font-size: 13px; font-weight: 600; color: #92400e; background: var(--gold-pale); padding: 4px 10px; border-radius: 20px; flex-shrink: 0; }
 
   /* Modal QR generado */
@@ -524,10 +496,8 @@
       <div class="countdown-box"><p class="countdown-n" id="cd-seg">--</p><p class="countdown-l">Seg</p></div>
     </div>
 
-    <!-- ✏️ EDITA: título carrusel -->
+    <!-- CARRUSEL -->
     <p class="carrusel-titulo">Imágenes de la última zonal</p>
-
-    <!-- CARRUSEL — duplicado para loop continuo -->
     <div class="carrusel-wrap">
       <div class="carrusel-track">
         <img src="fotos/foto1.jpg" alt="Zonal 1"> <img src="fotos/foto2.jpg" alt="Zonal 2">
@@ -544,7 +514,7 @@
     </div>
 
     <div class="hero-btns">
-      <button class="btn-gold" id="btn-confirmar" onclick="abrirNuevo()">✓ &nbsp;Confirmar asistencia</button>
+      <button class="btn-gold"    onclick="abrirNuevo()">✓ &nbsp;Confirmar asistencia</button>
       <button class="btn-outline" onclick="mostrar('participacion', null)">≡ &nbsp;Ver participación</button>
     </div>
   </section>
@@ -735,7 +705,7 @@
     </div>
   </div>
 
-  <!-- Modal: confirmación cerrada -->
+  <!-- Confirmación cerrada -->
   <div class="modal-backdrop" id="modal-confirmacion-cerrada">
     <div class="modal-sheet">
       <p class="modal-cerrada-icon">🔒</p>
@@ -796,7 +766,6 @@
 
   /* ════════════════════════════════════════
      NAVEGACIÓN
-     Al cambiar de panel: cierra menú y revoca autorización admin
   ════════════════════════════════════════ */
   let panelAnterior = 'inicio';
   let modoEdicion   = false;
@@ -807,8 +776,8 @@
     ['panel-inicio','panel-formulario','panel-participacion'].forEach(id => {
       document.getElementById(id).style.display = 'none';
     });
-    if      (panel === 'inicio')         document.getElementById('panel-inicio').style.display = 'flex';
-    else if (panel === 'formulario')     document.getElementById('panel-formulario').style.display = 'flex';
+    if      (panel === 'inicio')        document.getElementById('panel-inicio').style.display = 'flex';
+    else if (panel === 'formulario')    document.getElementById('panel-formulario').style.display = 'flex';
     else if (panel === 'participacion') {
       document.getElementById('panel-participacion').style.display = 'flex';
       cargarParticipacion();
@@ -820,13 +789,7 @@
   function volverDesdeFormulario() { mostrar(panelAnterior || 'inicio', null); }
 
   /* ════════════════════════════════════════
-     3 PUNTITOS — LÓGICA COMPLETA
-     • Tocar con menú abierto  → cierra + revoca
-     • Tocar con menú cerrado  → pide clave
-     • Clave correcta          → abre menú
-     • Click fuera             → cierra visual (NO revoca)
-     • Cambio de panel         → cierra + revoca (via cerrarMenuAdmin)
-     • Recarga de página       → adminAutorizado=false (var en memoria)
+     MENÚ 3 PUNTITOS
   ════════════════════════════════════════ */
   let adminAutorizado = false;
 
@@ -839,24 +802,20 @@
     e.stopPropagation();
     const menu = document.getElementById('dots-menu-inicio');
     if (menu.classList.contains('open')) {
-      /* Toggle: cierra y revoca */
       cerrarMenuAdmin();
       return;
     }
-    /* Menú cerrado: pedir clave siempre */
     adminAutorizado = false;
     document.getElementById('admin-clave-input').value = '';
     abrirModal('modal-admin-clave');
     setTimeout(() => document.getElementById('admin-clave-input').focus(), 300);
   }
 
-  /* Click fuera: solo cierra visualmente */
-  document.addEventListener('click', () => {
+  document.addEventListener('click', function() {
     document.getElementById('dots-menu-inicio').classList.remove('open');
   });
 
-  /* El menú mismo absorbe su propio click para no cerrarse antes de ejecutar */
-  document.getElementById('dots-menu-inicio').addEventListener('click', e => {
+  document.getElementById('dots-menu-inicio').addEventListener('click', function(e) {
     e.stopPropagation();
   });
 
@@ -874,7 +833,6 @@
   }
 
   function ejecutarAccionAdmin(accion) {
-    /* Cierra el menú al elegir una opción */
     document.getElementById('dots-menu-inicio').classList.remove('open');
     if      (accion === 'scanner')   abrirScanner();
     else if (accion === 'generar')   abrirGenerarQR();
@@ -888,10 +846,10 @@
   function cerrarModal(id) { document.getElementById(id).classList.remove('open'); }
 
   /* ════════════════════════════════════════
-     GENERAR QR — lista de iglesias
+     GENERAR QR
   ════════════════════════════════════════ */
-  let iglesiasData    = [];
-  let qrIglesiaActual = null;
+  let iglesiasData     = [];
+  let qrIglesiaActual  = null;
   let qrCantidadActual = 0;
 
   async function abrirGenerarQR() {
@@ -909,24 +867,15 @@
       const total   = (c.participantes||0) + (c.adolescentes||0) + (c.pastores||0);
       const tieneQR = !!c.qr_token;
       if (tieneQR) {
-        return `
-          <div class="iglesia-select-item" style="opacity:0.55;cursor:default;background:var(--gray-50);"
-            onclick="mostrarToast('⚠ Ya se generó un QR para ${c.iglesia.replace(/'/g,'&#39;')}')">
-            <div>
-              <p class="iglesia-select-name">${c.iglesia}</p>
-              <p class="iglesia-select-enc">Enc: ${c.nombre} &nbsp;·&nbsp; <span style="color:#065f46;font-weight:600;">✅ QR ya generado</span></p>
-            </div>
-            <span class="iglesia-select-count">${total}</span>
-          </div>`;
+        return '<div class="iglesia-select-item" style="opacity:0.55;cursor:default;background:var(--gray-50);" onclick="mostrarToast(\'⚠ Ya se generó un QR para esta iglesia\')">' +
+          '<div><p class="iglesia-select-name">' + c.iglesia + '</p>' +
+          '<p class="iglesia-select-enc">Enc: ' + c.nombre + ' &nbsp;·&nbsp; <span style="color:#065f46;font-weight:600;">✅ QR ya generado</span></p></div>' +
+          '<span class="iglesia-select-count">' + total + '</span></div>';
       }
-      return `
-        <div class="iglesia-select-item" onclick="seleccionarIglesiaQR('${c.id}')">
-          <div>
-            <p class="iglesia-select-name">${c.iglesia}</p>
-            <p class="iglesia-select-enc">Enc: ${c.nombre}</p>
-          </div>
-          <span class="iglesia-select-count">${total}</span>
-        </div>`;
+      return '<div class="iglesia-select-item" onclick="seleccionarIglesiaQR(\'' + c.id + '\')">' +
+        '<div><p class="iglesia-select-name">' + c.iglesia + '</p>' +
+        '<p class="iglesia-select-enc">Enc: ' + c.nombre + '</p></div>' +
+        '<span class="iglesia-select-count">' + total + '</span></div>';
     }).join('');
   }
 
@@ -943,8 +892,8 @@
 
     const token = 'QR_' + id + '_' + Date.now();
     await db.from('confirmaciones').update({ qr_token: token, qr_cantidad: total, qr_canjeados: 0 }).eq('id', id);
-    iglesia.qr_token    = token;
-    iglesia.qr_cantidad = total;
+    iglesia.qr_token     = token;
+    iglesia.qr_cantidad  = total;
     iglesia.qr_canjeados = 0;
 
     document.getElementById('qr-iglesia-nombre').textContent = iglesia.iglesia;
@@ -1003,14 +952,10 @@
     descargaData = conQR;
     cont.innerHTML = conQR.map(c => {
       const restantes = (c.qr_cantidad||0) - (c.qr_canjeados||0);
-      return `
-        <div class="iglesia-select-item" onclick="descargarQRDeIglesia('${c.id}')">
-          <div>
-            <p class="iglesia-select-name">${c.iglesia}</p>
-            <p class="iglesia-select-enc">Enc: ${c.nombre} &nbsp;·&nbsp; ${restantes}/${c.qr_cantidad||0} disponibles</p>
-          </div>
-          <span class="iglesia-select-count" style="background:#d1fae5;color:#065f46;">⬇</span>
-        </div>`;
+      return '<div class="iglesia-select-item" onclick="descargarQRDeIglesia(\'' + c.id + '\')">' +
+        '<div><p class="iglesia-select-name">' + c.iglesia + '</p>' +
+        '<p class="iglesia-select-enc">Enc: ' + c.nombre + ' &nbsp;·&nbsp; ' + restantes + '/' + (c.qr_cantidad||0) + ' disponibles</p></div>' +
+        '<span class="iglesia-select-count" style="background:#d1fae5;color:#065f46;">⬇</span></div>';
     }).join('');
   }
 
@@ -1028,7 +973,7 @@
     }
     tmp.innerHTML = '';
     new QRCode(tmp, { text: iglesia.qr_token, width: 300, height: 300, colorDark: '#0d2e6e', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
-    setTimeout(() => {
+    setTimeout(function() {
       const canvas = tmp.querySelector('canvas');
       if (!canvas) { mostrarToast('❌ Error al generar QR'); return; }
       const a = document.createElement('a');
@@ -1061,7 +1006,7 @@
 
       const canvas = document.createElement('canvas');
       const ctx    = canvas.getContext('2d');
-      scannerInterval = setInterval(async () => {
+      scannerInterval = setInterval(async function() {
         if (video.readyState !== video.HAVE_ENOUGH_DATA) return;
         canvas.width = video.videoWidth; canvas.height = video.videoHeight;
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -1104,7 +1049,7 @@
 
   function cerrarScanner() {
     clearInterval(scannerInterval);
-    if (scannerStream) { scannerStream.getTracks().forEach(t => t.stop()); scannerStream = null; }
+    if (scannerStream) { scannerStream.getTracks().forEach(function(t) { t.stop(); }); scannerStream = null; }
     cerrarModal('modal-scanner');
     document.getElementById('scanner-video').srcObject = null;
   }
@@ -1122,7 +1067,7 @@
     document.getElementById('enc-pass').value   = '';
     document.getElementById('enc-correo').dataset.iglesiaId = idIglesia;
     abrirModal('modal-encargado-qr');
-    setTimeout(() => document.getElementById('enc-correo').focus(), 300);
+    setTimeout(function() { document.getElementById('enc-correo').focus(); }, 300);
   }
 
   async function loginEncargado() {
@@ -1132,9 +1077,9 @@
     if (!correo || !pass) { mostrarToast('⚠ Completa tus datos'); return; }
 
     const { data, error } = await db.from('confirmaciones').select('*').eq('id', id).single();
-    if (error || !data)              { mostrarToast('❌ Error al buscar tu registro'); return; }
-    if (data.correo !== correo || data.password !== pass) { mostrarToast('❌ Correo o contraseña incorrectos'); return; }
-    if (!data.qr_token)              { mostrarToast('⚠ Tu QR aún no fue generado por el organizador'); return; }
+    if (error || !data)                                    { mostrarToast('❌ Error al buscar tu registro'); return; }
+    if (data.correo !== correo || data.password !== pass)  { mostrarToast('❌ Correo o contraseña incorrectos'); return; }
+    if (!data.qr_token)                                    { mostrarToast('⚠ Tu QR aún no fue generado por el organizador'); return; }
 
     encQRData = data;
     document.getElementById('enc-login-section').style.display = 'none';
@@ -1165,7 +1110,9 @@
     modoEdicion = false; editandoId = null;
     document.getElementById('form-titulo').textContent = 'Confirmar asistencia';
     document.getElementById('btn-submit').textContent  = '✉  Enviar confirmación';
-    ['f-id','f-nombre','f-correo','f-password','f-iglesia','f-jovenes','f-adolescentes'].forEach(id => document.getElementById(id).value = '');
+    ['f-id','f-nombre','f-correo','f-password','f-iglesia','f-jovenes','f-adolescentes'].forEach(function(id) {
+      document.getElementById(id).value = '';
+    });
     resetPastores(0);
     mostrar('formulario', 'inicio');
   }
@@ -1176,7 +1123,7 @@
     const pass   = prompt('Ingresa tu contraseña:');         if (!pass)   return;
 
     const { data, error } = await db.from('confirmaciones').select('*').eq('id', id).single();
-    if (error || !data)                            { mostrarToast('❌ No se encontró el registro'); return; }
+    if (error || !data)                                               { mostrarToast('❌ No se encontró el registro'); return; }
     if (data.correo !== correo.trim() || data.password !== pass.trim()) { mostrarToast('❌ Correo o contraseña incorrectos'); return; }
 
     modoEdicion = true; editandoId = id;
@@ -1188,20 +1135,22 @@
     document.getElementById('f-password').value             = data.password;
     document.getElementById('f-iglesia').value              = data.iglesia;
     document.getElementById('f-jovenes').value              = data.participantes || 0;
-    document.getElementById('f-adolescentes').value         = data.adolescentes || 0;
+    document.getElementById('f-adolescentes').value         = data.adolescentes  || 0;
     resetPastores(data.pastores || 0);
     mostrar('formulario', 'participacion');
   }
 
   let pastoresVal = 0;
   function selectPastor(el) {
-    document.querySelectorAll('.pastor-opt').forEach(o => o.classList.remove('selected'));
+    document.querySelectorAll('.pastor-opt').forEach(function(o) { o.classList.remove('selected'); });
     el.classList.add('selected');
     pastoresVal = parseInt(el.dataset.val);
   }
   function resetPastores(val) {
     pastoresVal = val;
-    document.querySelectorAll('.pastor-opt').forEach(o => o.classList.toggle('selected', parseInt(o.dataset.val) === val));
+    document.querySelectorAll('.pastor-opt').forEach(function(o) {
+      o.classList.toggle('selected', parseInt(o.dataset.val) === val);
+    });
   }
 
   async function enviarFormulario() {
@@ -1239,18 +1188,18 @@
     const { data, error } = await db.from('confirmaciones').select('*').order('created_at', { ascending: false });
     if (error || !data) { lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Error al cargar datos.</p>'; return; }
 
-    const totalGeneral = data.reduce((s, c) => s + (c.participantes||0) + (c.adolescentes||0) + (c.pastores||0), 0);
+    const totalGeneral = data.reduce(function(s,c) { return s + (c.participantes||0) + (c.adolescentes||0) + (c.pastores||0); }, 0);
     document.getElementById('total-participantes').textContent = totalGeneral;
     document.getElementById('total-iglesias').textContent = data.length;
 
     if (data.length === 0) { lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Aún no hay confirmaciones.</p>'; return; }
 
     const editable = puedeEditar();
-    lista.innerHTML = data.map(c => {
-      const iniciales = c.iglesia.split(' ').slice(-2).map(w => w[0]).join('').toUpperCase();
-      const pastorTxt = c.pastores === 0 ? 'Sin pastor' : c.pastores === 1 ? '1 pastor' : '2 pastores';
-      const adolTxt   = c.adolescentes > 0 ? c.adolescentes + ' adolescente' + (c.adolescentes > 1 ? 's' : '') : 'Sin adolescentes';
-      const totalFila = (c.participantes||0) + (c.adolescentes||0) + (c.pastores||0);
+    lista.innerHTML = data.map(function(c) {
+      const iniciales   = c.iglesia.split(' ').slice(-2).map(function(w) { return w[0]; }).join('').toUpperCase();
+      const pastorTxt   = c.pastores === 0 ? 'Sin pastor' : c.pastores === 1 ? '1 pastor' : '2 pastores';
+      const adolTxt     = c.adolescentes > 0 ? c.adolescentes + ' adolescente' + (c.adolescentes > 1 ? 's' : '') : 'Sin adolescentes';
+      const totalFila   = (c.participantes||0) + (c.adolescentes||0) + (c.pastores||0);
       const accionEditar = editable
         ? '<button class="btn-edit" onclick="abrirEdicion(\'' + c.id + '\')">Editar</button>'
         : '<span class="edit-closed">Cerrado</span>';
@@ -1260,7 +1209,7 @@
       const badgeAlmuerzo = c.qr_token
         ? '<span class="badge-almuerzo badge-pagado">✓ QR · ' + (c.qr_canjeados||0) + '/' + (c.qr_cantidad||0) + '</span>'
         : '';
-      const bottom = (c.qr_token || btnVerQR || badgeAlmuerzo)
+      const bottom = (c.qr_token || btnVerQR)
         ? '<div class="church-bottom">' + badgeAlmuerzo + btnVerQR + '</div>'
         : '';
       return '<div class="church-card">' +
@@ -1298,10 +1247,10 @@
     const { jsPDF } = window.jspdf;
     const doc  = new jsPDF();
     const fecha = new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'long', year:'numeric' });
-    const tp = data.reduce((s,c) => s+(c.participantes||0), 0);
-    const ta = data.reduce((s,c) => s+(c.adolescentes||0), 0);
-    const tpa = data.reduce((s,c) => s+(c.pastores||0), 0);
-    const tg = tp + ta + tpa;
+    const tp  = data.reduce(function(s,c) { return s+(c.participantes||0); }, 0);
+    const ta  = data.reduce(function(s,c) { return s+(c.adolescentes||0); }, 0);
+    const tpa = data.reduce(function(s,c) { return s+(c.pastores||0); }, 0);
+    const tg  = tp + ta + tpa;
     doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(13,46,110);
     doc.text('Iglesia Unida Metodista Pentecostal', 105, 22, { align:'center' });
     doc.setFontSize(12); doc.setFont('helvetica','normal'); doc.setTextColor(80);
@@ -1313,7 +1262,7 @@
     doc.autoTable({
       startY: 56,
       head: [['Iglesia','Encargado','Pastores','Adolescentes','Participantes','Total']],
-      body: data.map(c => {
+      body: data.map(function(c) {
         const t = (c.participantes||0)+(c.adolescentes||0)+(c.pastores||0);
         return [c.iglesia, c.nombre, c.pastores===0?'Ninguno':c.pastores===1?'1':'2', c.adolescentes||0, c.participantes||0, t];
       }),
@@ -1325,7 +1274,7 @@
       columnStyles: { 0:{cellWidth:42}, 1:{cellWidth:40}, 2:{cellWidth:22,halign:'center'}, 3:{cellWidth:25,halign:'center'}, 4:{cellWidth:28,halign:'center'}, 5:{cellWidth:20,halign:'center',fontStyle:'bold'} }
     });
     const pages = doc.internal.getNumberOfPages();
-    for (let i=1; i<=pages; i++) {
+    for (var i=1; i<=pages; i++) {
       doc.setPage(i); doc.setFontSize(8); doc.setTextColor(180);
       doc.text('IUMP · Jóvenes · Página '+i+' de '+pages, 105, doc.internal.pageSize.height-10, { align:'center' });
     }
@@ -1339,12 +1288,12 @@
   async function imprimirLista() {
     const data = await obtenerDatos();
     if (!data || data.length === 0) { mostrarToast('⚠ No hay confirmaciones aún'); return; }
-    const tp = data.reduce((s,c) => s+(c.participantes||0), 0);
-    const ta = data.reduce((s,c) => s+(c.adolescentes||0), 0);
-    const tpa = data.reduce((s,c) => s+(c.pastores||0), 0);
+    const tp  = data.reduce(function(s,c) { return s+(c.participantes||0); }, 0);
+    const ta  = data.reduce(function(s,c) { return s+(c.adolescentes||0); }, 0);
+    const tpa = data.reduce(function(s,c) { return s+(c.pastores||0); }, 0);
     const tg  = tp + ta + tpa;
     const fecha = new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'long', year:'numeric' });
-    const filas = data.map(c => {
+    const filas = data.map(function(c) {
       const t = (c.participantes||0)+(c.adolescentes||0)+(c.pastores||0);
       return '<tr><td>'+c.iglesia+'</td><td>'+c.nombre+'</td><td style="text-align:center">'+(c.pastores===0?'Ninguno':c.pastores===1?'1':'2')+'</td><td style="text-align:center">'+(c.adolescentes||0)+'</td><td style="text-align:center">'+(c.participantes||0)+'</td><td style="text-align:center;font-weight:bold;color:#0d2e6e">'+t+'</td></tr>';
     }).join('');
@@ -1359,7 +1308,7 @@
   function mostrarToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
+    setTimeout(function() { t.classList.remove('show'); }, 3000);
   }
 </script>
 </body>
