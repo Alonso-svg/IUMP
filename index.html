@@ -69,7 +69,6 @@
     #panel-inicio { min-height: 750px; border-radius: 20px; }
   }
 
-  /* ✏️ Para cambiar la imagen de fondo reemplaza la URL aquí */
   .hero-bg {
     position: absolute; inset: 0; z-index: 0; overflow: hidden;
     background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80');
@@ -98,14 +97,11 @@
   }
   .logo-ring img { width: 100%; height: 100%; object-fit: contain; }
 
-  /* ✏️ EDITA AQUÍ: nombre corporación */
   .corp-name {
     font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
     text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 4px;
   }
 
-  /* ✏️ EDITA AQUÍ: nombre corto / sección — cambia si es otra zona
-     Ejemplo: "JIUMP Cautín Norte" / "JIUMP Cautín Sur" */
   .corp-short {
     font-size: 17px; font-weight: 600; color: var(--gold-light);
     letter-spacing: 0.04em; margin-bottom: 1rem;
@@ -122,53 +118,79 @@
     font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 3px 12px; border-radius: 20px; margin-bottom: 8px;
   }
-
-  /* ✏️ EDITA AQUÍ: nombre del evento + lugar
-     Ejemplo: "Zonal de Jóvenes Lautaro" / "Zonal de Jóvenes Temuco" */
   .event-name { font-size: 22px; font-weight: 600; color: var(--white); line-height: 1.2; margin-bottom: 8px; }
-
-  /* ✏️ EDITA AQUÍ: solo la fecha — el lugar ya está en el título de arriba
-     IMPORTANTE: también actualiza FECHA_EVENTO y TITULO_EVENTO en el script */
   .event-meta {
     display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
     font-size: 13px; color: rgba(255,255,255,0.65);
   }
   .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
 
-  /* ══ CARRUSEL HORIZONTAL ══ */
-  /* ✏️ EDITA AQUÍ: título del carrusel (en el HTML, busca class="carrusel-titulo") */
+  /* ══ 3 PUNTITOS ══ */
+  .btn-dots {
+    position: absolute; top: 1.25rem; right: 1.25rem; z-index: 10;
+    background: rgba(255,255,255,0.12); border: none; width: 36px; height: 36px;
+    border-radius: 8px; color: white; cursor: pointer; font-size: 20px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s;
+    letter-spacing: -2px; line-height: 1;
+  }
+  .btn-dots:hover { background: rgba(255,255,255,0.22); }
+
+  .dots-menu {
+    position: absolute; top: 64px; right: 12px; z-index: 200;
+    background: var(--white); border-radius: var(--radius-md);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.22); min-width: 190px;
+    overflow: hidden; display: none;
+  }
+  .dots-menu.open { display: block; }
+  .dots-menu-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 13px 16px; font-size: 14px; font-weight: 500; color: var(--gray-900);
+    cursor: pointer; border-bottom: 1px solid var(--gray-100); transition: background 0.12s;
+    user-select: none;
+  }
+  .dots-menu-item:last-child { border-bottom: none; }
+  .dots-menu-item:hover { background: var(--blue-light); color: var(--blue-mid); }
+  .dots-menu-icon { font-size: 17px; }
+
+  /* ══ CUENTA REGRESIVA ══ */
+  .countdown-wrap {
+    position: relative; z-index: 2;
+    display: flex; justify-content: center; gap: 10px;
+    margin-bottom: 0.75rem; padding: 0 1.5rem; width: 100%;
+  }
+  .countdown-box {
+    background: rgba(255,255,255,0.1); border: 0.5px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius-sm); padding: 8px 12px; text-align: center; min-width: 58px;
+  }
+  .countdown-n { font-size: 22px; font-weight: 600; color: var(--gold-light); line-height: 1; }
+  .countdown-l { font-size: 9px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+
+  /* ══ CARRUSEL ══ */
   .carrusel-titulo {
     position: relative; z-index: 2;
     text-align: center; margin-bottom: 0.4rem;
     font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
     text-transform: uppercase; color: rgba(255,255,255,0.45);
   }
-  .carrusel-wrap {
-    position: relative; z-index: 2;
-    width: 100%; overflow: hidden;
-    margin-bottom: 1.25rem;
-  }
+  .carrusel-wrap { position: relative; z-index: 2; width: 100%; overflow: hidden; margin-bottom: 1.25rem; }
   .carrusel-track {
-    display: flex; gap: 10px;
-    width: max-content;
-    animation: scroll-left 30s linear infinite;
-    padding: 0 1rem;
+    display: flex; gap: 10px; width: max-content;
+    animation: scroll-left 30s linear infinite; padding: 0 1rem;
   }
   .carrusel-track:hover { animation-play-state: paused; }
   .carrusel-track img {
-    width: 130px; height: 82px;
-    object-fit: cover; border-radius: var(--radius-sm);
-    border: 2px solid rgba(255,255,255,0.2);
-    flex-shrink: 0;
+    width: 130px; height: 82px; object-fit: cover; border-radius: var(--radius-sm);
+    border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0;
   }
   @keyframes scroll-left {
     0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
 
+  /* ══ BOTONES HERO ══ */
   .hero-btns {
     position: relative; z-index: 2;
-    width: 100%; padding: 0 1.5rem 2rem;
+    width: 100%; padding: 0 1.5rem 1.25rem;
     display: flex; flex-direction: column; gap: 10px;
   }
   .btn-gold {
@@ -184,7 +206,7 @@
   }
   .btn-outline:hover { background: rgba(255,255,255,0.14); }
 
-  /* ══ PANEL 2 ══ */
+  /* ══ PANEL 2 — FORMULARIO ══ */
   #panel-formulario { display: none; min-height: 100vh; flex-direction: column; background: var(--white); }
 
   .form-header {
@@ -220,7 +242,6 @@
   }
   .field input:focus { border-color: var(--blue-mid); box-shadow: 0 0 0 3px rgba(26,70,153,0.12); }
 
-  /* Grid de 3 columnas para los conteos numéricos */
   .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 0.9rem; }
   .grid3 .field { margin-bottom: 0; }
 
@@ -232,6 +253,7 @@
     background: var(--white); cursor: pointer; transition: all 0.15s; user-select: none;
   }
   .pastor-opt.selected { border-color: var(--blue-mid); color: var(--blue-mid); background: var(--blue-light); }
+
   .btn-submit {
     background: var(--blue); color: var(--white); border: none; border-radius: var(--radius-sm);
     padding: 13px; font-size: 15px; font-weight: 600; width: 100%; margin-top: 1.25rem; cursor: pointer;
@@ -240,14 +262,13 @@
   .btn-submit:hover { opacity: 0.88; }
   .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
-  /* ══ PANEL 3 ══ */
+  /* ══ PANEL 3 — PARTICIPACIÓN ══ */
   #panel-participacion { display: none; min-height: 100vh; flex-direction: column; background: var(--gray-50); }
 
   .part-header { background: var(--blue); padding: 1.5rem; display: flex; align-items: center; gap: 12px; }
   .part-header-title { font-size: 16px; font-weight: 600; color: var(--white); flex: 1; }
   .live-pill { font-size: 11px; font-weight: 600; background: var(--gold-pale); color: #92400e; padding: 4px 10px; border-radius: 20px; }
 
-  /* Botones descarga e impresión */
   .part-actions { display: flex; gap: 10px; padding: 1rem 1.25rem 0; }
   .btn-action {
     flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -266,8 +287,9 @@
   .church-list { padding: 1.25rem; display: flex; flex-direction: column; gap: 10px; }
   .church-card {
     background: var(--white); border-radius: var(--radius-md); border: 0.5px solid var(--gray-300);
-    padding: 12px 14px; display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px; display: flex; flex-direction: column; gap: 8px;
   }
+  .church-card-top { display: flex; align-items: center; justify-content: space-between; width: 100%; }
   .church-left { display: flex; align-items: center; gap: 10px; }
   .church-avatar {
     width: 38px; height: 38px; border-radius: var(--radius-sm); background: var(--blue-light);
@@ -275,13 +297,15 @@
     font-size: 13px; font-weight: 600; color: var(--blue-mid); flex-shrink: 0;
   }
   .church-name { font-size: 13px; font-weight: 600; color: var(--gray-900); }
-  .church-enc { font-size: 11px; color: var(--gray-500); margin-top: 1px; }
+  .church-enc  { font-size: 11px; color: var(--gray-500); margin-top: 1px; }
   .church-detail { font-size: 10px; color: var(--gray-500); margin-top: 1px; }
   .church-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .church-count {
     font-size: 14px; font-weight: 600; color: #92400e;
     background: var(--gold-pale); border-radius: 20px; padding: 5px 13px;
   }
+  .church-bottom { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
   .btn-edit {
     background: var(--blue-light); color: var(--blue-mid); border: none;
     border-radius: var(--radius-sm); padding: 6px 12px; font-size: 12px; font-weight: 600;
@@ -290,14 +314,160 @@
   .btn-edit:hover { background: #c7d9f5; }
   .edit-closed { font-size: 11px; color: var(--gray-500); font-style: italic; }
 
-  /* Toast */
+  .btn-qr-church {
+    background: var(--gold-pale); color: #92400e; border: none;
+    border-radius: var(--radius-sm); padding: 6px 10px; font-size: 12px; font-weight: 600;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .btn-qr-church:hover { background: #fde68a; }
+
+  .badge-almuerzo {
+    font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px;
+    display: inline-flex; align-items: center; gap: 3px;
+  }
+  .badge-pagado { background: #d1fae5; color: #065f46; }
+
+  /* ══ PANEL 4 — MAPA ══ */
+  #panel-mapa { display: none; min-height: 100vh; flex-direction: column; background: var(--gray-50); }
+  .mapa-header { background: var(--blue); padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 12px; }
+  .mapa-header-title { font-size: 16px; font-weight: 600; color: var(--white); flex: 1; }
+  #mapa-frame { width: 100%; height: 280px; border: none; }
+  .mapa-body { padding: 1.25rem; }
+  .mapa-card {
+    background: var(--white); border-radius: var(--radius-md); border: 0.5px solid var(--gray-300);
+    padding: 1rem 1.25rem; margin-bottom: 1rem;
+  }
+  .mapa-card-title { font-size: 13px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .mapa-address { font-size: 15px; font-weight: 500; color: var(--gray-900); margin-bottom: 12px; line-height: 1.4; }
+  .mapa-btns { display: flex; gap: 8px; }
+  .btn-mapa-ext {
+    flex: 1; padding: 10px; border: none; border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity 0.15s;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .btn-mapa-ext:hover { opacity: 0.85; }
+  .btn-gmaps { background: #4285f4; color: white; }
+  .btn-waze  { background: #00c0f0; color: white; }
+  .instrucciones-item { display: flex; gap: 10px; margin-bottom: 10px; }
+  .inst-num {
+    width: 24px; height: 24px; border-radius: 50%; background: var(--blue); color: white;
+    font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .inst-text { font-size: 13px; color: var(--gray-700); line-height: 1.5; padding-top: 2px; }
+
+  /* ══ TOAST ══ */
   .toast {
     position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
     background: #065f46; color: white; padding: 12px 20px; border-radius: var(--radius-sm);
     font-size: 14px; font-weight: 500; opacity: 0; transition: opacity 0.3s;
-    pointer-events: none; white-space: nowrap; z-index: 100;
+    pointer-events: none; white-space: nowrap; z-index: 1000;
   }
   .toast.show { opacity: 1; }
+
+  /* ══ MODALES ══ */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 300;
+    display: none; align-items: flex-end; justify-content: center;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal-sheet {
+    background: var(--white); border-radius: 20px 20px 0 0;
+    width: 100%; max-width: 480px; padding: 1.5rem;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal-title {
+    font-size: 16px; font-weight: 600; color: var(--gray-900);
+    margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;
+  }
+  .modal-close {
+    background: var(--gray-100); border: none; border-radius: 8px;
+    width: 30px; height: 30px; cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Scanner */
+  #modal-scanner .modal-sheet { background: #0a0a0a; }
+  #modal-scanner .modal-title { color: white; }
+  #modal-scanner .modal-close { background: rgba(255,255,255,0.1); color: white; }
+  #scanner-video { width: 100%; border-radius: var(--radius-md); aspect-ratio: 1; background: #111; object-fit: cover; margin-bottom: 1rem; }
+  .scanner-frame { position: relative; width: 100%; border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1rem; }
+  .scanner-corners { position: absolute; inset: 0; pointer-events: none; }
+  .scanner-corners::before,
+  .scanner-corners::after {
+    content: ''; position: absolute; width: 32px; height: 32px;
+    border-color: var(--gold-light); border-style: solid;
+  }
+  .scanner-corners::before { top: 10px; left: 10px; border-width: 3px 0 0 3px; border-radius: 4px 0 0 0; }
+  .scanner-corners::after  { bottom: 10px; right: 10px; border-width: 0 3px 3px 0; border-radius: 0 0 4px 0; }
+  .scanner-result { border-radius: var(--radius-md); padding: 14px; text-align: center; font-size: 15px; font-weight: 600; display: none; }
+  .scanner-result.ok   { background: #d1fae5; color: #065f46; display: block; }
+  .scanner-result.warn { background: #fee2e2; color: #991b1b; display: block; }
+  .scanner-status { font-size: 12px; color: rgba(255,255,255,0.4); text-align: center; margin-bottom: 0.5rem; }
+
+  /* Lista iglesias modal */
+  .iglesia-select-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px; border: 0.5px solid var(--gray-300); border-radius: var(--radius-md);
+    margin-bottom: 8px; cursor: pointer; transition: background 0.12s;
+  }
+  .iglesia-select-item:hover { background: var(--blue-light); border-color: var(--blue-mid); }
+  .iglesia-select-name { font-size: 14px; font-weight: 600; color: var(--gray-900); }
+  .iglesia-select-enc  { font-size: 12px; color: var(--gray-500); }
+  .iglesia-select-count { font-size: 13px; font-weight: 600; color: #92400e; background: var(--gold-pale); padding: 4px 10px; border-radius: 20px; flex-shrink: 0; }
+
+  /* Modal QR generado */
+  #modal-qr-generado .modal-sheet { text-align: center; }
+  #qr-canvas-container { margin: 1rem auto; display: flex; justify-content: center; }
+  #qr-canvas-container canvas { border-radius: var(--radius-md); border: 3px solid var(--gold-light); }
+  .qr-iglesia-name { font-size: 16px; font-weight: 600; color: var(--gray-900); margin-bottom: 4px; }
+  .qr-count-badge {
+    display: inline-block; background: var(--gold-pale); color: #92400e;
+    font-size: 13px; font-weight: 600; padding: 5px 16px; border-radius: 20px; margin-bottom: 1rem;
+  }
+  .qr-extras-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 1rem; }
+  .qr-extras-label { font-size: 13px; color: var(--gray-500); }
+  .qr-extras-input {
+    width: 64px; border: 1px solid var(--gray-300); border-radius: var(--radius-sm);
+    padding: 7px 10px; font-size: 14px; font-weight: 600; text-align: center;
+    font-family: 'Inter', sans-serif; outline: none;
+  }
+  .qr-extras-input:focus { border-color: var(--blue-mid); }
+  .btn-qr-download {
+    background: var(--blue); color: white; border: none; border-radius: var(--radius-sm);
+    padding: 12px; font-size: 14px; font-weight: 600; width: 100%; cursor: pointer; margin-bottom: 8px;
+    display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity 0.15s;
+  }
+  .btn-qr-download:hover { opacity: 0.88; }
+
+  /* Modal clave admin */
+  .admin-input {
+    width: 100%; border: 1px solid var(--gray-300); border-radius: var(--radius-sm);
+    padding: 12px 14px; font-size: 16px; font-family: 'Inter', sans-serif;
+    outline: none; margin-bottom: 1rem; letter-spacing: 0.1em;
+  }
+  .admin-input:focus { border-color: var(--blue-mid); box-shadow: 0 0 0 3px rgba(26,70,153,0.12); }
+  .btn-admin-ok {
+    background: var(--blue); color: white; border: none; border-radius: var(--radius-sm);
+    padding: 12px; font-size: 15px; font-weight: 600; width: 100%; cursor: pointer; transition: opacity 0.15s;
+  }
+  .btn-admin-ok:hover { opacity: 0.88; }
+
+  /* Modal QR encargado */
+  #modal-encargado-qr .modal-sheet { text-align: center; }
+  .enc-login-fields { text-align: left; }
+  #enc-qr-canvas canvas { border-radius: var(--radius-md); border: 3px solid var(--gold-light); }
+
+  /* ══ MODAL CONFIRMACIÓN CERRADA ══ */
+  .modal-cerrada-icon  { font-size: 48px; text-align: center; margin-bottom: 0.75rem; }
+  .modal-cerrada-title { font-size: 18px; font-weight: 700; color: var(--blue); text-align: center; margin-bottom: 0.75rem; }
+  .modal-cerrada-verse { font-size: 13px; color: var(--gray-500); text-align: center; font-style: italic; line-height: 1.6; margin-bottom: 0.25rem; }
+  .modal-cerrada-ref   { font-size: 12px; font-weight: 600; color: var(--gold); text-align: center; margin-bottom: 1rem; }
+  .modal-cerrada-sub   { font-size: 13px; color: var(--gray-500); text-align: center; margin-bottom: 1.25rem; line-height: 1.5; }
+  .btn-cerrada-ok {
+    background: var(--blue); color: white; border: none; border-radius: var(--radius-sm);
+    padding: 12px; font-size: 14px; font-weight: 600; width: 100%; cursor: pointer; transition: opacity 0.15s;
+  }
+  .btn-cerrada-ok:hover { opacity: 0.88; }
 </style>
 </head>
 <body>
@@ -310,73 +480,71 @@
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
 
+    <!-- 3 PUNTITOS -->
+    <button class="btn-dots" id="btn-dots-inicio" onclick="toggleDotsMenuInicio(event)">···</button>
+    <div class="dots-menu" id="dots-menu-inicio">
+      <div class="dots-menu-item" onclick="ejecutarAccionAdmin('scanner')">
+        <span class="dots-menu-icon">📷</span> Scanner QR
+      </div>
+      <div class="dots-menu-item" onclick="ejecutarAccionAdmin('generar')">
+        <span class="dots-menu-icon">🎫</span> Generar QR
+      </div>
+      <div class="dots-menu-item" onclick="ejecutarAccionAdmin('descargar')">
+        <span class="dots-menu-icon">⬇</span> Descargar QR
+      </div>
+    </div>
+
     <div class="hero-content">
       <div class="logo-ring">
         <img src="img/logo_jiump.png" alt="Logo JIUMP" onerror="this.style.display='none'">
       </div>
-
-      <!-- ✏️ EDITA AQUÍ: nombre corporación -->
+      <!-- ✏️ EDITA: nombre corporación -->
       <p class="corp-name">Iglesia Unida Metodista Pentecostal</p>
-
-      <!-- ✏️ EDITA AQUÍ: nombre corto / sección — cambia si es otra zona
-           Ejemplo: "JIUMP Cautín Norte" / "JIUMP Cautín Sur" -->
+      <!-- ✏️ EDITA: sección -->
       <p class="corp-short">JIUMP Cautín Central</p>
-
       <div class="divider"></div>
-
       <div class="event-card">
         <span class="event-tag">Próxima actividad</span>
-
-        <!-- ✏️ EDITA AQUÍ: nombre del evento + lugar
-             Ejemplo: "Zonal de Jóvenes Lautaro" / "Zonal de Jóvenes Temuco" -->
+        <!-- ✏️ EDITA: nombre evento -->
         <p class="event-name">Zonal de Jóvenes Lautaro</p>
-
-        <!-- ✏️ EDITA AQUÍ: solo la fecha — el lugar ya está en el título de arriba
-             IMPORTANTE: actualiza también FECHA_EVENTO y TITULO_EVENTO en el script -->
         <div class="event-meta">
           <span class="dot"></span>
+          <!-- ✏️ EDITA: fecha visible — también actualiza FECHA_EVENTO en el script -->
           <span>Sábado 4 de julio de 2026</span>
           <span class="dot"></span>
         </div>
       </div>
     </div>
 
-    <!-- ✏️ EDITA AQUÍ: título del carrusel -->
+    <!-- CUENTA REGRESIVA -->
+    <div class="countdown-wrap">
+      <div class="countdown-box"><p class="countdown-n" id="cd-dias">--</p><p class="countdown-l">Días</p></div>
+      <div class="countdown-box"><p class="countdown-n" id="cd-hrs">--</p><p class="countdown-l">Horas</p></div>
+      <div class="countdown-box"><p class="countdown-n" id="cd-min">--</p><p class="countdown-l">Min</p></div>
+      <div class="countdown-box"><p class="countdown-n" id="cd-seg">--</p><p class="countdown-l">Seg</p></div>
+    </div>
+
+    <!-- ✏️ EDITA: título carrusel -->
     <p class="carrusel-titulo">Imágenes de la última zonal</p>
 
-    <!-- ══ CARRUSEL DE FOTOS ══
-         ✏️ Para cambiar fotos: reemplaza los archivos en la carpeta /fotos
-            manteniendo los mismos nombres (foto1.jpg, foto2.jpg, etc.)
-            El bloque se repite dos veces para que el loop sea continuo -->
+    <!-- CARRUSEL — duplicado para loop continuo -->
     <div class="carrusel-wrap">
       <div class="carrusel-track">
-        <!-- Bloque 1 (original) -->
-        <img src="fotos/foto1.jpg" alt="Zonal 1">
-        <img src="fotos/foto2.jpg" alt="Zonal 2">
-        <img src="fotos/foto3.jpg" alt="Zonal 3">
-        <img src="fotos/foto4.jpg" alt="Zonal 4">
-        <img src="fotos/foto5.jpg" alt="Zonal 5">
-        <img src="fotos/foto6.jpg" alt="Zonal 6">
-        <img src="fotos/foto7.jpg" alt="Zonal 7">
-        <img src="fotos/foto8.jpg" alt="Zonal 8">
-        <img src="fotos/foto9.jpg" alt="Zonal 9">
-        <img src="fotos/foto10.jpg" alt="Zonal 10">
-        <!-- Bloque 2 (duplicado para loop continuo) -->
-        <img src="fotos/foto1.jpg" alt="Zonal 1">
-        <img src="fotos/foto2.jpg" alt="Zonal 2">
-        <img src="fotos/foto3.jpg" alt="Zonal 3">
-        <img src="fotos/foto4.jpg" alt="Zonal 4">
-        <img src="fotos/foto5.jpg" alt="Zonal 5">
-        <img src="fotos/foto6.jpg" alt="Zonal 6">
-        <img src="fotos/foto7.jpg" alt="Zonal 7">
-        <img src="fotos/foto8.jpg" alt="Zonal 8">
-        <img src="fotos/foto9.jpg" alt="Zonal 9">
-        <img src="fotos/foto10.jpg" alt="Zonal 10">
+        <img src="fotos/foto1.jpg" alt="Zonal 1"> <img src="fotos/foto2.jpg" alt="Zonal 2">
+        <img src="fotos/foto3.jpg" alt="Zonal 3"> <img src="fotos/foto4.jpg" alt="Zonal 4">
+        <img src="fotos/foto5.jpg" alt="Zonal 5"> <img src="fotos/foto6.jpg" alt="Zonal 6">
+        <img src="fotos/foto7.jpg" alt="Zonal 7"> <img src="fotos/foto8.jpg" alt="Zonal 8">
+        <img src="fotos/foto9.jpg" alt="Zonal 9"> <img src="fotos/foto10.jpg" alt="Zonal 10">
+        <img src="fotos/foto1.jpg" alt="Zonal 1"> <img src="fotos/foto2.jpg" alt="Zonal 2">
+        <img src="fotos/foto3.jpg" alt="Zonal 3"> <img src="fotos/foto4.jpg" alt="Zonal 4">
+        <img src="fotos/foto5.jpg" alt="Zonal 5"> <img src="fotos/foto6.jpg" alt="Zonal 6">
+        <img src="fotos/foto7.jpg" alt="Zonal 7"> <img src="fotos/foto8.jpg" alt="Zonal 8">
+        <img src="fotos/foto9.jpg" alt="Zonal 9"> <img src="fotos/foto10.jpg" alt="Zonal 10">
       </div>
     </div>
 
     <div class="hero-btns">
-      <button class="btn-gold" onclick="abrirNuevo()">✓ &nbsp;Confirmar asistencia</button>
+      <button class="btn-gold" id="btn-confirmar" onclick="abrirNuevo()">✓ &nbsp;Confirmar asistencia</button>
       <button class="btn-outline" onclick="mostrar('participacion', null)">≡ &nbsp;Ver participación</button>
     </div>
   </section>
@@ -391,15 +559,12 @@
         <p class="form-header-title" id="form-titulo">Confirmar asistencia</p>
       </div>
     </div>
-
     <div class="form-body">
       <div class="info-box">
         <strong>¿Para qué sirve la contraseña?</strong><br>
         Si necesitas modificar tu confirmación después de enviarla, puedes hacerlo desde el panel de participación usando tu correo y esta contraseña. Solo es posible editar hasta <strong>5 días antes</strong> de la fecha del evento.
       </div>
-
       <input type="hidden" id="f-id">
-
       <div class="field">
         <label>Nombre del encargado</label>
         <input type="text" id="f-nombre" placeholder="Ej: Juan Pérez">
@@ -416,8 +581,6 @@
         <label>Nombre de la iglesia</label>
         <input type="text" id="f-iglesia" placeholder="Ej: IUMP Barrio Norte">
       </div>
-
-      <!-- Los tres campos numéricos en una fila para ahorrar espacio en celular -->
       <div class="grid3">
         <div class="field">
           <label>Participantes</label>
@@ -436,7 +599,6 @@
           </div>
         </div>
       </div>
-
       <button class="btn-submit" id="btn-submit" onclick="enviarFormulario()">✉ &nbsp;Enviar confirmación</button>
     </div>
   </section>
@@ -450,13 +612,10 @@
       <p class="part-header-title">Iglesias confirmadas</p>
       <span class="live-pill">En vivo</span>
     </div>
-
-    <!-- Botones descargar PDF e imprimir -->
     <div class="part-actions">
       <button class="btn-action btn-download" onclick="descargarPDF()">⬇ Descargar PDF</button>
       <button class="btn-action btn-print"    onclick="imprimirLista()">🖨 Imprimir</button>
     </div>
-
     <div class="stats-grid">
       <div class="stat-card">
         <p class="stat-n" id="total-participantes">0</p>
@@ -467,60 +626,190 @@
         <p class="stat-l">Iglesias confirmadas</p>
       </div>
     </div>
-
     <div class="church-list" id="lista-iglesias">
-      <p style="font-size:14px; color:#6b7280; text-align:center; margin-top:1rem;">
-        Aún no hay confirmaciones.
-      </p>
+      <p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Aún no hay confirmaciones.</p>
     </div>
   </section>
+
+  <!-- ══════════════════════════════════════
+       MODALES
+  ══════════════════════════════════════ -->
+
+  <!-- Clave admin -->
+  <div class="modal-backdrop" id="modal-admin-clave">
+    <div class="modal-sheet">
+      <p class="modal-title">
+        🔐 Acceso administrador
+        <button class="modal-close" onclick="cerrarModal('modal-admin-clave')">✕</button>
+      </p>
+      <p style="font-size:13px;color:var(--gray-500);margin-bottom:1rem;">Ingresa la clave del evento para continuar.</p>
+      <input class="admin-input" type="password" id="admin-clave-input" placeholder="Clave del evento" onkeydown="if(event.key==='Enter')validarClave()">
+      <button class="btn-admin-ok" onclick="validarClave()">Ingresar</button>
+    </div>
+  </div>
+
+  <!-- Generar QR — lista iglesias -->
+  <div class="modal-backdrop" id="modal-generar-qr">
+    <div class="modal-sheet">
+      <p class="modal-title">
+        🎫 Generar QR de almuerzo
+        <button class="modal-close" onclick="cerrarModal('modal-generar-qr')">✕</button>
+      </p>
+      <p style="font-size:13px;color:var(--gray-500);margin-bottom:1rem;">Selecciona la iglesia que está pagando su almuerzo.</p>
+      <div id="lista-para-qr"></div>
+    </div>
+  </div>
+
+  <!-- QR generado -->
+  <div class="modal-backdrop" id="modal-qr-generado">
+    <div class="modal-sheet" style="text-align:center;">
+      <p class="modal-title">
+        ✅ QR generado
+        <button class="modal-close" onclick="cerrarModal('modal-qr-generado')">✕</button>
+      </p>
+      <p class="qr-iglesia-name" id="qr-iglesia-nombre">—</p>
+      <p class="qr-count-badge"  id="qr-count-badge">— almuerzos</p>
+      <div id="qr-canvas-container"></div>
+      <div class="qr-extras-row">
+        <span class="qr-extras-label">¿Agregar más almuerzos?</span>
+        <input class="qr-extras-input" type="number" id="qr-extras" min="0" value="0" placeholder="0">
+        <button class="btn-edit" onclick="actualizarCantidadQR()">Actualizar</button>
+      </div>
+      <button class="btn-qr-download" onclick="descargarQR()">⬇ Descargar QR</button>
+    </div>
+  </div>
+
+  <!-- Descargar QR — plan B admin -->
+  <div class="modal-backdrop" id="modal-descargar-qr">
+    <div class="modal-sheet">
+      <p class="modal-title">
+        ⬇ Descargar QR de iglesia
+        <button class="modal-close" onclick="cerrarModal('modal-descargar-qr')">✕</button>
+      </p>
+      <p style="font-size:13px;color:var(--gray-500);margin-bottom:1rem;">Selecciona la iglesia para descargar su QR.</p>
+      <div id="lista-para-descargar"></div>
+    </div>
+  </div>
+
+  <!-- Scanner QR -->
+  <div class="modal-backdrop" id="modal-scanner">
+    <div class="modal-sheet" style="background:#0a0a0a;">
+      <p class="modal-title" style="color:white;">
+        📷 Scanner QR
+        <button class="modal-close" style="background:rgba(255,255,255,0.1);color:white;" onclick="cerrarScanner()">✕</button>
+      </p>
+      <p class="scanner-status" id="scanner-status">Apunta la cámara al código QR</p>
+      <div class="scanner-frame">
+        <video id="scanner-video" autoplay playsinline muted></video>
+        <div class="scanner-corners"></div>
+      </div>
+      <div class="scanner-result" id="scanner-result"></div>
+    </div>
+  </div>
+
+  <!-- Ver QR — encargado de iglesia -->
+  <div class="modal-backdrop" id="modal-encargado-qr">
+    <div class="modal-sheet">
+      <p class="modal-title">
+        🎫 Ver QR de almuerzo
+        <button class="modal-close" onclick="cerrarModal('modal-encargado-qr')">✕</button>
+      </p>
+      <div id="enc-login-section" class="enc-login-fields">
+        <p style="font-size:13px;color:var(--gray-500);margin-bottom:1rem;">Ingresa tus datos para ver tu QR de almuerzo.</p>
+        <div class="field">
+          <label>Correo electrónico</label>
+          <input type="email" id="enc-correo" placeholder="tu@correo.cl">
+        </div>
+        <div class="field">
+          <label>Contraseña</label>
+          <input type="password" id="enc-pass" placeholder="Tu contraseña" onkeydown="if(event.key==='Enter')loginEncargado()">
+        </div>
+        <button class="btn-admin-ok" onclick="loginEncargado()">Ver mi QR</button>
+      </div>
+      <div id="enc-qr-section" style="display:none;text-align:center;">
+        <p class="qr-iglesia-name" id="enc-qr-nombre">—</p>
+        <p class="qr-count-badge"  id="enc-qr-badge">—</p>
+        <div id="enc-qr-canvas" style="margin:1rem auto;display:flex;justify-content:center;"></div>
+        <button class="btn-qr-download" style="margin-top:1rem;" onclick="descargarQREncargado()">⬇ Descargar QR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: confirmación cerrada -->
+  <div class="modal-backdrop" id="modal-confirmacion-cerrada">
+    <div class="modal-sheet">
+      <p class="modal-cerrada-icon">🔒</p>
+      <p class="modal-cerrada-title">El plazo de confirmación ha cerrado.</p>
+      <p class="modal-cerrada-verse">"El que es descuidado en su trabajo<br>es hermano del que destruye."</p>
+      <p class="modal-cerrada-ref">— Proverbios 18:9</p>
+      <p class="modal-cerrada-sub">Si tienes alguna consulta,<br>contacta al organizador.</p>
+      <button class="btn-cerrada-ok" onclick="cerrarModal('modal-confirmacion-cerrada')">Entendido</button>
+    </div>
+  </div>
 
   <div class="toast" id="toast"></div>
 </div>
 
-<!-- jsPDF para generación de PDF -->
+<!-- ══ LIBRERÍAS ══ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-
-<!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+
 <script>
-  /* ── CONFIGURACIÓN SUPABASE ── */
-  const SUPABASE_URL = 'https://uyhmxtmmcnivrbayyfbf.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5aG14dG1tY25pdnJiYXl5ZmJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2Mjg1NjEsImV4cCI6MjA5NzIwNDU2MX0.z3X2yenl04WsxMqteDBESOCv0hT5V_QspM1ubY2wHHs';
+  /* ════════════════════════════════════════
+     CONFIGURACIÓN — edita aquí para cada zonal
+  ════════════════════════════════════════ */
+  const SUPABASE_URL  = 'https://uyhmxtmmcnivrbayyfbf.supabase.co';
+  const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5aG14dG1tY25pdnJiYXl5ZmJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2Mjg1NjEsImV4cCI6MjA5NzIwNDU2MX0.z3X2yenl04WsxMqteDBESOCv0hT5V_QspM1ubY2wHHs';
+  const FECHA_EVENTO  = '2026-07-04';           /* ✏️ Formato YYYY-MM-DD */
+  const TITULO_EVENTO = 'Zonal de Jóvenes · 4 de julio de 2026 · Lautaro';
+  const CLAVE_ADMIN   = 'kove123';              /* ✏️ Clave admin del evento */
+
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     ✏️  CAMBIA ESTO PARA CADA ZONAL:
-
-     FECHA_EVENTO  → Formato 'YYYY-MM-DD'
-                     La edición se bloquea 5 días antes automáticamente
-
-     TITULO_EVENTO → Aparece en el PDF y en la hoja de impresión
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-  const FECHA_EVENTO  = '2026-07-04';
-  const TITULO_EVENTO = 'Zonal de Jóvenes · 4 de julio de 2026 · Lautaro';
-
   function puedeEditar() {
-    const hoy    = new Date();
-    const evento = new Date(FECHA_EVENTO);
-    return (evento - hoy) / (1000 * 60 * 60 * 24) > 5;
+    return (new Date(FECHA_EVENTO) - new Date()) / (1000*60*60*24) > 5;
   }
 
-  /* ── Navegación ── */
+  function puedeConfirmar() {
+    return (new Date(FECHA_EVENTO) - new Date()) / (1000*60*60*24) > 3;
+  }
+
+  /* ════════════════════════════════════════
+     CUENTA REGRESIVA
+  ════════════════════════════════════════ */
+  function actualizarCuentaRegresiva() {
+    const diff = new Date(FECHA_EVENTO + 'T09:00:00') - new Date();
+    if (diff <= 0) {
+      ['cd-dias','cd-hrs','cd-min','cd-seg'].forEach(id => document.getElementById(id).textContent = '0');
+      return;
+    }
+    document.getElementById('cd-dias').textContent = Math.floor(diff / (1000*60*60*24));
+    document.getElementById('cd-hrs').textContent  = String(Math.floor((diff % (1000*60*60*24)) / (1000*60*60))).padStart(2,'0');
+    document.getElementById('cd-min').textContent  = String(Math.floor((diff % (1000*60*60)) / (1000*60))).padStart(2,'0');
+    document.getElementById('cd-seg').textContent  = String(Math.floor((diff % (1000*60)) / 1000)).padStart(2,'0');
+  }
+  actualizarCuentaRegresiva();
+  setInterval(actualizarCuentaRegresiva, 1000);
+
+  /* ════════════════════════════════════════
+     NAVEGACIÓN
+     Al cambiar de panel: cierra menú y revoca autorización admin
+  ════════════════════════════════════════ */
   let panelAnterior = 'inicio';
   let modoEdicion   = false;
   let editandoId    = null;
 
   function mostrar(panel, desde) {
-    ['panel-inicio', 'panel-formulario', 'panel-participacion'].forEach(id => {
+    cerrarMenuAdmin();
+    ['panel-inicio','panel-formulario','panel-participacion'].forEach(id => {
       document.getElementById(id).style.display = 'none';
     });
-    if (panel === 'inicio') {
-      document.getElementById('panel-inicio').style.display = 'flex';
-    } else if (panel === 'formulario') {
-      document.getElementById('panel-formulario').style.display = 'flex';
-    } else if (panel === 'participacion') {
+    if      (panel === 'inicio')         document.getElementById('panel-inicio').style.display = 'flex';
+    else if (panel === 'formulario')     document.getElementById('panel-formulario').style.display = 'flex';
+    else if (panel === 'participacion') {
       document.getElementById('panel-participacion').style.display = 'flex';
       cargarParticipacion();
     }
@@ -528,79 +817,393 @@
   }
   mostrar('inicio', null);
 
-  function volverDesdeFormulario() {
-    mostrar(panelAnterior || 'inicio', null);
+  function volverDesdeFormulario() { mostrar(panelAnterior || 'inicio', null); }
+
+  /* ════════════════════════════════════════
+     3 PUNTITOS — LÓGICA COMPLETA
+     • Tocar con menú abierto  → cierra + revoca
+     • Tocar con menú cerrado  → pide clave
+     • Clave correcta          → abre menú
+     • Click fuera             → cierra visual (NO revoca)
+     • Cambio de panel         → cierra + revoca (via cerrarMenuAdmin)
+     • Recarga de página       → adminAutorizado=false (var en memoria)
+  ════════════════════════════════════════ */
+  let adminAutorizado = false;
+
+  function cerrarMenuAdmin() {
+    document.getElementById('dots-menu-inicio').classList.remove('open');
+    adminAutorizado = false;
   }
 
-  /* ── Abrir formulario para NUEVO registro ── */
+  function toggleDotsMenuInicio(e) {
+    e.stopPropagation();
+    const menu = document.getElementById('dots-menu-inicio');
+    if (menu.classList.contains('open')) {
+      /* Toggle: cierra y revoca */
+      cerrarMenuAdmin();
+      return;
+    }
+    /* Menú cerrado: pedir clave siempre */
+    adminAutorizado = false;
+    document.getElementById('admin-clave-input').value = '';
+    abrirModal('modal-admin-clave');
+    setTimeout(() => document.getElementById('admin-clave-input').focus(), 300);
+  }
+
+  /* Click fuera: solo cierra visualmente */
+  document.addEventListener('click', () => {
+    document.getElementById('dots-menu-inicio').classList.remove('open');
+  });
+
+  /* El menú mismo absorbe su propio click para no cerrarse antes de ejecutar */
+  document.getElementById('dots-menu-inicio').addEventListener('click', e => {
+    e.stopPropagation();
+  });
+
+  function validarClave() {
+    const clave = document.getElementById('admin-clave-input').value.trim();
+    if (clave === CLAVE_ADMIN) {
+      adminAutorizado = true;
+      cerrarModal('modal-admin-clave');
+      document.getElementById('dots-menu-inicio').classList.add('open');
+    } else {
+      mostrarToast('❌ Clave incorrecta');
+      document.getElementById('admin-clave-input').value = '';
+      document.getElementById('admin-clave-input').focus();
+    }
+  }
+
+  function ejecutarAccionAdmin(accion) {
+    /* Cierra el menú al elegir una opción */
+    document.getElementById('dots-menu-inicio').classList.remove('open');
+    if      (accion === 'scanner')   abrirScanner();
+    else if (accion === 'generar')   abrirGenerarQR();
+    else if (accion === 'descargar') abrirDescargarQR();
+  }
+
+  /* ════════════════════════════════════════
+     MODALES
+  ════════════════════════════════════════ */
+  function abrirModal(id) { document.getElementById(id).classList.add('open'); }
+  function cerrarModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  /* ════════════════════════════════════════
+     GENERAR QR — lista de iglesias
+  ════════════════════════════════════════ */
+  let iglesiasData    = [];
+  let qrIglesiaActual = null;
+  let qrCantidadActual = 0;
+
+  async function abrirGenerarQR() {
+    abrirModal('modal-generar-qr');
+    const cont = document.getElementById('lista-para-qr');
+    cont.innerHTML = '<p style="font-size:13px;color:var(--gray-500);text-align:center;">Cargando...</p>';
+
+    const { data, error } = await db.from('confirmaciones').select('*').order('iglesia', { ascending: true });
+    if (error || !data || data.length === 0) {
+      cont.innerHTML = '<p style="font-size:13px;color:var(--gray-500);text-align:center;">No hay iglesias confirmadas aún.</p>';
+      return;
+    }
+    iglesiasData = data;
+    cont.innerHTML = data.map(c => {
+      const total   = (c.participantes||0) + (c.adolescentes||0) + (c.pastores||0);
+      const tieneQR = !!c.qr_token;
+      if (tieneQR) {
+        return `
+          <div class="iglesia-select-item" style="opacity:0.55;cursor:default;background:var(--gray-50);"
+            onclick="mostrarToast('⚠ Ya se generó un QR para ${c.iglesia.replace(/'/g,'&#39;')}')">
+            <div>
+              <p class="iglesia-select-name">${c.iglesia}</p>
+              <p class="iglesia-select-enc">Enc: ${c.nombre} &nbsp;·&nbsp; <span style="color:#065f46;font-weight:600;">✅ QR ya generado</span></p>
+            </div>
+            <span class="iglesia-select-count">${total}</span>
+          </div>`;
+      }
+      return `
+        <div class="iglesia-select-item" onclick="seleccionarIglesiaQR('${c.id}')">
+          <div>
+            <p class="iglesia-select-name">${c.iglesia}</p>
+            <p class="iglesia-select-enc">Enc: ${c.nombre}</p>
+          </div>
+          <span class="iglesia-select-count">${total}</span>
+        </div>`;
+    }).join('');
+  }
+
+  async function seleccionarIglesiaQR(id) {
+    const iglesia = iglesiasData.find(c => c.id === id);
+    if (!iglesia) return;
+    if (iglesia.qr_token) { mostrarToast('⚠ Ya se generó un QR para esta iglesia'); return; }
+
+    const total = (iglesia.participantes||0) + (iglesia.adolescentes||0) + (iglesia.pastores||0);
+    qrIglesiaActual  = iglesia;
+    qrCantidadActual = total;
+
+    cerrarModal('modal-generar-qr');
+
+    const token = 'QR_' + id + '_' + Date.now();
+    await db.from('confirmaciones').update({ qr_token: token, qr_cantidad: total, qr_canjeados: 0 }).eq('id', id);
+    iglesia.qr_token    = token;
+    iglesia.qr_cantidad = total;
+    iglesia.qr_canjeados = 0;
+
+    document.getElementById('qr-iglesia-nombre').textContent = iglesia.iglesia;
+    document.getElementById('qr-count-badge').textContent    = total + ' almuerzos';
+    document.getElementById('qr-extras').value = 0;
+    renderQR('qr-canvas-container', token);
+    abrirModal('modal-qr-generado');
+    cargarParticipacion();
+  }
+
+  async function actualizarCantidadQR() {
+    if (!qrIglesiaActual) return;
+    const extras = parseInt(document.getElementById('qr-extras').value) || 0;
+    const base   = (qrIglesiaActual.participantes||0) + (qrIglesiaActual.adolescentes||0) + (qrIglesiaActual.pastores||0);
+    qrCantidadActual = base + extras;
+    await db.from('confirmaciones').update({ qr_cantidad: qrCantidadActual }).eq('id', qrIglesiaActual.id);
+    qrIglesiaActual.qr_cantidad = qrCantidadActual;
+    document.getElementById('qr-count-badge').textContent = qrCantidadActual + ' almuerzos';
+    mostrarToast('✓ Actualizado a ' + qrCantidadActual + ' almuerzos');
+    cargarParticipacion();
+  }
+
+  function renderQR(containerId, token) {
+    const cont = document.getElementById(containerId);
+    cont.innerHTML = '';
+    new QRCode(cont, { text: token, width: 220, height: 220, colorDark: '#0d2e6e', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+  }
+
+  function descargarQR() {
+    const canvas = document.querySelector('#qr-canvas-container canvas');
+    if (!canvas) return;
+    const a = document.createElement('a');
+    a.download = 'QR-almuerzo-' + (qrIglesiaActual ? qrIglesiaActual.iglesia : 'iglesia') + '.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  }
+
+  /* ════════════════════════════════════════
+     DESCARGAR QR — plan B admin
+  ════════════════════════════════════════ */
+  let descargaData = [];
+
+  async function abrirDescargarQR() {
+    abrirModal('modal-descargar-qr');
+    const cont = document.getElementById('lista-para-descargar');
+    cont.innerHTML = '<p style="font-size:13px;color:var(--gray-500);text-align:center;">Cargando...</p>';
+
+    const { data, error } = await db.from('confirmaciones').select('*').order('iglesia', { ascending: true });
+    if (error || !data) { cont.innerHTML = '<p style="font-size:13px;color:var(--gray-500);text-align:center;">Error al cargar.</p>'; return; }
+
+    const conQR = data.filter(c => c.qr_token);
+    if (conQR.length === 0) {
+      cont.innerHTML = '<p style="font-size:13px;color:var(--gray-500);text-align:center;">Ninguna iglesia tiene QR generado aún.</p>';
+      return;
+    }
+    descargaData = conQR;
+    cont.innerHTML = conQR.map(c => {
+      const restantes = (c.qr_cantidad||0) - (c.qr_canjeados||0);
+      return `
+        <div class="iglesia-select-item" onclick="descargarQRDeIglesia('${c.id}')">
+          <div>
+            <p class="iglesia-select-name">${c.iglesia}</p>
+            <p class="iglesia-select-enc">Enc: ${c.nombre} &nbsp;·&nbsp; ${restantes}/${c.qr_cantidad||0} disponibles</p>
+          </div>
+          <span class="iglesia-select-count" style="background:#d1fae5;color:#065f46;">⬇</span>
+        </div>`;
+    }).join('');
+  }
+
+  function descargarQRDeIglesia(id) {
+    const iglesia = descargaData.find(c => c.id === id);
+    if (!iglesia || !iglesia.qr_token) return;
+    cerrarModal('modal-descargar-qr');
+
+    let tmp = document.getElementById('tmp-qr-dl');
+    if (!tmp) {
+      tmp = document.createElement('div');
+      tmp.id = 'tmp-qr-dl';
+      tmp.style.cssText = 'position:fixed;top:-9999px;left:-9999px;';
+      document.body.appendChild(tmp);
+    }
+    tmp.innerHTML = '';
+    new QRCode(tmp, { text: iglesia.qr_token, width: 300, height: 300, colorDark: '#0d2e6e', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+    setTimeout(() => {
+      const canvas = tmp.querySelector('canvas');
+      if (!canvas) { mostrarToast('❌ Error al generar QR'); return; }
+      const a = document.createElement('a');
+      a.download = 'QR-almuerzo-' + iglesia.iglesia + '.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+      mostrarToast('✓ QR descargado: ' + iglesia.iglesia);
+    }, 400);
+  }
+
+  /* ════════════════════════════════════════
+     SCANNER QR
+  ════════════════════════════════════════ */
+  let scannerStream   = null;
+  let scannerInterval = null;
+  let ultimoEscaneo   = null;
+  let ultimoEscaneoTs = 0;
+
+  async function abrirScanner() {
+    abrirModal('modal-scanner');
+    document.getElementById('scanner-result').className = 'scanner-result';
+    document.getElementById('scanner-result').textContent = '';
+    document.getElementById('scanner-status').textContent = 'Iniciando cámara...';
+    try {
+      scannerStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      const video = document.getElementById('scanner-video');
+      video.srcObject = scannerStream;
+      video.play();
+      document.getElementById('scanner-status').textContent = 'Apunta la cámara al código QR';
+
+      const canvas = document.createElement('canvas');
+      const ctx    = canvas.getContext('2d');
+      scannerInterval = setInterval(async () => {
+        if (video.readyState !== video.HAVE_ENOUGH_DATA) return;
+        canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
+        if (code && code.data) {
+          const ahora = Date.now();
+          if (code.data === ultimoEscaneo && ahora - ultimoEscaneoTs < 3000) return;
+          ultimoEscaneo   = code.data;
+          ultimoEscaneoTs = ahora;
+          await procesarEscaneo(code.data);
+        }
+      }, 300);
+    } catch (err) {
+      document.getElementById('scanner-status').textContent = '❌ No se pudo acceder a la cámara';
+    }
+  }
+
+  async function procesarEscaneo(token) {
+    const res = document.getElementById('scanner-result');
+    res.className = 'scanner-result';
+    res.textContent = 'Verificando...';
+    res.style.display = 'block';
+
+    const { data, error } = await db.from('confirmaciones').select('*').eq('qr_token', token).single();
+    if (error || !data) { res.className = 'scanner-result warn'; res.textContent = '❌ QR inválido o no reconocido'; return; }
+
+    const canjeados = data.qr_canjeados || 0;
+    const cantidad  = data.qr_cantidad  || 0;
+    if (canjeados >= cantidad) {
+      res.className = 'scanner-result warn';
+      res.textContent = '❌ ' + data.iglesia + ' — Todos los almuerzos ya fueron canjeados (' + cantidad + '/' + cantidad + ')';
+      return;
+    }
+    const nuevos = canjeados + 1;
+    await db.from('confirmaciones').update({ qr_canjeados: nuevos }).eq('id', data.id);
+    res.className = 'scanner-result ok';
+    res.textContent = '✅ ' + data.iglesia + ' — Almuerzo ' + nuevos + ' de ' + cantidad + ' canjeado';
+  }
+
+  function cerrarScanner() {
+    clearInterval(scannerInterval);
+    if (scannerStream) { scannerStream.getTracks().forEach(t => t.stop()); scannerStream = null; }
+    cerrarModal('modal-scanner');
+    document.getElementById('scanner-video').srcObject = null;
+  }
+
+  /* ════════════════════════════════════════
+     VER QR — encargado de iglesia
+  ════════════════════════════════════════ */
+  let encQRData = null;
+
+  async function abrirQREncargado(idIglesia) {
+    encQRData = null;
+    document.getElementById('enc-login-section').style.display = 'block';
+    document.getElementById('enc-qr-section').style.display    = 'none';
+    document.getElementById('enc-correo').value = '';
+    document.getElementById('enc-pass').value   = '';
+    document.getElementById('enc-correo').dataset.iglesiaId = idIglesia;
+    abrirModal('modal-encargado-qr');
+    setTimeout(() => document.getElementById('enc-correo').focus(), 300);
+  }
+
+  async function loginEncargado() {
+    const correo = document.getElementById('enc-correo').value.trim();
+    const pass   = document.getElementById('enc-pass').value.trim();
+    const id     = document.getElementById('enc-correo').dataset.iglesiaId;
+    if (!correo || !pass) { mostrarToast('⚠ Completa tus datos'); return; }
+
+    const { data, error } = await db.from('confirmaciones').select('*').eq('id', id).single();
+    if (error || !data)              { mostrarToast('❌ Error al buscar tu registro'); return; }
+    if (data.correo !== correo || data.password !== pass) { mostrarToast('❌ Correo o contraseña incorrectos'); return; }
+    if (!data.qr_token)              { mostrarToast('⚠ Tu QR aún no fue generado por el organizador'); return; }
+
+    encQRData = data;
+    document.getElementById('enc-login-section').style.display = 'none';
+    document.getElementById('enc-qr-section').style.display    = 'block';
+    document.getElementById('enc-qr-nombre').textContent = data.iglesia;
+    const restantes = (data.qr_cantidad||0) - (data.qr_canjeados||0);
+    document.getElementById('enc-qr-badge').textContent = restantes + ' de ' + (data.qr_cantidad||0) + ' almuerzos disponibles';
+    renderQR('enc-qr-canvas', data.qr_token);
+  }
+
+  function descargarQREncargado() {
+    const canvas = document.querySelector('#enc-qr-canvas canvas');
+    if (!canvas) return;
+    const a = document.createElement('a');
+    a.download = 'QR-almuerzo-' + (encQRData ? encQRData.iglesia : 'iglesia') + '.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  }
+
+  /* ════════════════════════════════════════
+     FORMULARIO — CONFIRMAR / EDITAR
+  ════════════════════════════════════════ */
   function abrirNuevo() {
-    modoEdicion = false;
-    editandoId  = null;
+    if (!puedeConfirmar()) {
+      abrirModal('modal-confirmacion-cerrada');
+      return;
+    }
+    modoEdicion = false; editandoId = null;
     document.getElementById('form-titulo').textContent = 'Confirmar asistencia';
     document.getElementById('btn-submit').textContent  = '✉  Enviar confirmación';
-    document.getElementById('f-id').value           = '';
-    document.getElementById('f-nombre').value       = '';
-    document.getElementById('f-correo').value       = '';
-    document.getElementById('f-password').value     = '';
-    document.getElementById('f-iglesia').value      = '';
-    document.getElementById('f-jovenes').value      = '';
-    document.getElementById('f-adolescentes').value = '';
+    ['f-id','f-nombre','f-correo','f-password','f-iglesia','f-jovenes','f-adolescentes'].forEach(id => document.getElementById(id).value = '');
     resetPastores(0);
     mostrar('formulario', 'inicio');
   }
 
-  /* ── Abrir formulario para EDITAR registro existente ── */
   async function abrirEdicion(id) {
-    if (!puedeEditar()) {
-      mostrarToast('⚠ Edición cerrada: faltan menos de 5 días para el evento');
-      return;
-    }
+    if (!puedeEditar()) { mostrarToast('⚠ Edición cerrada: faltan menos de 5 días para el evento'); return; }
+    const correo = prompt('Ingresa tu correo electrónico:'); if (!correo) return;
+    const pass   = prompt('Ingresa tu contraseña:');         if (!pass)   return;
 
-    const correo = prompt('Ingresa tu correo electrónico:');
-    if (!correo) return;
-    const pass = prompt('Ingresa tu contraseña:');
-    if (!pass) return;
+    const { data, error } = await db.from('confirmaciones').select('*').eq('id', id).single();
+    if (error || !data)                            { mostrarToast('❌ No se encontró el registro'); return; }
+    if (data.correo !== correo.trim() || data.password !== pass.trim()) { mostrarToast('❌ Correo o contraseña incorrectos'); return; }
 
-    const { data, error } = await db
-      .from('confirmaciones').select('*').eq('id', id).single();
-
-    if (error || !data) { mostrarToast('❌ No se encontró el registro'); return; }
-    if (data.correo !== correo.trim() || data.password !== pass.trim()) {
-      mostrarToast('❌ Correo o contraseña incorrectos'); return;
-    }
-
-    modoEdicion = true;
-    editandoId  = id;
-    document.getElementById('form-titulo').textContent = 'Editar confirmación';
-    document.getElementById('btn-submit').textContent  = '💾  Guardar cambios';
-    document.getElementById('f-id').value           = id;
-    document.getElementById('f-nombre').value       = data.nombre;
-    document.getElementById('f-correo').value       = data.correo;
-    document.getElementById('f-password').value     = data.password;
-    document.getElementById('f-iglesia').value      = data.iglesia;
-    document.getElementById('f-jovenes').value      = data.participantes || 0;
-    document.getElementById('f-adolescentes').value = data.adolescentes || 0;
+    modoEdicion = true; editandoId = id;
+    document.getElementById('form-titulo').textContent       = 'Editar confirmación';
+    document.getElementById('btn-submit').textContent        = '💾  Guardar cambios';
+    document.getElementById('f-id').value                   = id;
+    document.getElementById('f-nombre').value               = data.nombre;
+    document.getElementById('f-correo').value               = data.correo;
+    document.getElementById('f-password').value             = data.password;
+    document.getElementById('f-iglesia').value              = data.iglesia;
+    document.getElementById('f-jovenes').value              = data.participantes || 0;
+    document.getElementById('f-adolescentes').value         = data.adolescentes || 0;
     resetPastores(data.pastores || 0);
     mostrar('formulario', 'participacion');
   }
 
-  /* ── Selector de pastores ── */
   let pastoresVal = 0;
-
   function selectPastor(el) {
     document.querySelectorAll('.pastor-opt').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
     pastoresVal = parseInt(el.dataset.val);
   }
-
   function resetPastores(val) {
     pastoresVal = val;
-    document.querySelectorAll('.pastor-opt').forEach(o => {
-      o.classList.toggle('selected', parseInt(o.dataset.val) === val);
-    });
+    document.querySelectorAll('.pastor-opt').forEach(o => o.classList.toggle('selected', parseInt(o.dataset.val) === val));
   }
 
-  /* ── Envío / guardado del formulario ── */
   async function enviarFormulario() {
     const nombre        = document.getElementById('f-nombre').value.trim();
     const correo        = document.getElementById('f-correo').value.trim();
@@ -608,269 +1211,154 @@
     const iglesia       = document.getElementById('f-iglesia').value.trim();
     const participantes = parseInt(document.getElementById('f-jovenes').value) || 0;
     const adolescentes  = parseInt(document.getElementById('f-adolescentes').value) || 0;
-
-    if (!nombre || !correo || !password || !iglesia) {
-      mostrarToast('⚠ Completa todos los campos'); return;
-    }
+    if (!nombre || !correo || !password || !iglesia) { mostrarToast('⚠ Completa todos los campos'); return; }
 
     const btn = document.getElementById('btn-submit');
-    btn.textContent = 'Guardando...';
-    btn.disabled = true;
+    btn.textContent = 'Guardando...'; btn.disabled = true;
 
     let error;
     if (modoEdicion && editandoId) {
-      /* EDITAR: reemplaza el registro existente */
-      ({ error } = await db.from('confirmaciones').update({
-        nombre, correo, password, iglesia, participantes, adolescentes, pastores: pastoresVal
-      }).eq('id', editandoId));
+      ({ error } = await db.from('confirmaciones').update({ nombre, correo, password, iglesia, participantes, adolescentes, pastores: pastoresVal }).eq('id', editandoId));
     } else {
-      /* NUEVO: inserta registro */
-      ({ error } = await db.from('confirmaciones').insert([{
-        nombre, correo, password, iglesia, participantes, adolescentes, pastores: pastoresVal
-      }]));
+      ({ error } = await db.from('confirmaciones').insert([{ nombre, correo, password, iglesia, participantes, adolescentes, pastores: pastoresVal }]));
     }
-
     btn.textContent = modoEdicion ? '💾  Guardar cambios' : '✉  Enviar confirmación';
     btn.disabled = false;
-
     if (error) { mostrarToast('❌ Error al guardar. Intenta de nuevo.'); console.error(error); return; }
-
     mostrarToast(modoEdicion ? '✓ Confirmación actualizada' : '✓ Confirmación enviada');
     mostrar(modoEdicion ? 'participacion' : 'inicio', null);
   }
 
-  /* ── Cargar panel de participación desde Supabase ── */
+  /* ════════════════════════════════════════
+     PANEL DE PARTICIPACIÓN
+  ════════════════════════════════════════ */
   async function cargarParticipacion() {
     const lista = document.getElementById('lista-iglesias');
     lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Cargando...</p>';
 
-    const { data, error } = await db
-      .from('confirmaciones')
-      .select('*')
-      .order('created_at', { ascending: false });
+    const { data, error } = await db.from('confirmaciones').select('*').order('created_at', { ascending: false });
+    if (error || !data) { lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Error al cargar datos.</p>'; return; }
 
-    if (error || !data) {
-      lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Error al cargar datos.</p>';
-      return;
-    }
-
-    /* Total general = participantes + adolescentes + pastores de todas las iglesias */
-    const totalGeneral = data.reduce((s, c) => s + (c.participantes || 0) + (c.adolescentes || 0) + (c.pastores || 0), 0);
+    const totalGeneral = data.reduce((s, c) => s + (c.participantes||0) + (c.adolescentes||0) + (c.pastores||0), 0);
     document.getElementById('total-participantes').textContent = totalGeneral;
     document.getElementById('total-iglesias').textContent = data.length;
 
-    if (data.length === 0) {
-      lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Aún no hay confirmaciones.</p>';
-      return;
-    }
+    if (data.length === 0) { lista.innerHTML = '<p style="font-size:14px;color:#6b7280;text-align:center;margin-top:1rem;">Aún no hay confirmaciones.</p>'; return; }
 
     const editable = puedeEditar();
-
     lista.innerHTML = data.map(c => {
-      const iniciales  = c.iglesia.split(' ').slice(-2).map(w => w[0]).join('').toUpperCase();
-      const pastorTxt  = c.pastores === 0 ? 'Sin pastor' : c.pastores === 1 ? '1 pastor' : '2 pastores';
-      const adolTxt    = c.adolescentes > 0 ? `${c.adolescentes} adolescente${c.adolescentes > 1 ? 's' : ''}` : 'Sin adolescentes';
-      const totalFila  = (c.participantes || 0) + (c.adolescentes || 0) + (c.pastores || 0);
-      const accion = editable
-        ? `<button class="btn-edit" onclick="abrirEdicion('${c.id}')">Editar</button>`
-        : `<span class="edit-closed">Cerrado</span>`;
-      return `
-        <div class="church-card">
-          <div class="church-left">
-            <div class="church-avatar">${iniciales}</div>
-            <div>
-              <p class="church-name">${c.iglesia}</p>
-              <p class="church-enc">Enc: ${c.nombre}</p>
-              <p class="church-detail">${pastorTxt} · ${adolTxt} · ${c.participantes || 0} part.</p>
-            </div>
-          </div>
-          <div class="church-right">
-            <span class="church-count">${totalFila}</span>
-            ${accion}
-          </div>
-        </div>`;
+      const iniciales = c.iglesia.split(' ').slice(-2).map(w => w[0]).join('').toUpperCase();
+      const pastorTxt = c.pastores === 0 ? 'Sin pastor' : c.pastores === 1 ? '1 pastor' : '2 pastores';
+      const adolTxt   = c.adolescentes > 0 ? c.adolescentes + ' adolescente' + (c.adolescentes > 1 ? 's' : '') : 'Sin adolescentes';
+      const totalFila = (c.participantes||0) + (c.adolescentes||0) + (c.pastores||0);
+      const accionEditar = editable
+        ? '<button class="btn-edit" onclick="abrirEdicion(\'' + c.id + '\')">Editar</button>'
+        : '<span class="edit-closed">Cerrado</span>';
+      const btnVerQR = c.qr_token
+        ? '<button class="btn-qr-church" onclick="abrirQREncargado(\'' + c.id + '\')">🎫 Ver QR</button>'
+        : '';
+      const badgeAlmuerzo = c.qr_token
+        ? '<span class="badge-almuerzo badge-pagado">✓ QR · ' + (c.qr_canjeados||0) + '/' + (c.qr_cantidad||0) + '</span>'
+        : '';
+      const bottom = (c.qr_token || btnVerQR || badgeAlmuerzo)
+        ? '<div class="church-bottom">' + badgeAlmuerzo + btnVerQR + '</div>'
+        : '';
+      return '<div class="church-card">' +
+        '<div class="church-card-top">' +
+          '<div class="church-left">' +
+            '<div class="church-avatar">' + iniciales + '</div>' +
+            '<div>' +
+              '<p class="church-name">' + c.iglesia + '</p>' +
+              '<p class="church-enc">Enc: ' + c.nombre + '</p>' +
+              '<p class="church-detail">' + pastorTxt + ' · ' + adolTxt + ' · ' + (c.participantes||0) + ' part.</p>' +
+            '</div>' +
+          '</div>' +
+          '<div class="church-right">' +
+            '<span class="church-count">' + totalFila + '</span>' +
+            accionEditar +
+          '</div>' +
+        '</div>' +
+        bottom +
+      '</div>';
     }).join('');
   }
 
-  /* ── Obtener todos los datos ordenados por iglesia (para PDF/impresión) ── */
+  /* ════════════════════════════════════════
+     PDF
+  ════════════════════════════════════════ */
   async function obtenerDatos() {
-    const { data, error } = await db
-      .from('confirmaciones')
-      .select('*')
-      .order('iglesia', { ascending: true });
-    if (error || !data) return null;
-    return data;
+    const { data, error } = await db.from('confirmaciones').select('*').order('iglesia', { ascending: true });
+    return (error || !data) ? null : data;
   }
 
-  /* ── Descargar PDF ── */
   async function descargarPDF() {
     const data = await obtenerDatos();
     if (!data || data.length === 0) { mostrarToast('⚠ No hay confirmaciones aún'); return; }
     mostrarToast('Generando PDF...');
-
     const { jsPDF } = window.jspdf;
-    const doc    = new jsPDF();
-    const fecha  = new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'long', year:'numeric' });
-
-    /* Totales generales */
-    const totalParticipantes = data.reduce((s, c) => s + (c.participantes || 0), 0);
-    const totalAdolescentes  = data.reduce((s, c) => s + (c.adolescentes || 0), 0);
-    const totalPastores      = data.reduce((s, c) => s + (c.pastores || 0), 0);
-    const totalGeneral       = totalParticipantes + totalAdolescentes + totalPastores;
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(16);
-    doc.setTextColor(13, 46, 110);
-    doc.text('Iglesia Unida Metodista Pentecostal', 105, 22, { align: 'center' });
-
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(80);
-    doc.text(TITULO_EVENTO, 105, 31, { align: 'center' });
-
-    doc.setFontSize(9);
-    doc.setTextColor(150);
-    doc.text('Generado el ' + fecha, 105, 39, { align: 'center' });
-
-    doc.setFontSize(11);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(13, 46, 110);
-    doc.text('Total general: ' + totalGeneral + '   |   Iglesias confirmadas: ' + data.length, 105, 49, { align: 'center' });
-
-    /* Columnas: Iglesia, Encargado, Pastores, Adolescentes, Participantes, Total */
+    const doc  = new jsPDF();
+    const fecha = new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'long', year:'numeric' });
+    const tp = data.reduce((s,c) => s+(c.participantes||0), 0);
+    const ta = data.reduce((s,c) => s+(c.adolescentes||0), 0);
+    const tpa = data.reduce((s,c) => s+(c.pastores||0), 0);
+    const tg = tp + ta + tpa;
+    doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(13,46,110);
+    doc.text('Iglesia Unida Metodista Pentecostal', 105, 22, { align:'center' });
+    doc.setFontSize(12); doc.setFont('helvetica','normal'); doc.setTextColor(80);
+    doc.text(TITULO_EVENTO, 105, 31, { align:'center' });
+    doc.setFontSize(9); doc.setTextColor(150);
+    doc.text('Generado el ' + fecha, 105, 39, { align:'center' });
+    doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(13,46,110);
+    doc.text('Total general: ' + tg + '   |   Iglesias confirmadas: ' + data.length, 105, 49, { align:'center' });
     doc.autoTable({
       startY: 56,
-      head: [['Iglesia', 'Encargado', 'Pastores', 'Adolescentes', 'Participantes', 'Total']],
+      head: [['Iglesia','Encargado','Pastores','Adolescentes','Participantes','Total']],
       body: data.map(c => {
-        const total = (c.participantes || 0) + (c.adolescentes || 0) + (c.pastores || 0);
-        return [
-          c.iglesia,
-          c.nombre,
-          c.pastores === 0 ? 'Ninguno' : c.pastores === 1 ? '1' : '2',
-          c.adolescentes || 0,
-          c.participantes || 0,
-          total
-        ];
+        const t = (c.participantes||0)+(c.adolescentes||0)+(c.pastores||0);
+        return [c.iglesia, c.nombre, c.pastores===0?'Ninguno':c.pastores===1?'1':'2', c.adolescentes||0, c.participantes||0, t];
       }),
-      /* Fila de totales al final con color dorado */
-      foot: [[
-        'TOTALES', '',
-        totalPastores,
-        totalAdolescentes,
-        totalParticipantes,
-        totalGeneral
-      ]],
-      headStyles: { fillColor: [13, 46, 110], textColor: 255, fontStyle: 'bold', fontSize: 9 },
-      footStyles: { fillColor: [201, 146, 10], textColor: 255, fontStyle: 'bold', fontSize: 9 },
-      alternateRowStyles: { fillColor: [240, 245, 255] },
-      styles: { fontSize: 9, cellPadding: 3 },
-      columnStyles: {
-        0: { cellWidth: 42 },
-        1: { cellWidth: 40 },
-        2: { cellWidth: 22, halign: 'center' },
-        3: { cellWidth: 25, halign: 'center' },
-        4: { cellWidth: 28, halign: 'center' },
-        5: { cellWidth: 20, halign: 'center', fontStyle: 'bold' }
-      }
+      foot: [['TOTALES','', tpa, ta, tp, tg]],
+      headStyles: { fillColor:[13,46,110], textColor:255, fontStyle:'bold', fontSize:9 },
+      footStyles: { fillColor:[201,146,10], textColor:255, fontStyle:'bold', fontSize:9 },
+      alternateRowStyles: { fillColor:[240,245,255] },
+      styles: { fontSize:9, cellPadding:3 },
+      columnStyles: { 0:{cellWidth:42}, 1:{cellWidth:40}, 2:{cellWidth:22,halign:'center'}, 3:{cellWidth:25,halign:'center'}, 4:{cellWidth:28,halign:'center'}, 5:{cellWidth:20,halign:'center',fontStyle:'bold'} }
     });
-
     const pages = doc.internal.getNumberOfPages();
-    for (let i = 1; i <= pages; i++) {
-      doc.setPage(i);
-      doc.setFontSize(8);
-      doc.setTextColor(180);
-      doc.text('IUMP · Jóvenes · Página ' + i + ' de ' + pages, 105, doc.internal.pageSize.height - 10, { align: 'center' });
+    for (let i=1; i<=pages; i++) {
+      doc.setPage(i); doc.setFontSize(8); doc.setTextColor(180);
+      doc.text('IUMP · Jóvenes · Página '+i+' de '+pages, 105, doc.internal.pageSize.height-10, { align:'center' });
     }
-
     doc.save('confirmaciones-zonal.pdf');
     mostrarToast('✓ PDF descargado');
   }
 
-  /* ── Imprimir ── */
+  /* ════════════════════════════════════════
+     IMPRIMIR
+  ════════════════════════════════════════ */
   async function imprimirLista() {
     const data = await obtenerDatos();
     if (!data || data.length === 0) { mostrarToast('⚠ No hay confirmaciones aún'); return; }
-
-    const totalParticipantes = data.reduce((s, c) => s + (c.participantes || 0), 0);
-    const totalAdolescentes  = data.reduce((s, c) => s + (c.adolescentes || 0), 0);
-    const totalPastores      = data.reduce((s, c) => s + (c.pastores || 0), 0);
-    const totalGeneral       = totalParticipantes + totalAdolescentes + totalPastores;
-    const fecha              = new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'long', year:'numeric' });
-
-    /* Columnas: Iglesia, Encargado, Pastores, Adolescentes, Participantes, Total */
+    const tp = data.reduce((s,c) => s+(c.participantes||0), 0);
+    const ta = data.reduce((s,c) => s+(c.adolescentes||0), 0);
+    const tpa = data.reduce((s,c) => s+(c.pastores||0), 0);
+    const tg  = tp + ta + tpa;
+    const fecha = new Date().toLocaleDateString('es-CL', { day:'2-digit', month:'long', year:'numeric' });
     const filas = data.map(c => {
-      const total = (c.participantes || 0) + (c.adolescentes || 0) + (c.pastores || 0);
-      return `
-        <tr>
-          <td>${c.iglesia}</td>
-          <td>${c.nombre}</td>
-          <td style="text-align:center">${c.pastores === 0 ? 'Ninguno' : c.pastores === 1 ? '1' : '2'}</td>
-          <td style="text-align:center">${c.adolescentes || 0}</td>
-          <td style="text-align:center">${c.participantes || 0}</td>
-          <td style="text-align:center; font-weight:bold; color:#0d2e6e">${total}</td>
-        </tr>`;
+      const t = (c.participantes||0)+(c.adolescentes||0)+(c.pastores||0);
+      return '<tr><td>'+c.iglesia+'</td><td>'+c.nombre+'</td><td style="text-align:center">'+(c.pastores===0?'Ninguno':c.pastores===1?'1':'2')+'</td><td style="text-align:center">'+(c.adolescentes||0)+'</td><td style="text-align:center">'+(c.participantes||0)+'</td><td style="text-align:center;font-weight:bold;color:#0d2e6e">'+t+'</td></tr>';
     }).join('');
-
-    const ventana = window.open('', '_blank');
-    ventana.document.write(`
-      <!DOCTYPE html><html lang="es"><head>
-      <meta charset="UTF-8">
-      <title>Confirmaciones Zonal</title>
-      <style>
-        body { font-family: Arial, sans-serif; padding: 2cm; color: #111; }
-        h1 { font-size: 18px; text-align: center; margin-bottom: 4px; color: #0d2e6e; }
-        h2 { font-size: 13px; text-align: center; font-weight: normal; color: #444; margin-bottom: 4px; }
-        .meta { text-align: center; font-size: 11px; color: #888; margin-bottom: 12px; }
-        .totales {
-          text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 20px;
-          color: #0d2e6e; border: 1px solid #c7d9f5; padding: 8px;
-          border-radius: 6px; background: #f0f5ff;
-        }
-        table { width: 100%; border-collapse: collapse; font-size: 11px; }
-        th { background: #0d2e6e; color: white; padding: 7px 8px; text-align: left; }
-        td { padding: 6px 8px; border-bottom: 1px solid #ddd; }
-        tr:nth-child(even) td { background: #f0f5ff; }
-        .fila-total td { background: #c9920a; color: white; font-weight: bold; }
-        .footer { text-align: center; font-size: 10px; color: #aaa; margin-top: 24px; }
-      </style></head><body>
-      <h1>Iglesia Unida Metodista Pentecostal</h1>
-      <h2>${TITULO_EVENTO}</h2>
-      <p class="meta">Generado el ${fecha}</p>
-      <p class="totales">Total general: ${totalGeneral} &nbsp;&nbsp;|&nbsp;&nbsp; Iglesias confirmadas: ${data.length}</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Iglesia</th>
-            <th>Encargado</th>
-            <th style="text-align:center">Pastores</th>
-            <th style="text-align:center">Adolescentes</th>
-            <th style="text-align:center">Participantes</th>
-            <th style="text-align:center">Total</th>
-          </tr>
-        </thead>
-        <tbody>${filas}</tbody>
-        <tfoot>
-          <tr class="fila-total">
-            <td>TOTALES</td>
-            <td></td>
-            <td style="text-align:center">${totalPastores}</td>
-            <td style="text-align:center">${totalAdolescentes}</td>
-            <td style="text-align:center">${totalParticipantes}</td>
-            <td style="text-align:center">${totalGeneral}</td>
-          </tr>
-        </tfoot>
-      </table>
-      <p class="footer">IUMP · Jóvenes · Zona Central</p>
-      <script>window.onload = () => { window.print(); }<\/script>
-      </body></html>`);
-    ventana.document.close();
+    const v = window.open('','_blank');
+    v.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Confirmaciones Zonal</title><style>body{font-family:Arial,sans-serif;padding:2cm;color:#111}h1{font-size:18px;text-align:center;color:#0d2e6e;margin-bottom:4px}h2{font-size:13px;text-align:center;font-weight:normal;color:#444;margin-bottom:4px}.meta{text-align:center;font-size:11px;color:#888;margin-bottom:12px}.totales{text-align:center;font-size:13px;font-weight:bold;margin-bottom:20px;color:#0d2e6e;border:1px solid #c7d9f5;padding:8px;border-radius:6px;background:#f0f5ff}table{width:100%;border-collapse:collapse;font-size:11px}th{background:#0d2e6e;color:white;padding:7px 8px;text-align:left}td{padding:6px 8px;border-bottom:1px solid #ddd}tr:nth-child(even) td{background:#f0f5ff}.fila-total td{background:#c9920a;color:white;font-weight:bold}.footer{text-align:center;font-size:10px;color:#aaa;margin-top:24px}</style></head><body><h1>Iglesia Unida Metodista Pentecostal</h1><h2>'+TITULO_EVENTO+'</h2><p class="meta">Generado el '+fecha+'</p><p class="totales">Total general: '+tg+' &nbsp;|&nbsp; Iglesias confirmadas: '+data.length+'</p><table><thead><tr><th>Iglesia</th><th>Encargado</th><th style="text-align:center">Pastores</th><th style="text-align:center">Adolescentes</th><th style="text-align:center">Participantes</th><th style="text-align:center">Total</th></tr></thead><tbody>'+filas+'</tbody><tfoot><tr class="fila-total"><td>TOTALES</td><td></td><td style="text-align:center">'+tpa+'</td><td style="text-align:center">'+ta+'</td><td style="text-align:center">'+tp+'</td><td style="text-align:center">'+tg+'</td></tr></tfoot></table><p class="footer">IUMP · Jóvenes · Zona Central</p><script>window.onload=function(){window.print()}<\/script></body></html>');
+    v.document.close();
   }
 
-  /* ── Toast de confirmación ── */
+  /* ════════════════════════════════════════
+     TOAST
+  ════════════════════════════════════════ */
   function mostrarToast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
+    t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 </script>
