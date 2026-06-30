@@ -364,6 +364,21 @@
   .scanner-result.warn { background: #fee2e2; color: #991b1b; display: block; }
   .scanner-status { font-size: 12px; color: rgba(255,255,255,0.4); text-align: center; margin-bottom: 0.5rem; }
 
+  /* Línea animada scanner estilo iPhone */
+  .scanner-line {
+    position: absolute; left: 10%; right: 10%; height: 2px;
+    background: linear-gradient(90deg, transparent, #f0b429, transparent);
+    box-shadow: 0 0 8px 2px rgba(240,180,41,0.7);
+    border-radius: 2px;
+    animation: scanner-sweep 2s ease-in-out infinite;
+    z-index: 10;
+  }
+  @keyframes scanner-sweep {
+    0%   { top: 15%; opacity: 1; }
+    50%  { top: 80%; opacity: 1; }
+    100% { top: 15%; opacity: 1; }
+  }
+
   /* Lista iglesias */
   .iglesia-select-item {
     display: flex; align-items: center; justify-content: space-between;
@@ -422,7 +437,7 @@
     <div class="dots-menu" id="dots-menu-inicio">
       <div class="dots-menu-item" onclick="ejecutarAccionAdmin('scanner')"><span class="dots-menu-icon">📷</span> Scanner QR</div>
       <div class="dots-menu-item" onclick="ejecutarAccionAdmin('generar')"><span class="dots-menu-icon">🎫</span> Generar QR</div>
-      <div class="dots-menu-item" onclick="ejecutarAccionAdmin('descargar')"><span class="dots-menu-icon">⬇</span> Descargar QR</div>
+      <div class="dots-menu-item" onclick="ejecutarAccionAdmin('descargar')"><span class="dots-menu-icon">📱</span> Ver QR</div>
     </div>
 
     <div class="hero-content">
@@ -567,12 +582,18 @@
     </div>
   </div>
 
-  <!-- Descargar QR admin -->
+  <!-- Ver QR admin (muestra QR en pantalla para que el hermano saque foto) -->
   <div class="modal-backdrop" id="modal-descargar-qr">
-    <div class="modal-sheet">
-      <p class="modal-title">⬇ Descargar QR de iglesia <button class="modal-close" onclick="cerrarModal('modal-descargar-qr')">✕</button></p>
-      <p style="font-size:13px;color:var(--gray-500);margin-bottom:1rem;">Selecciona la iglesia para descargar su QR.</p>
+    <div class="modal-sheet" style="text-align:center;">
+      <p class="modal-title">📱 Ver QR de iglesia <button class="modal-close" onclick="cerrarModal('modal-descargar-qr')">✕</button></p>
       <div id="lista-para-descargar"></div>
+      <div id="ver-qr-panel" style="display:none;">
+        <p class="qr-iglesia-name" id="ver-qr-nombre">—</p>
+        <p class="qr-count-badge" id="ver-qr-badge">—</p>
+        <div id="ver-qr-canvas" style="margin:1rem auto;display:flex;justify-content:center;"></div>
+        <p style="font-size:12px;color:var(--gray-500);margin-top:0.5rem;">El hermano puede sacarle foto a este QR</p>
+        <button class="btn-admin-ok" style="margin-top:1rem;" onclick="volverListaVerQR()">← Volver a la lista</button>
+      </div>
     </div>
   </div>
 
@@ -584,6 +605,7 @@
       <div class="scanner-frame">
         <video id="scanner-video" autoplay playsinline muted></video>
         <div class="scanner-corners"></div>
+        <div class="scanner-line" id="scanner-line"></div>
       </div>
       <div class="scanner-result" id="scanner-result"></div>
     </div>
@@ -838,11 +860,13 @@ function descargarQR() {
   a.click();
 }
 
-/* ════════ DESCARGAR QR ADMIN ════════ */
+/* ════════ VER QR ADMIN (muestra en pantalla) ════════ */
 var descargaData = [];
 
 async function abrirDescargarQR() {
   abrirModal('modal-descargar-qr');
+  document.getElementById('lista-para-descargar').style.display = 'block';
+  document.getElementById('ver-qr-panel').style.display = 'none';
   var cont = document.getElementById('lista-para-descargar');
   cont.innerHTML = '<p style="font-size:13px;color:var(--gray-500);text-align:center;">Cargando...</p>';
   var res = await db.from('confirmaciones').select('*').order('iglesia', { ascending: true });
@@ -850,37 +874,32 @@ async function abrirDescargarQR() {
   var conQR = res.data.filter(function(c) { return !!c.qr_token; });
   if (conQR.length === 0) { cont.innerHTML = '<p style="font-size:13px;color:var(--gray-500);text-align:center;">Ninguna iglesia tiene QR aún.</p>'; return; }
   descargaData = conQR;
-  cont.innerHTML = conQR.map(function(c) {
-    var restantes = (c.qr_cantidad||0) - (c.qr_canjeados||0);
-    return '<div class="iglesia-select-item" onclick="descargarQRDeIglesia(\'' + c.id + '\')">' +
-      '<div><p class="iglesia-select-name">' + c.iglesia + '</p>' +
-      '<p class="iglesia-select-enc">Enc: ' + c.nombre + ' &nbsp;·&nbsp; ' + restantes + '/' + (c.qr_cantidad||0) + ' disponibles</p></div>' +
-      '<span class="iglesia-select-count" style="background:#d1fae5;color:#065f46;">⬇</span></div>';
-  }).join('');
+  cont.innerHTML = '<p style="font-size:13px;color:var(--gray-500);margin-bottom:0.75rem;">Selecciona la iglesia para mostrar su QR.</p>' +
+    conQR.map(function(c) {
+      var restantes = (c.qr_cantidad||0) - (c.qr_canjeados||0);
+      return '<div class="iglesia-select-item" onclick="mostrarQRDeIglesia(\'' + c.id + '\')">' +
+        '<div><p class="iglesia-select-name">' + c.iglesia + '</p>' +
+        '<p class="iglesia-select-enc">Enc: ' + c.nombre + ' &nbsp;·&nbsp; ' + restantes + '/' + (c.qr_cantidad||0) + ' disponibles</p></div>' +
+        '<span class="iglesia-select-count" style="background:#d1fae5;color:#065f46;">📱</span></div>';
+    }).join('');
 }
 
-function descargarQRDeIglesia(id) {
+function mostrarQRDeIglesia(id) {
   var iglesia = descargaData.find(function(c) { return c.id === id; });
   if (!iglesia || !iglesia.qr_token) return;
-  cerrarModal('modal-descargar-qr');
-  var tmp = document.getElementById('tmp-qr-dl');
-  if (!tmp) {
-    tmp = document.createElement('div');
-    tmp.id = 'tmp-qr-dl';
-    tmp.style.cssText = 'position:fixed;top:-9999px;left:-9999px;';
-    document.body.appendChild(tmp);
-  }
-  tmp.innerHTML = '';
-  new QRCode(tmp, { text: iglesia.qr_token, width: 300, height: 300, colorDark: '#0d2e6e', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
-  setTimeout(function() {
-    var canvas = tmp.querySelector('canvas');
-    if (!canvas) { mostrarToast('❌ Error al generar QR'); return; }
-    var a = document.createElement('a');
-    a.download = 'QR-almuerzo-' + iglesia.iglesia + '.png';
-    a.href = canvas.toDataURL('image/png');
-    a.click();
-    mostrarToast('✓ QR descargado: ' + iglesia.iglesia);
-  }, 400);
+  document.getElementById('lista-para-descargar').style.display = 'none';
+  document.getElementById('ver-qr-panel').style.display = 'block';
+  document.getElementById('ver-qr-nombre').textContent = iglesia.iglesia;
+  var restantes = (iglesia.qr_cantidad||0) - (iglesia.qr_canjeados||0);
+  document.getElementById('ver-qr-badge').textContent = restantes + ' de ' + (iglesia.qr_cantidad||0) + ' almuerzos disponibles';
+  var cont = document.getElementById('ver-qr-canvas');
+  cont.innerHTML = '';
+  new QRCode(cont, { text: iglesia.qr_token, width: 260, height: 260, colorDark: '#0d2e6e', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+}
+
+function volverListaVerQR() {
+  document.getElementById('ver-qr-panel').style.display = 'none';
+  document.getElementById('lista-para-descargar').style.display = 'block';
 }
 
 /* ════════ SCANNER QR ════════ */
@@ -893,31 +912,44 @@ async function abrirScanner() {
   abrirModal('modal-scanner');
   document.getElementById('scanner-result').className = 'scanner-result';
   document.getElementById('scanner-result').textContent = '';
+  document.getElementById('scanner-result').style.display = 'none';
   document.getElementById('scanner-status').textContent = 'Iniciando cámara...';
+  ultimoEscaneo = null;
+  ultimoEscaneoTs = 0;
   try {
-    scannerStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+    scannerStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }
+    });
     var video = document.getElementById('scanner-video');
     video.srcObject = scannerStream;
+    video.setAttribute('playsinline', true);
     video.play();
-    document.getElementById('scanner-status').textContent = 'Apunta la cámara al código QR';
-    var canvas = document.createElement('canvas');
-    var ctx    = canvas.getContext('2d');
-    scannerInterval = setInterval(async function() {
-      if (video.readyState !== video.HAVE_ENOUGH_DATA) return;
-      canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      var code = jsQR(imageData.data, imageData.width, imageData.height);
-      if (code && code.data) {
-        var ahora = Date.now();
-        if (code.data === ultimoEscaneo && ahora - ultimoEscaneoTs < 3000) return;
-        ultimoEscaneo   = code.data;
-        ultimoEscaneoTs = ahora;
-        await procesarEscaneo(code.data);
-      }
-    }, 300);
+    video.addEventListener('loadedmetadata', function() {
+      document.getElementById('scanner-status').textContent = 'Apunta la cámara al código QR';
+      var canvas = document.createElement('canvas');
+      var ctx    = canvas.getContext('2d');
+      scannerInterval = setInterval(async function() {
+        if (video.readyState < video.HAVE_ENOUGH_DATA) return;
+        if (video.videoWidth === 0 || video.videoHeight === 0) return;
+        canvas.width  = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        try {
+          var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          var code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
+          if (code && code.data) {
+            var ahora = Date.now();
+            if (code.data === ultimoEscaneo && ahora - ultimoEscaneoTs < 4000) return;
+            ultimoEscaneo   = code.data;
+            ultimoEscaneoTs = ahora;
+            await procesarEscaneo(code.data);
+          }
+        } catch(e) {}
+      }, 200);
+    });
   } catch(err) {
     document.getElementById('scanner-status').textContent = '❌ No se pudo acceder a la cámara';
+    console.error(err);
   }
 }
 
