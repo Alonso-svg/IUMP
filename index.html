@@ -549,18 +549,18 @@
 
   <!-- Clave admin -->
   <div class="modal-backdrop" id="modal-admin-clave">
-    <div class="modal-sheet">
-      <p class="modal-title">🔐 Acceso administrador <button class="modal-close" onclick="cerrarModal('modal-admin-clave')">✕</button></p>
+    <div class="modal-sheet" onclick="event.stopPropagation()">
+      <p class="modal-title">🔐 Acceso administrador <button type="button" class="modal-close" onclick="cerrarModal('modal-admin-clave')">✕</button></p>
       <p style="font-size:13px;color:var(--gray-500);margin-bottom:1rem;">Ingresa la clave del evento para continuar.</p>
-      <input class="admin-input" type="password" id="admin-clave-input" placeholder="Clave del evento" onkeydown="if(event.key==='Enter')validarClave()">
-      <button class="btn-admin-ok" onclick="validarClave()">Ingresar</button>
+      <input class="admin-input" type="password" id="admin-clave-input" placeholder="Clave del evento" onkeydown="if(event.key==='Enter'){event.preventDefault();validarClave();}">
+      <button type="button" class="btn-admin-ok" onclick="validarClave()">Ingresar</button>
     </div>
   </div>
 
   <!-- Generar QR -->
   <div class="modal-backdrop" id="modal-generar-qr">
     <div class="modal-sheet">
-      <p class="modal-title">🎫 Generar QR de almuerzo <button class="modal-close" onclick="cerrarModal('modal-generar-qr')">✕</button></p>
+      <p class="modal-title">🎫 Generar QR de almuerzo <button class="modal-close" onclick="cerrarModal('modal-generar-qr');volverAMenuAdmin()">✕</button></p>
       <p style="font-size:13px;color:var(--gray-500);margin-bottom:1rem;">Selecciona la iglesia que está pagando su almuerzo.</p>
       <div id="lista-para-qr"></div>
     </div>
@@ -569,7 +569,7 @@
   <!-- QR generado -->
   <div class="modal-backdrop" id="modal-qr-generado">
     <div class="modal-sheet" style="text-align:center;">
-      <p class="modal-title">✅ QR generado <button class="modal-close" onclick="cerrarModal('modal-qr-generado')">✕</button></p>
+      <p class="modal-title">✅ QR generado <button class="modal-close" onclick="cerrarModal('modal-qr-generado');volverAMenuAdmin()">✕</button></p>
       <p class="qr-iglesia-name" id="qr-iglesia-nombre">—</p>
       <p class="qr-count-badge" id="qr-count-badge">— almuerzos</p>
       <div id="qr-canvas-container"></div>
@@ -585,7 +585,7 @@
   <!-- Ver QR admin (muestra QR en pantalla para que el hermano saque foto) -->
   <div class="modal-backdrop" id="modal-descargar-qr">
     <div class="modal-sheet" style="text-align:center;">
-      <p class="modal-title">📱 Ver QR de iglesia <button class="modal-close" onclick="cerrarModal('modal-descargar-qr')">✕</button></p>
+      <p class="modal-title">📱 Ver QR de iglesia <button class="modal-close" onclick="cerrarModal('modal-descargar-qr');volverAMenuAdmin()">✕</button></p>
       <div id="lista-para-descargar"></div>
       <div id="ver-qr-panel" style="display:none;">
         <p class="qr-iglesia-name" id="ver-qr-nombre">—</p>
@@ -752,12 +752,13 @@ function toggleDotsMenuInicio(e) {
   setTimeout(function() { document.getElementById('admin-clave-input').focus(); }, 300);
 }
 
-document.addEventListener('click', function() {
-  document.getElementById('dots-menu-inicio').classList.remove('open');
-});
-
-document.getElementById('dots-menu-inicio').addEventListener('click', function(e) {
-  e.stopPropagation();
+/* Cierre del menú: solo al hacer click en el backdrop fuera del menú, nunca afecta botones internos */
+document.addEventListener('click', function(e) {
+  var menu = document.getElementById('dots-menu-inicio');
+  var btn  = document.getElementById('btn-dots-inicio');
+  if (menu.classList.contains('open') && !menu.contains(e.target) && e.target !== btn) {
+    menu.classList.remove('open');
+  }
 });
 
 function validarClave() {
@@ -778,6 +779,14 @@ function ejecutarAccionAdmin(accion) {
   if (accion === 'scanner')   abrirScanner();
   if (accion === 'generar')   abrirGenerarQR();
   if (accion === 'descargar') abrirDescargarQR();
+}
+
+/* Vuelve a mostrar el menú de 3 opciones sin pedir clave, siempre que la sesión admin siga activa
+   (es decir, mientras no se haya cambiado de panel ni recargado la página) */
+function volverAMenuAdmin() {
+  if (adminAutorizado) {
+    document.getElementById('dots-menu-inicio').classList.add('open');
+  }
 }
 
 /* ════════ MODALES ════════ */
@@ -976,6 +985,7 @@ function cerrarScanner() {
   if (scannerStream) { scannerStream.getTracks().forEach(function(t) { t.stop(); }); scannerStream = null; }
   cerrarModal('modal-scanner');
   document.getElementById('scanner-video').srcObject = null;
+  volverAMenuAdmin();
 }
 
 /* ════════ VER QR ENCARGADO ════════ */
