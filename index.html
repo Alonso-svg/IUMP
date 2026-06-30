@@ -752,14 +752,11 @@ function toggleDotsMenuInicio(e) {
   setTimeout(function() { document.getElementById('admin-clave-input').focus(); }, 300);
 }
 
-/* Cierre del menú: solo al hacer click en el backdrop fuera del menú, nunca afecta botones internos */
-document.addEventListener('click', function(e) {
-  var menu = document.getElementById('dots-menu-inicio');
-  var btn  = document.getElementById('btn-dots-inicio');
-  if (menu.classList.contains('open') && !menu.contains(e.target) && e.target !== btn) {
-    menu.classList.remove('open');
-  }
-});
+/* El menú se cierra únicamente por acciones explícitas:
+   - Tocar de nuevo el botón ··· (toggle)
+   - Seleccionar una opción del menú (ejecutarAccionAdmin)
+   No usamos un listener global de click en document para evitar que el propio
+   click que abre un modal (scanner, generar QR, ver QR) cierre el menú por error. */
 
 function validarClave() {
   var clave = document.getElementById('admin-clave-input').value.trim();
