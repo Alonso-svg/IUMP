@@ -686,10 +686,10 @@ async function cargarConfig() {
 cargarConfig();
 
 function puedeEditar() {
-  return (new Date(FECHA_EVENTO) - new Date()) / (1000*60*60*24) > 5;
+  return (new Date(FECHA_EVENTO) - new Date()) / (1000*60*60*24) > 4;
 }
 function puedeConfirmar() {
-  return (new Date(FECHA_EVENTO) - new Date()) / (1000*60*60*24) > 3;
+  return (new Date(FECHA_EVENTO) - new Date()) / (1000*60*60*24) > 2;
 }
 
 /* ════════ CUENTA REGRESIVA ════════ */
