@@ -660,11 +660,14 @@ const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /* Variables globales — se cargan desde Supabase tabla config */
-var FECHA_EVENTO  = '';
-var TITULO_EVENTO = '';
-var CLAVE_ADMIN   = '';
+/* Variables globales */
+var FECHA_EVENTO      = '';
+var TITULO_EVENTO     = '';
+var CLAVE_ADMIN       = '';
+var MENSAJE_VERSICULO = '';
+var MENSAJE_TEXTO     = '';
 
-/* ════════ CARGA DE CONFIGURACIÓN DESDE SUPABASE ════════ */
+/* CARGA DE CONFIGURACIÓN DESDE SUPABASE */
 async function cargarConfig() {
   var r = await db.from('config').select('clave, valor');
   if (r.error || !r.data) {
@@ -672,13 +675,15 @@ async function cargarConfig() {
     return;
   }
   r.data.forEach(function(row) {
-    if (row.clave === 'fecha_evento')  FECHA_EVENTO  = row.valor;
-    if (row.clave === 'titulo_evento') TITULO_EVENTO = row.valor;
-    if (row.clave === 'clave_admin')   CLAVE_ADMIN   = row.valor;
+    if (row.clave === 'fecha_evento')      FECHA_EVENTO      = row.valor;
+    if (row.clave === 'titulo_evento')     TITULO_EVENTO     = row.valor;
+    if (row.clave === 'clave_admin')       CLAVE_ADMIN       = row.valor;
+    if (row.clave === 'mensaje_versiculo') MENSAJE_VERSICULO = row.valor || '';
+    if (row.clave === 'mensaje_texto')     MENSAJE_TEXTO     = row.valor || '';
     if (row.clave === 'nombre_evento') document.getElementById('txt-nombre-evento').textContent = row.valor;
     if (row.clave === 'fecha_visible') document.getElementById('txt-fecha-visible').textContent = row.valor;
   });
-  /* Iniciar cuenta regresiva y navegación una vez cargada la config */
+  
   actualizarCuentaRegresiva();
   setInterval(actualizarCuentaRegresiva, 1000);
   mostrar('inicio', null);
