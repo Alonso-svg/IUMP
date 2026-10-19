@@ -1148,8 +1148,7 @@ async function cargarParticipacion() {
   }).join('');
 }
 
-/* ════════ PDF ════════ */
-/* ════════ PDF DINÁMICO REFORZADO ════════ */
+/* ════════ PDF DINÁMICO CORREGIDO ════════ */
 async function obtenerDatos() {
   var r = await db.from('confirmaciones').select('*').order('iglesia', { ascending: true });
   return (r.error || !r.data) ? null : r.data;
@@ -1177,18 +1176,22 @@ async function descargarPDF() {
   doc.setFontSize(12); doc.setFont('helvetica','bold'); doc.setTextColor(80);
   doc.text(TITULO_EVENTO, 105, y, { align:'center' });
 
-  // Versículo (Agrandado un poco)
+  // Versículo (Salto de línea automático hacia abajo, máximo 160mm de ancho)
   if (MENSAJE_VERSICULO && MENSAJE_VERSICULO.trim() !== '') {
-    y += 9;
-    doc.setFont('helvetica','italic'); doc.setFontSize(11.5); doc.setTextColor(201,146,10);
-    doc.text(MENSAJE_VERSICULO, 105, y, { align:'center' });
+    y += 8;
+    doc.setFont('helvetica','italic'); doc.setFontSize(11); doc.setTextColor(201,146,10);
+    var linesV = doc.splitTextToSize(MENSAJE_VERSICULO, 160);
+    doc.text(linesV, 105, y, { align:'center' });
+    y += (linesV.length - 1) * 5; // Ajusta la altura según la cantidad de líneas
   }
 
-  // Mensaje (Más grande, fuente distinta Times, negro intenso y destacado)
+  // Mensaje (Salto de línea automático hacia abajo, Times Negrita Negro, máximo 160mm)
   if (MENSAJE_TEXTO && MENSAJE_TEXTO.trim() !== '') {
     y += 7;
     doc.setFont('times','bold'); doc.setFontSize(11); doc.setTextColor(0, 0, 0);
-    doc.text(MENSAJE_TEXTO, 105, y, { align:'center' });
+    var linesM = doc.splitTextToSize(MENSAJE_TEXTO, 160);
+    doc.text(linesM, 105, y, { align:'center' });
+    y += (linesM.length - 1) * 5; // Ajusta la altura según la cantidad de líneas
   }
 
   // Fecha de generación
@@ -1201,7 +1204,7 @@ async function descargarPDF() {
   doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(13,46,110);
   doc.text('Total general: ' + tg + '   |   Iglesias confirmadas: ' + data.length, 105, y, { align:'center' });
 
-  // Tabla
+  // Tabla de Confirmaciones
   doc.autoTable({
     startY: y + 5,
     head: [['Iglesia','Encargado','Pastores','Adolescentes','Participantes','Total']],
@@ -1227,7 +1230,7 @@ async function descargarPDF() {
   mostrarToast('✓ PDF descargado');
 }
 
-/* ════════ IMPRIMIR DINÁMICO REFORZADO ════════ */
+/* ════════ IMPRIMIR DINÁMICO CORREGIDO ════════ */
 async function imprimirLista() {
   var data = await obtenerDatos();
   if (!data || data.length === 0) { mostrarToast('⚠ No hay confirmaciones aún'); return; }
@@ -1252,8 +1255,8 @@ async function imprimirLista() {
     'body{font-family:Arial,sans-serif;padding:2cm;color:#111}' +
     'h1{font-size:18px;text-align:center;color:#0d2e6e;margin-bottom:4px}' +
     'h2{font-size:13px;text-align:center;font-weight:bold;color:#444;margin-bottom:8px}' +
-    '.versiculo{text-align:center;font-size:12.5px;font-style:italic;color:#c9920a;margin-bottom:6px}' +
-    '.mensaje{text-align:center;font-size:13px;font-weight:bold;font-family:"Georgia", serif;color:#000000;margin-bottom:14px}' +
+    '.versiculo{text-align:center;font-size:12px;font-style:italic;color:#c9920a;max-width:520px;margin:0 auto 6px auto;line-height:1.4;}' +
+    '.mensaje{text-align:center;font-size:13px;font-weight:bold;font-family:"Georgia", serif;color:#000000;max-width:520px;margin:0 auto 14px auto;line-height:1.4;}' +
     '.meta{text-align:center;font-size:10px;color:#888;margin-bottom:12px}' +
     '.totales{text-align:center;font-size:13px;font-weight:bold;margin-bottom:20px;color:#0d2e6e;border:1px solid #c7d9f5;padding:8px;border-radius:6px;background:#f0f5ff}' +
     'table{width:100%;border-collapse:collapse;font-size:11px}th{background:#0d2e6e;color:white;padding:7px 8px;text-align:left}td{padding:6px 8px;border-bottom:1px solid #ddd}tr:nth-child(even) td{background:#f0f5ff}.fila-total td{background:#c9920a;color:white;font-weight:bold}.footer{text-align:center;font-size:10px;color:#aaa;margin-top:24px}' +
