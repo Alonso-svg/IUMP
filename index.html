@@ -192,7 +192,7 @@
     flex-shrink: 0;
   }
   .btn-location:hover { opacity: 0.9; transform: translateY(-1px); }
-  /* ══ CARRUSEL ══ */
+  /* ══ CARRUSEL DINÁMICO ══ */
   .carrusel-titulo {
     position: relative; z-index: 2; text-align: center; margin-bottom: 0.4rem;
     font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
@@ -372,7 +372,6 @@
   .scanner-result.ok   { background: #d1fae5; color: #065f46; display: block; }
   .scanner-result.warn { background: #fee2e2; color: #991b1b; display: block; }
   .scanner-status { font-size: 12px; color: rgba(255,255,255,0.4); text-align: center; margin-bottom: 0.5rem; }
-  /* Línea animada scanner estilo iPhone */
   .scanner-line {
     position: absolute; left: 10%; right: 10%; height: 2px;
     background: linear-gradient(90deg, transparent, #f0b429, transparent);
@@ -477,22 +476,16 @@
       </a>
     </div>
 
-    <!-- Carrusel de fotos -->
-    <p class="carrusel-titulo">Imágenes de la última zonal</p>
-    <div class="carrusel-wrap">
-      <div class="carrusel-track">
-        <img src="fotos/foto1.jpg" alt="Zonal 1"> <img src="fotos/foto2.jpg" alt="Zonal 2">
-        <img src="fotos/foto3.jpg" alt="Zonal 3"> <img src="fotos/foto4.jpg" alt="Zonal 4">
-        <img src="fotos/foto5.jpg" alt="Zonal 5"> <img src="fotos/foto6.jpg" alt="Zonal 6">
-        <img src="fotos/foto7.jpg" alt="Zonal 7"> <img src="fotos/foto8.jpg" alt="Zonal 8">
-        <img src="fotos/foto9.jpg" alt="Zonal 9"> <img src="fotos/foto10.jpg" alt="Zonal 10">
-        <img src="fotos/foto1.jpg" alt="Zonal 1"> <img src="fotos/foto2.jpg" alt="Zonal 2">
-        <img src="fotos/foto3.jpg" alt="Zonal 3"> <img src="fotos/foto4.jpg" alt="Zonal 4">
-        <img src="fotos/foto5.jpg" alt="Zonal 5"> <img src="fotos/foto6.jpg" alt="Zonal 6">
-        <img src="fotos/foto7.jpg" alt="Zonal 7"> <img src="fotos/foto8.jpg" alt="Zonal 8">
-        <img src="fotos/foto9.jpg" alt="Zonal 9"> <img src="fotos/foto10.jpg" alt="Zonal 10">
+    <!-- 🖼️ Carrusel Dinámico desde Supabase Storage -->
+    <div id="seccion-carrusel" style="display: none;">
+      <p class="carrusel-titulo">Imágenes de la última zonal</p>
+      <div class="carrusel-wrap">
+        <div class="carrusel-track" id="carrusel-track">
+          <!-- Las fotos se cargan automáticamente desde el bucket 'fotos_zonal' -->
+        </div>
       </div>
     </div>
+
     <div class="hero-btns">
       <button class="btn-gold" onclick="abrirNuevo()">✓ &nbsp;Confirmar asistencia</button>
       <button class="btn-outline" onclick="mostrar('participacion', null)">≡ &nbsp;Ver participación</button>
@@ -698,11 +691,49 @@ async function cargarConfig() {
     }
   }
 
+  // Cargar fotos del carrusel dinámicamente desde Supabase Storage
+  cargarFotosCarrusel();
+
   actualizarCuentaRegresiva();
   setInterval(actualizarCuentaRegresiva, 1000);
   mostrar('inicio', null);
 }
 cargarConfig();
+
+/* ════════ CARGAR FOTOS DINÁMICAS DESDE SUPABASE STORAGE ════════ */
+async function cargarFotosCarrusel() {
+  var track   = document.getElementById('carrusel-track');
+  var seccion = document.getElementById('seccion-carrusel');
+  if (!track || !seccion) return;
+
+  var res = await db.storage.from('fotos_zonal').list('', {
+    limit: 100,
+    sortBy: { column: 'created_at', order: 'desc' }
+  });
+
+  if (res.error || !res.data || res.data.length === 0) {
+    seccion.style.display = 'none';
+    return;
+  }
+
+  var fotos = res.data.filter(function(item) {
+    return item.name !== '.emptyFolderPlaceholder';
+  });
+
+  if (fotos.length === 0) {
+    seccion.style.display = 'none';
+    return;
+  }
+
+  var htmlFotos = fotos.map(function(item) {
+    var urlData = db.storage.from('fotos_zonal').getPublicUrl(item.name);
+    return '<img src="' + urlData.data.publicUrl + '" alt="Foto Zonal">';
+  }).join('');
+
+  // Duplicamos el HTML para permitir el bucle de animación continua en CSS
+  track.innerHTML = htmlFotos + htmlFotos;
+  seccion.style.display = 'block';
+}
 
 /* REGLAS DE BLOQUEO (Cierra miércoles a las 23:59 hrs / 2 días antes) */
 function puedeEditar() {
@@ -1180,9 +1211,8 @@ async function descargarPDF() {
   var tpa = data.reduce(function(s,c) { return s+(c.pastores||0); }, 0);
   var tg  = tp + ta + tpa;
 
-  var y = 18; // Posición vertical inicial
+  var y = 18;
 
-  // Encabezado Principal
   doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(13,46,110);
   doc.text('Iglesia Unida Metodista Pentecostal', 105, y, { align:'center' });
 
@@ -1190,7 +1220,6 @@ async function descargarPDF() {
   doc.setFontSize(12); doc.setFont('helvetica','bold'); doc.setTextColor(80);
   doc.text(TITULO_EVENTO, 105, y, { align:'center' });
 
-  // Versículo (Agrandado con salto de línea automático)
   if (MENSAJE_VERSICULO && MENSAJE_VERSICULO.trim() !== '') {
     y += 8;
     doc.setFont('helvetica','italic'); doc.setFontSize(11); doc.setTextColor(201,146,10);
@@ -1199,7 +1228,6 @@ async function descargarPDF() {
     y += (linesV.length - 1) * 5;
   }
 
-  // Mensaje (Más grande, fuente Times Negrita Negro con salto automático)
   if (MENSAJE_TEXTO && MENSAJE_TEXTO.trim() !== '') {
     y += 7;
     doc.setFont('times','bold'); doc.setFontSize(11); doc.setTextColor(0, 0, 0);
@@ -1208,17 +1236,14 @@ async function descargarPDF() {
     y += (linesM.length - 1) * 5;
   }
 
-  // Fecha de generación
   y += 7;
   doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(150);
   doc.text('Generado el ' + fecha, 105, y, { align:'center' });
 
-  // Resumen Totales
   y += 8;
   doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(13,46,110);
   doc.text('Total general: ' + tg + '   |   Iglesias confirmadas: ' + data.length, 105, y, { align:'center' });
 
-  // Tabla
   doc.autoTable({
     startY: y + 5,
     head: [['Iglesia','Encargado','Pastores','Adolescentes','Participantes','Total']],
