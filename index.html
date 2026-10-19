@@ -1149,6 +1149,7 @@ async function cargarParticipacion() {
 }
 
 /* ════════ PDF ════════ */
+/* ════════ PDF DINÁMICO ════════ */
 async function obtenerDatos() {
   var r = await db.from('confirmaciones').select('*').order('iglesia', { ascending: true });
   return (r.error || !r.data) ? null : r.data;
@@ -1165,16 +1166,44 @@ async function descargarPDF() {
   var ta  = data.reduce(function(s,c) { return s+(c.adolescentes||0); }, 0);
   var tpa = data.reduce(function(s,c) { return s+(c.pastores||0); }, 0);
   var tg  = tp + ta + tpa;
+
+  var y = 18; // Posición vertical inicial
+
+  // Encabezado Principal
   doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(13,46,110);
-  doc.text('Iglesia Unida Metodista Pentecostal', 105, 22, { align:'center' });
-  doc.setFontSize(12); doc.setFont('helvetica','normal'); doc.setTextColor(80);
-  doc.text(TITULO_EVENTO, 105, 31, { align:'center' });
-  doc.setFontSize(9); doc.setTextColor(150);
-  doc.text('Generado el ' + fecha, 105, 39, { align:'center' });
+  doc.text('Iglesia Unida Metodista Pentecostal', 105, y, { align:'center' });
+
+  y += 7;
+  doc.setFontSize(12); doc.setFont('helvetica','bold'); doc.setTextColor(80);
+  doc.text(TITULO_EVENTO, 105, y, { align:'center' });
+
+  // Versículo Dinámico (solo si existe)
+  if (MENSAJE_VERSICULO && MENSAJE_VERSICULO.trim() !== '') {
+    y += 8;
+    doc.setFont('helvetica','italic'); doc.setFontSize(10); doc.setTextColor(201,146,10);
+    doc.text(MENSAJE_VERSICULO, 105, y, { align:'center' });
+  }
+
+  // Mensaje Dinámico (solo si existe)
+  if (MENSAJE_TEXTO && MENSAJE_TEXTO.trim() !== '') {
+    y += 6;
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(60);
+    doc.text(MENSAJE_TEXTO, 105, y, { align:'center' });
+  }
+
+  // Fecha de generación
+  y += 6;
+  doc.setFontSize(8); doc.setTextColor(150);
+  doc.text('Generado el ' + fecha, 105, y, { align:'center' });
+
+  // Resumen Totales
+  y += 8;
   doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(13,46,110);
-  doc.text('Total general: ' + tg + '   |   Iglesias confirmadas: ' + data.length, 105, 49, { align:'center' });
+  doc.text('Total general: ' + tg + '   |   Iglesias confirmadas: ' + data.length, 105, y, { align:'center' });
+
+  // Tabla
   doc.autoTable({
-    startY: 56,
+    startY: y + 5,
     head: [['Iglesia','Encargado','Pastores','Adolescentes','Participantes','Total']],
     body: data.map(function(c) {
       var t = (c.participantes||0)+(c.adolescentes||0)+(c.pastores||0);
@@ -1187,16 +1216,19 @@ async function descargarPDF() {
     styles: { fontSize:9, cellPadding:3 },
     columnStyles: { 0:{cellWidth:42}, 1:{cellWidth:40}, 2:{cellWidth:22,halign:'center'}, 3:{cellWidth:25,halign:'center'}, 4:{cellWidth:28,halign:'center'}, 5:{cellWidth:20,halign:'center',fontStyle:'bold'} }
   });
+
   var pages = doc.internal.getNumberOfPages();
   for (var i=1; i<=pages; i++) {
     doc.setPage(i); doc.setFontSize(8); doc.setTextColor(180);
     doc.text('IUMP · Jóvenes · Página '+i+' de '+pages, 105, doc.internal.pageSize.height-10, { align:'center' });
   }
+
   doc.save('confirmaciones-zonal.pdf');
   mostrarToast('✓ PDF descargado');
 }
 
 /* ════════ IMPRIMIR ════════ */
+/* ════════ IMPRIMIR DINÁMICO ════════ */
 async function imprimirLista() {
   var data = await obtenerDatos();
   if (!data || data.length === 0) { mostrarToast('⚠ No hay confirmaciones aún'); return; }
@@ -1209,11 +1241,37 @@ async function imprimirLista() {
     var t = (c.participantes||0)+(c.adolescentes||0)+(c.pastores||0);
     return '<tr><td>'+c.iglesia+'</td><td>'+c.nombre+'</td><td style="text-align:center">'+(c.pastores===0?'Ninguno':c.pastores===1?'1':'2')+'</td><td style="text-align:center">'+(c.adolescentes||0)+'</td><td style="text-align:center">'+(c.participantes||0)+'</td><td style="text-align:center;font-weight:bold;color:#0d2e6e">'+t+'</td></tr>';
   }).join('');
+  
+  var htmlVersiculo = (MENSAJE_VERSICULO && MENSAJE_VERSICULO.trim() !== '') 
+    ? '<p class="versiculo">'+MENSAJE_VERSICULO+'</p>' : '';
+  var htmlMensaje = (MENSAJE_TEXTO && MENSAJE_TEXTO.trim() !== '') 
+    ? '<p class="mensaje">'+MENSAJE_TEXTO+'</p>' : '';
+
   var v = window.open('','_blank');
-  v.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Confirmaciones</title><style>body{font-family:Arial,sans-serif;padding:2cm;color:#111}h1{font-size:18px;text-align:center;color:#0d2e6e;margin-bottom:4px}h2{font-size:13px;text-align:center;font-weight:normal;color:#444;margin-bottom:4px}.meta{text-align:center;font-size:11px;color:#888;margin-bottom:12px}.totales{text-align:center;font-size:13px;font-weight:bold;margin-bottom:20px;color:#0d2e6e;border:1px solid #c7d9f5;padding:8px;border-radius:6px;background:#f0f5ff}table{width:100%;border-collapse:collapse;font-size:11px}th{background:#0d2e6e;color:white;padding:7px 8px;text-align:left}td{padding:6px 8px;border-bottom:1px solid #ddd}tr:nth-child(even) td{background:#f0f5ff}.fila-total td{background:#c9920a;color:white;font-weight:bold}.footer{text-align:center;font-size:10px;color:#aaa;margin-top:24px}</style></head><body><h1>Iglesia Unida Metodista Pentecostal</h1><h2>'+TITULO_EVENTO+'</h2><p class="meta">Generado el '+fecha+'</p><p class="totales">Total general: '+tg+' | Iglesias confirmadas: '+data.length+'</p><table><thead><tr><th>Iglesia</th><th>Encargado</th><th>Pastores</th><th>Adolescentes</th><th>Participantes</th><th>Total</th></tr></thead><tbody>'+filas+'</tbody><tfoot><tr class="fila-total"><td>TOTALES</td><td></td><td>'+tpa+'</td><td>'+ta+'</td><td>'+tp+'</td><td>'+tg+'</td></tr></tfoot></table><p class="footer">IUMP · Jóvenes · Zona Central</p><script>window.onload=function(){window.print()}<\/script></body></html>');
+  v.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Confirmaciones</title>' +
+    '<style>' +
+    'body{font-family:Arial,sans-serif;padding:2cm;color:#111}' +
+    'h1{font-size:18px;text-align:center;color:#0d2e6e;margin-bottom:4px}' +
+    'h2{font-size:13px;text-align:center;font-weight:bold;color:#444;margin-bottom:8px}' +
+    '.versiculo{text-align:center;font-size:11px;font-style:italic;color:#c9920a;margin-bottom:4px}' +
+    '.mensaje{text-align:center;font-size:11px;color:#555;margin-bottom:12px}' +
+    '.meta{text-align:center;font-size:10px;color:#888;margin-bottom:12px}' +
+    '.totales{text-align:center;font-size:13px;font-weight:bold;margin-bottom:20px;color:#0d2e6e;border:1px solid #c7d9f5;padding:8px;border-radius:6px;background:#f0f5ff}' +
+    'table{width:100%;border-collapse:collapse;font-size:11px}th{background:#0d2e6e;color:white;padding:7px 8px;text-align:left}td{padding:6px 8px;border-bottom:1px solid #ddd}tr:nth-child(even) td{background:#f0f5ff}.fila-total td{background:#c9920a;color:white;font-weight:bold}.footer{text-align:center;font-size:10px;color:#aaa;margin-top:24px}' +
+    '</style></head><body>' +
+    '<h1>Iglesia Unida Metodista Pentecostal</h1>' +
+    '<h2>'+TITULO_EVENTO+'</h2>' +
+    htmlVersiculo +
+    htmlMensaje +
+    '<p class="meta">Generado el '+fecha+'</p>' +
+    '<p class="totales">Total general: '+tg+' | Iglesias confirmadas: '+data.length+'</p>' +
+    '<table><thead><tr><th>Iglesia</th><th>Encargado</th><th>Pastores</th><th>Adolescentes</th><th>Participantes</th><th>Total</th></tr></thead>' +
+    '<tbody>'+filas+'</tbody>' +
+    '<tfoot><tr class="fila-total"><td>TOTALES</td><td></td><td>'+tpa+'</td><td>'+ta+'</td><td>'+tp+'</td><td>'+tg+'</td></tr></tfoot>' +
+    '</table><p class="footer">IUMP · Jóvenes · Cautín Central</p>' +
+    '<script>window.onload=function(){window.print()}<\/script></body></html>');
   v.document.close();
 }
-
 /* ════════ TOAST ════════ */
 function mostrarToast(msg) {
   var t = document.getElementById('toast');
